@@ -6,10 +6,14 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 ##How to use:
 
 Make sure to include jQuery in your page:
-	&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
 
 Include **jQuery Selectric:**
-	&lt;script src=&quot;js/jquery.selectric.min.js&quot;&gt;&lt;/script&gt;
+
+	<script src="js/jquery.selectric.min.js"></script>
+
 
 Put styles in your CSS
 
@@ -34,11 +38,11 @@ Put styles in your CSS
 
 Initialize **jQuery Selectric:**
 
-	&lt;script&gt;
+	<script>
 	$(function(){
 		$('select').selectric();
 	});
-	&lt;/script&gt;
+	</script>
 
 ##Options:
 
