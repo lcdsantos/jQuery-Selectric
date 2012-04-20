@@ -4,7 +4,7 @@
 jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.
 
 ##How to use:
--------------
+
 1. Make sure to include jQuery in your page:
 	&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js&quot;&gt;&lt;/script&gt;
 
@@ -21,7 +21,7 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 	.selectric .label span { background: #09F; color: #FFF; }
 	.selectric span.button { position: absolute; right: 2px; top: 2px; font-size: 9px; height: 22px; width: 23px; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; color: #FFF; text-align: center; line-height: 22px; background: #A7C7DC; background: -moz-linear-gradient(top, #A7C7DC 0%, #85B2D3 100%); background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#A7C7DC), color-stop(100%,#85B2D3)); background: -webkit-linear-gradient(top, #A7C7DC 0%,#85B2D3 100%); background: -o-linear-gradient(top, #A7C7DC 0%,#85B2D3 100%); background: -ms-linear-gradient(top, #A7C7DC 0%,#85B2D3 100%); background: linear-gradient(top, #A7C7DC 0%,#85B2D3 100%); filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#A7C7DC', endColorstr='#85B2D3',GradientType=0 ); }
 	.hover span.button { border-color: #AAA; background: #85B2D3; }
-
+	
 	/* Items box */
 	.selectricItems ul,
 	.selectricItems li { list-style: none; padding: 0; margin: 0; }
@@ -38,7 +38,7 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 	&lt;/script&gt;
 
 ##Options:
-----------
+
 <table>
 	<tr>
 		<td><strong>Option</strong></td>
