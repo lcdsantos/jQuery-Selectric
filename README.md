@@ -5,7 +5,6 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 
 ##How to use:
 -------------
-
 1. Make sure to include jQuery in your page:
 	&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js&quot;&gt;&lt;/script&gt;
 
@@ -30,7 +29,7 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 	.selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #DFDFDF; }
 	.selectricItems li.selected { background: #888; color: #F0F0F0; }
 	.selectricItems li:hover { background: #999; color: #F0F0F0; }
-		
+
 4. Initialize **jQuery Selectric:**
 	&lt;script&gt;
 	$(function(){
@@ -40,7 +39,6 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 
 ##Options:
 ----------
-
 <table>
 	<tr>
 		<td><strong>Option</strong></td>
@@ -106,8 +104,8 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 
 ##Browser support:
 
-*Firefox
-*Chrome
-*Safari
-*Internet Explorer 7+
-*Opera
+* Firefox
+* Chrome
+* Safari
+* Internet Explorer 7+
+* Opera
