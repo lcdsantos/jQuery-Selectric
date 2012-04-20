@@ -13,7 +13,7 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 
 3. Put styles in your CSS
 
-	.selectricWrapper { position: relative; margin: 0 0 10px; }
+    .selectricWrapper { position: relative; margin: 0 0 10px; }
 	.selectricWrapper.selectricOpen { z-index: 9999; }
 	.selectricWrapper select { position: absolute; left: -9999em; }
 	.selectric { border: 1px solid #CCC; background: #F0F0F0; width: 300px; position: relative; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; cursor: pointer; line-height: 16px; }
