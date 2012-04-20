@@ -5,13 +5,13 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 
 ##How to use:
 
-1. Make sure to include jQuery in your page:
+Make sure to include jQuery in your page:
 	&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js&quot;&gt;&lt;/script&gt;
 
-2. Include **jQuery Selectric:**
+Include **jQuery Selectric:**
 	&lt;script src=&quot;js/jquery.selectric.min.js&quot;&gt;&lt;/script&gt;
 
-3. Put styles in your CSS
+Put styles in your CSS
 
     .selectricWrapper { position: relative; margin: 0 0 10px; }
 	.selectricWrapper.selectricOpen { z-index: 9999; }
@@ -32,7 +32,7 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 	.selectricItems li:hover { background: #999; color: #F0F0F0; }
 
 
-4. Initialize **jQuery Selectric:**
+Initialize **jQuery Selectric:**
 	&lt;script&gt;
 	$(function(){
 		$('select').selectric();
