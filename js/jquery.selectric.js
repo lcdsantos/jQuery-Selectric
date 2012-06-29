@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.0
+ * Selectric Ϟ v1.1
  *
  * Copyright (c) 2012 Leonardo Santos
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
@@ -19,8 +19,8 @@
 ;(function ($, window, undefined) {
 	var pluginName = 'selectric',
 		defaults = {
-			onOpen: function(){},
-			onClose: function(){},
+			onOpen: function() {},
+			onClose: function() {},
 			maxHeight: 300,
 			keySearchTimeout: 500,
 			highlight: true,
@@ -50,12 +50,23 @@
 			$li, $items = $wrapper.find('ul').parent(),
 			bindSufix = /^\./.test(options.bindSufix) ? options.bindSufix : '.' + options.bindSufix,
 			$doc = $(document),
-			$outerWrapper = $original.wrap('<div class="' + pluginName + 'Wrapper"/>').parent().addClass(elm.className).bind('mouseenter mouseleave', function(){
+			$outerWrapper = $original.wrap('<div class="' + pluginName + 'Wrapper"/>').parent().addClass(elm.className).bind('mouseenter mouseleave', function() {
 				$(this).toggleClass('hover');
 			}),
 			// Firefox has problems to change <select> value on keydown,
 			// so we use keypress for it and keydown for all other browsers
-			keyBind = $.browser.mozilla ? 'keypress' + bindSufix : 'keydown' + bindSufix;
+			keyBind = $.browser.mozilla ? 'keypress' + bindSufix : 'keydown' + bindSufix,
+			chars = ['a', 'e', 'i', 'o', 'u', 'n', 'c', 'y'],
+			diacritics = [
+				/[\340-\346]/g, // a
+				/[\350-\353]/g, // e
+				/[\354-\357]/g, // i
+				/[\362-\370]/g, // o
+				/[\371-\374]/g, // u
+				/[\361]/g, // n
+				/[\347]/g, // c
+				/[\377]/g // y
+			];
 
 		$original.data(pluginName, this);
 		
@@ -141,8 +152,6 @@
 		var searchStr = '',
 			resetStr, highlight = options.highlight;
 
-		$original.bind('keydown', _keySearch);
-
 		function _keySearch(e) {
 			var key = e.keyCode || e.which;
 			clearTimeout(resetStr);
@@ -151,9 +160,11 @@
 			if (!~$.inArray(key, [37, 38, 39, 40])) {
 				searchStr += String.fromCharCode(key);
 				
-				var rSearch = new RegExp('^(' + searchStr + ')', 'i');
-
-				for (var k = 0; k < selectItems.length; k++) {
+				var rSearch = new RegExp('^(' + searchStr + ')', 'i'),
+					k = 0,
+					l = selectItems.length;
+					
+				for (;k < l; k++) {
 					if (rSearch.test(selectItems[k].slug) || rSearch.test(selectItems[k].text)) {
 						_select(k);
 						highlight && $label.html($label.text().replace(rSearch, '<span>$1</span>'));
@@ -168,10 +179,12 @@
 				searchStr = '';
 			}
 		}
+		
+		$original.bind('keydown', _keySearch);
 
 		// This need to be this way so we can re-cache and re-bind if we use _reset()
 		function _bindClick() {
-			$ul = $wrapper.find('ul'),
+			$ul = $wrapper.find('ul');
 			$li = $ul.find('li');
 
 			// Select the clicked option
@@ -183,7 +196,7 @@
 		}
 
 		// Toggle show/hide the select options
-		function _toggleOpen(e){ isOpen ? _close(e) : _open(e) }
+		function _toggleOpen(e){ isOpen ? _close(e) : _open(e); }
 
 		// Open the select options box
 		function _open(e){
@@ -269,21 +282,9 @@
 		}
 		
 		// Remove diacritics to search function proper
-		var chars = ['a', 'e', 'i', 'o', 'u', 'n', 'c', 'y'],
-			diacritics = [
-				/[\340-\346]/g, // a
-				/[\350-\353]/g, // e
-				/[\354-\357]/g, // i
-				/[\362-\370]/g, // o
-				/[\371-\374]/g, // u
-				/[\361]/g, // n
-				/[\347]/g, // c
-				/[\377]/g // y
-			],
-			k = diacritics.length;
-			
 		function _replaceDiacritics(s) {
-			while (k--){
+			var k = diacritics.length;
+			while (k--) {
 				s = s.toLowerCase().replace(diacritics[k], chars[k]);
 			}
 			return s;
@@ -313,17 +314,17 @@
 		}
 
 		$original.bind('refresh', _reset).bind('destroy', _destroy).bind('open', _open).bind('close', _close);
-	}
+	};
 
 	// A really lightweight plugin wrapper around the constructor,
 	// preventing against multiple instantiations
 	$.fn[pluginName] = function (args, options) {
-		return this.each(function () {
+		return this.each(function() {
 			if (!$.data(this, pluginName)) {
 				new Selectric(this, args ? args : options);
 			} else if (typeof args === 'string') {
 				$(this).trigger(args);
 			}
 		});
-	}
+	};
 }(jQuery, window));

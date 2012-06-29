@@ -114,7 +114,7 @@ table td { border: 1px solid #DDD; padding: 6px 8px; }
 </head>
 <body>
 	<div class="center">
-		<h1>jQuery Selectric <span style="font-family:Consolas">Ϟ</span> v1.0</h1>
+		<h1>jQuery Selectric <span style="font-family:Georgia, 'Times New Roman', Times, serif">ϟ</span> v1.1</h1>
 		
 		<p>jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.</p>
 		
@@ -215,6 +215,15 @@ $(function(){
 				<td>Bind events namespace</td>
 			</tr>
 		</table>
+		
+		<h2>Public methods:</h2>
+		<pre>&lt;script&gt;
+	$('select').selectric('refresh'); // Reconstruct the instance of plugin
+	$('select').selectric('destroy'); // Destroy select and go back to normal
+	$('select').selectric('open'); // Open options
+	$('select').selectric('close'); // Close options
+&lt;/script&gt;</pre>
+		
 
 		<h2>Browser support:</h2>
 		

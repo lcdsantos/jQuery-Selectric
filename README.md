@@ -114,6 +114,15 @@ $(function(){
 	</tr>
 </table>
 
+##Public methods:
+
+```js
+$('select').selectric('refresh'); // Reconstruct the instance of plugin
+$('select').selectric('destroy'); // Destroy select and go back to normal
+$('select').selectric('open'); // Open options
+$('select').selectric('close'); // Close options
+```
+
 ##Browser support:
 
 * Firefox
