@@ -1,4 +1,4 @@
-#jQuery Selectric Ϟ v1.0
+#jQuery Selectric ϟ v1.0
 ========================
 
 jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.
@@ -17,7 +17,7 @@ Include **jQuery Selectric:**
 <script src="js/jquery.selectric.min.js"></script>
 ```
 
-Put styles in your CSS
+Put styles in your CSS and change it to your taste :D
 
 ```css
 .selectricWrapper { position: relative; margin: 0 0 10px; }
@@ -53,20 +53,20 @@ $(function(){
 
 <table>
 	<tr>
-		<td><strong>Option</strong></td>
-		<td><strong>Default</strong></td>
-		<td><strong>Type</strong></td>
-		<td><strong>Description</strong></td>
+		<th>Option</th>
+		<th>Default</th>
+		<th>Type</th>
+		<th>Description</th>
 	</tr>
 	<tr>
 		<td>onOpen</td>
-		<td>function(){}</td>
+		<td>function() {}</td>
 		<td>Function</td>
 		<td>Function called when select options is opened</td>
 	</tr>
 	<tr>
 		<td>onClose</td>
-		<td>function(){}</td>
+		<td>function() {}</td>
 		<td>Function</td>
 		<td>Function called when select options is closed</td>
 	</tr>
@@ -118,7 +118,7 @@ $(function(){
 
 ```js
 $('select').selectric('refresh'); // Reconstruct the instance of plugin
-$('select').selectric('destroy'); // Destroy select and go back to normal
+$('select').selectric('destroy'); // Destroy Selectric and go back to normal
 $('select').selectric('open'); // Open options
 $('select').selectric('close'); // Close options
 ```
