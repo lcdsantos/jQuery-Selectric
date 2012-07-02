@@ -55,10 +55,10 @@ $(function(){
 
 <table>
 	<tr>
-		<th>Option</th>
-		<th>Default</th>
-		<th>Type</th>
-		<th>Description</th>
+		<td>Option</td>
+		<td>Default</td>
+		<td>Type</td>
+		<td>Description</td>
 	</tr>
 	<tr>
 		<td>onOpen</td>
