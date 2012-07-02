@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.2
+ * Selectric Ϟ v1.3
  *
  * Copyright (c) 2012 Leonardo Santos
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
@@ -38,7 +38,7 @@
 	}
 
 	Selectric.prototype.init = function(options) {
-		var $wrapper = $('<div class="' + pluginName + '"><p class="label"></p>' + options.arrowButtonMarkup + '</div><div class="' + pluginName + 'Items"><ul></ul></div>'),
+		var $wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div><div class="' + pluginName + 'Items"><ul/></div>'),
 			elm = this.element,
 			$original = $(elm),
 			selectItems = [],
@@ -67,9 +67,7 @@
 				/[\377]/g // y
 			],
 			searchStr = '',
-			resetStr, highlight = options.highlight,
-			pd = 'preventDefault',
-			sp = 'stopPropagation';
+			resetStr, highlight = options.highlight;
 		
 		$original.data(pluginName, this);
 		
@@ -85,6 +83,9 @@
 				$label.parent().unbind('click').bind('click' + bindSufix, _toggleOpen);
 				$original.unbind('focusin').bind('focusin' + bindSufix, function(e){ !isOpen && _open(e); });
 				_bindClick();
+				
+				$original.parent().append($wrapper);
+				$original.wrap('<div class="' + pluginName + 'HideSelect" />');
 			}
 		}
 		
@@ -126,20 +127,20 @@
 		_start();
 		
 		function _keyActions(e) {
-			e[pd]();
+			e.preventDefault();
 			var selected = selectItems.selected,
 				length = selectItems.length,
 				key = e.keyCode;
 			
 			// Left / Up
-			if (/3(7|8)/.test(key)) _select(selected === 0 ? length - 1 : selected - 1);
+			if (/^3(7|8)$/.test(key)) _select(selected === 0 ? length - 1 : selected - 1);
 			
 			// Right / Down
-			if (/39|40/.test(key)) _select(selected < length - 1 ? selected + 1 : 0);
+			if (/^(39|40)$/.test(key)) _select(selected < length - 1 ? selected + 1 : 0);
 			
 			// Tab / Enter / ESC
-			if (/9|13|27/.test(key)){
-				e[sp]();
+			if (/^(9|13|27)$/.test(key)) {
+				e.stopPropagation();
 				_select(selected, true);
 			}
 		}
@@ -150,7 +151,7 @@
 			clearTimeout(resetStr);
 			
 			// If it's not a system, Enter or Backspace key
-			if (!/3(7|8|9)|40/.test(key)) {
+			if (!/^(3(7|8|9)|40)$/.test(key)) {
 				searchStr += String.fromCharCode(key);
 				
 				var rSearch = new RegExp('^(' + searchStr + ')', 'i'),
@@ -180,7 +181,7 @@
 		function _bindClick() {
 			$ul = $wrapper.find('ul');
 			$li = $ul.find('li').click(function(e) {
-				e[sp]();
+				e.stopPropagation();
 				// The second parameter is to close the box after click
 				_select($(this).index(), true);
 			});
@@ -191,8 +192,8 @@
 
 		// Open the select options box
 		function _open(e){
-			e[pd]();
-			e[sp]();
+			e.preventDefault();
+			e.stopPropagation();
 
 			// Find any other opened instances of select and close it
 			$('.' + pluginName + 'Open select')[pluginName]('close');
@@ -280,7 +281,7 @@
 			return s;
 		}
 
-		$original.parent().append($wrapper);
+		//$original.parent().append($wrapper);
 
 		function _calculateHeight() {
 			$items.height() > options.maxHeight && $items.height(options.maxHeight);
