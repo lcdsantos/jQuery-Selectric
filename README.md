@@ -1,4 +1,4 @@
-#jQuery Selectric ϟ v1.3
+#jQuery Selectric ϟ
 ========================
 
 jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.
@@ -20,6 +20,7 @@ Include **jQuery Selectric:**
 Put styles in your CSS and change it to your taste :D
 
 ```css
+/* Selectric */
 .selectricWrapper { position: relative; margin: 0 0 10px; }
 .selectricWrapper.selectricOpen { z-index: 9999; }
 .selectricHideSelect { position: relative; overflow: hidden; }
@@ -34,7 +35,7 @@ Put styles in your CSS and change it to your taste :D
 /* Items box */
 .selectricItems ul,
 .selectricItems li { list-style: none; padding: 0; margin: 0; min-height: 20px; font-size: 13px; }
-.selectricItems { display: none; position: absolute; overflow: auto; top: 28px; left: 0; background: #F0F0F0; border: 1px solid #CCC; z-index: 9998; }
+.selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F0F0F0; border: 1px solid #CCC; z-index: 9998; }
 .selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #DFDFDF; }
 .selectricItems li + li { border-top: 1px solid #FFF; }
 .selectricItems li.selected { background: #888; color: #F0F0F0; }

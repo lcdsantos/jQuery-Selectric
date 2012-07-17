@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.3
+ * Selectric Ϟ v1.4
  *
  * Copyright (c) 2012 Leonardo Santos
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
@@ -207,7 +207,7 @@
 			$win.scrollTop(scrollTop);
 			
 			$doc.bind('click' + bindSufix, _close);
-			$original.parent().addClass(pluginName + 'Open');
+			$outerWrapper.addClass(pluginName + 'Open');
 			_detectVisibility($ul.find('.selected').index());
 			
 			options.onOpen.call(this);
@@ -237,7 +237,8 @@
 		// Close the select options box
 		function _close(){
 			$items.hide();
-			$original.blur().change().parent().removeClass(pluginName + 'Open');
+			$original.blur().change();
+			$outerWrapper.removeClass(pluginName + 'Open');
 			isOpen = false;
 			highlight && $label.html($label.text());
 

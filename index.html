@@ -106,7 +106,7 @@ table td { border: 1px solid #DDD; padding: 6px 8px; }
 /* Items box */
 .selectricItems ul,
 .selectricItems li { list-style: none; padding: 0; margin: 0; min-height: 20px; font-size: 13px; }
-.selectricItems { display: none; position: absolute; overflow: auto; top: 28px; left: 0; background: #F0F0F0; border: 1px solid #CCC; z-index: 9998; }
+.selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F0F0F0; border: 1px solid #CCC; z-index: 9998; }
 .selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #DFDFDF; }
 .selectricItems li + li { border-top: 1px solid #FFF; }
 .selectricItems li.selected { background: #888; color: #F0F0F0; }
@@ -116,7 +116,7 @@ table td { border: 1px solid #DDD; padding: 6px 8px; }
 </head>
 <body>
 	<div class="center">
-		<h1>jQuery Selectric <span style="font-family:Georgia, 'Times New Roman', Times, serif">ϟ</span> v1.3</h1>
+		<h1>jQuery Selectric <span style="font-family:Georgia, 'Times New Roman', Times, serif">ϟ</span></h1>
 		
 		<p>jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.</p>
 		
@@ -129,7 +129,8 @@ table td { border: 1px solid #DDD; padding: 6px 8px; }
 		<pre>&lt;script src=&quot;js/jquery.selectric.min.js&quot;&gt;&lt;/script&gt;</pre>
 		
 		<p>3. Put styles in your CSS and change it to your taste :D</p>
-		<pre>.selectricWrapper { position: relative; margin: 0 0 10px; }
+		<pre>/* Selectric */
+.selectricWrapper { position: relative; margin: 0 0 10px; }
 .selectricWrapper.selectricOpen { z-index: 9999; }
 .selectricHideSelect { position: relative; overflow: hidden; }
 .selectricHideSelect select { position: absolute; left: -100%; }
@@ -143,7 +144,7 @@ table td { border: 1px solid #DDD; padding: 6px 8px; }
 /* Items box */
 .selectricItems ul,
 .selectricItems li { list-style: none; padding: 0; margin: 0; min-height: 20px; font-size: 13px; }
-.selectricItems { display: none; position: absolute; overflow: auto; top: 28px; left: 0; background: #F0F0F0; border: 1px solid #CCC; z-index: 9998; }
+.selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F0F0F0; border: 1px solid #CCC; z-index: 9998; }
 .selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #DFDFDF; }
 .selectricItems li + li { border-top: 1px solid #FFF; }
 .selectricItems li.selected { background: #888; color: #F0F0F0; }
