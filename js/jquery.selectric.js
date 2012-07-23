@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.4
+ * Selectric Ϟ v1.4.1
  *
  * Copyright (c) 2012 Leonardo Santos
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
@@ -72,21 +72,24 @@
 		$original.data(pluginName, this);
 		
 		function _start(){
+			$label.parent().unbind('click');
+			$original.unbind(keyBind).unbind('focusin');
+			
 			if ($original.prop('disabled')){
 				$outerWrapper.addClass(pluginName + 'Disabled');
 			} else {
 				$outerWrapper.removeClass(pluginName + 'Disabled');
-				$original.unbind(keyBind).bind(keyBind, _keyActions);
-	
+				$original.bind(keyBind, _keyActions);
+			
 				// click on label and :focus on original select will open the options box
 				// unbind in case of a refresh
-				$label.parent().unbind('click').bind('click' + bindSufix, _toggleOpen);
-				$original.unbind('focusin').bind('focusin' + bindSufix, function(e){ !isOpen && _open(e); });
+				$label.parent().bind('click' + bindSufix, _toggleOpen);
+				$original.bind('focusin' + bindSufix, function(e){ !isOpen && _open(e); });
 				_bindClick();
-				
-				$original.parent().append($wrapper);
-				$original.wrap('<div class="' + pluginName + 'HideSelect" />');
 			}
+			
+			$original.parent().append($wrapper);
+			$original.wrap('<div class="' + pluginName + 'HideSelect" />');
 		}
 		
 		function _populate() {
