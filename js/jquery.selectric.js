@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.4.1
+ * Selectric Ϟ v1.4.2
  *
  * Copyright (c) 2012 Leonardo Santos
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
@@ -49,7 +49,7 @@
 			bindSufix = ('.' + options.bindSufix).replace(/^\.+/g, '.'),
 			$doc = $(document),
 			$win = $(window),
-			$outerWrapper = $original.wrap('<div class="' + pluginName + 'Wrapper"/>').parent().addClass(elm.className).bind('hover', function() {
+			$outerWrapper = $original.wrap('<div class="' + pluginName + 'Wrapper"/>').parent().hover(function(){
 				$(this).toggleClass('hover');
 			}),
 			// Firefox has problems to change <select> value on keydown,
@@ -74,6 +74,7 @@
 		function _start(){
 			$label.parent().unbind('click');
 			$original.unbind(keyBind).unbind('focusin');
+			$outerWrapper.addClass(elm.className);
 			
 			if ($original.prop('disabled')){
 				$outerWrapper.addClass(pluginName + 'Disabled');
@@ -239,8 +240,11 @@
 
 		// Close the select options box
 		function _close(){
+			var selectedTxt = selectItems[selectItems.selected].text;
 			$items.hide();
-			$original.blur().change();
+			$original.blur();
+			selectedTxt != $label.text() && $original.change();
+			$label.text(selectedTxt);
 			$outerWrapper.removeClass(pluginName + 'Open');
 			isOpen = false;
 			highlight && $label.html($label.text());
@@ -257,7 +261,6 @@
 			$original.val(selectItems[index].value).find('option').eq(index).prop('selected', true);
 			_detectVisibility(index);
 			selectItems.selected = index;
-			$label.text(selectItems[index].text);
 			close && _close();
 		}
 
@@ -284,9 +287,7 @@
 			while (k--) s = s.toLowerCase().replace(diacritics[k], chars[k]);
 			return s;
 		}
-
-		//$original.parent().append($wrapper);
-
+		
 		function _calculateHeight() {
 			$items.height() > options.maxHeight && $items.height(options.maxHeight);
 			$items.width($wrapper.outerWidth() - (options.border * 2));
