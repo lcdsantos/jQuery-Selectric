@@ -49,7 +49,7 @@
 			bindSufix = ('.' + options.bindSufix).replace(/^\.+/g, '.'),
 			$doc = $(document),
 			$win = $(window),
-			$outerWrapper = $original.wrap('<div class="' + pluginName + 'Wrapper"/>').parent().hover(function(){
+			$outerWrapper = $original.wrap('<div/>').parent().hover(function(){
 				$(this).toggleClass('hover');
 			}),
 			// Firefox has problems to change <select> value on keydown,
@@ -69,12 +69,13 @@
 			searchStr = '',
 			resetStr, highlight = options.highlight;
 		
-		$original.data(pluginName, this);
-		
+		$original.data(pluginName, this).parent().append($wrapper);
+		$original.wrap('<div class="' + pluginName + 'HideSelect" />');
+			
 		function _start(){
 			$label.parent().unbind('click');
 			$original.unbind(keyBind).unbind('focusin');
-			$outerWrapper.addClass(elm.className);
+			$outerWrapper.removeClass().addClass(pluginName + 'Wrapper ' + elm.className);
 			
 			if ($original.prop('disabled')){
 				$outerWrapper.addClass(pluginName + 'Disabled');
@@ -88,9 +89,6 @@
 				$original.bind('focusin' + bindSufix, function(e){ !isOpen && _open(e); });
 				_bindClick();
 			}
-			
-			$original.parent().append($wrapper);
-			$original.wrap('<div class="' + pluginName + 'HideSelect" />');
 		}
 		
 		function _populate() {
