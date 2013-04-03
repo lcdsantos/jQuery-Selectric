@@ -1,5 +1,5 @@
 #jQuery Selectric ϟ
-========================
+===================
 
 jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.
 
@@ -8,7 +8,7 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 Make sure to include jQuery in your page:
 
 ```html
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 ```
 
 Include **jQuery Selectric:**
@@ -20,26 +20,28 @@ Include **jQuery Selectric:**
 Put styles in your CSS and change it to your taste :D
 
 ```css
-/* Selectric */
+/*======================================================================
+	Selectric
+======================================================================*/
 .selectricWrapper { position: relative; margin: 0 0 10px; }
 .selectricWrapper.selectricOpen { z-index: 9999; }
 .selectricHideSelect { position: relative; overflow: hidden; }
 .selectricHideSelect select { position: absolute; left: -100%; }
-.selectric { border: 1px solid #CCC; background: #F0F0F0; width: 300px; position: relative; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; cursor: pointer; line-height: 16px; }
-.selectricOpen .selectric { border: 1px solid #999; background: #E8E8E8; z-index: 9999; }
-.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding: 5px 0 5px 5px; font-size: 13px; }
+.selectric { border: 1px solid #DDD; background: #F8F8F8; width: 300px; position: relative; border-radius: 2px; cursor: pointer; line-height: 16px; }
+.selectricOpen .selectric { border: 1px solid #CCC; background: #EEE; z-index: 9999; }
+.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding: 5px 0 5px 5px; font-size: 13px; color: #444; }
 .selectric .label span { background: #09F; color: #FFF; }
-.selectric span.button { position: absolute; right: 2px; top: 2px; font-size: 9px; line-height: 22px; height: 22px; width: 23px; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; color: #FFF; text-align: center; background: #A7C7DC; }
+.selectric span.button { position: absolute; right: 2px; top: 2px; line-height: 22px; height: 22px; width: 23px; border-radius: 2px; color: #FFF; text-align: center; background: #A7C7DC; }
 .hover span.button { background: #85B2D3; }
+.selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
 
 /* Items box */
 .selectricItems ul,
 .selectricItems li { list-style: none; padding: 0; margin: 0; min-height: 20px; font-size: 13px; }
-.selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F0F0F0; border: 1px solid #CCC; z-index: 9998; }
-.selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #DFDFDF; }
-.selectricItems li + li { border-top: 1px solid #FFF; }
-.selectricItems li.selected { background: #888; color: #F0F0F0; }
-.selectricItems li:hover { background: #999; color: #F0F0F0; }
+.selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F9F9F9; border: 1px solid #CCC; z-index: 9998; }
+.selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #EEE; color: #666; border-top: 1px solid #FFF; }
+.selectricItems li.selected { background: #EFEFEF; color: #444; border-top: 1px solid #E0E0E0; }
+.selectricItems li:hover { background: #F0F0F0; color: #444; }
 ```
 
 Initialize **jQuery Selectric:**
@@ -86,14 +88,8 @@ $(function(){
 		<td>After this time without pressing any key, the search string is reseted</td>
 	</tr>
 	<tr>
-		<td>highlight</td>
-		<td>true</td>
-		<td>Boolean</td>
-		<td>Highlight searched string in label</td>
-	</tr>
-	<tr>
 		<td>arrowButtonMarkup</td>
-		<td>&lt;span class=&quot;button&quot;&gt;&amp;#9660;&lt;/span&gt;</td>
+		<td>&lt;span class=&quot;button&quot;&gt;&amp;#9662;&lt;/span&gt;</td>
 		<td>String [HTML]</td>
 		<td>Markup for open options button</td>
 	</tr>
@@ -110,10 +106,10 @@ $(function(){
 		<td>Minimum space between opened options and window</td>
 	</tr>
 	<tr>
-		<td>bindSufix</td>
-		<td>.sl</td>
-		<td>String</td>
-		<td>Bind events namespace</td>
+		<td>border</td>
+		<td>1</td>
+		<td>Integer</td>
+		<td>Options box border</td>
 	</tr>
 </table>
 
