@@ -9,139 +9,132 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.4.2
+ * Selectric Ϟ v1.4.5
  *
- * Copyright (c) 2012 Leonardo Santos
- * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
- * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
+ * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
  */
+
 ;(function ($, window, undefined) {
 	var pluginName = 'selectric',
-		defaults = {
+		opts = {
 			onOpen: function() {},
 			onClose: function() {},
 			maxHeight: 300,
 			keySearchTimeout: 500,
-			highlight: true,
-			arrowButtonMarkup: '<span class="button">&#9660;</span>',
+			arrowButtonMarkup: '<span class="button">&#9662;</span>',
 			disableOnMobile: true,
 			margin: 5,
-			bindSufix: '.sl',
 			border: 1
 		};
 
 	function Selectric(element, options) {
 		this.element = element;
-		this.options = $.extend({}, defaults, options);
-		if (!/android|ip(hone|od|ad)/i.test(navigator.userAgent)) this.init(this.options);
+		this.options = $.extend(opts, options);
+
+		if (opts.disableOnMobile && !/android|ip(hone|od|ad)/i.test(navigator.userAgent)) this.init(opts);
 	}
 
 	Selectric.prototype.init = function(options) {
-		var $wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div><div class="' + pluginName + 'Items"><ul/></div>'),
-			elm = this.element,
-			$original = $(elm),
+		var $wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
+			$original = $(this.element),
+			$outerWrapper = $original.data(pluginName, this).wrap('<div/>').parent().hover(function(){
+				$(this).toggleClass('hover');
+			}).append($wrapper),
 			selectItems = [],
 			isOpen = false,
 			$label = $wrapper.find('.label'),
-			$ul = $wrapper.find('ul'),
-			$li, $items = $ul.parent(),
-			bindSufix = ('.' + options.bindSufix).replace(/^\.+/g, '.'),
+			$items = $('<div class="' + pluginName + 'Items"><ul/></div>').appendTo($outerWrapper),
+			$ul = $items.find('ul'),
+			$li,
+			bindSufix = '.sl',
 			$doc = $(document),
 			$win = $(window),
-			$outerWrapper = $original.wrap('<div/>').parent().hover(function(){
-				$(this).toggleClass('hover');
-			}),
-			// Firefox has problems to change <select> value on keydown,
-			// so we use keypress for it and keydown for all other browsers
-			keyBind = $.browser.mozilla ? 'keypress' + bindSufix : 'keydown' + bindSufix,
-			chars = ['a', 'e', 'i', 'o', 'u', 'n', 'c', 'y'],
-			diacritics = [
-				/[\340-\346]/g, // a
-				/[\350-\353]/g, // e
-				/[\354-\357]/g, // i
-				/[\362-\370]/g, // o
-				/[\371-\374]/g, // u
-				/[\361]/g, // n
-				/[\347]/g, // c
-				/[\377]/g // y
-			],
+			keyBind = 'keydown' + bindSufix,
+			clickBind = 'click' + bindSufix,
 			searchStr = '',
-			resetStr, highlight = options.highlight;
-		
-		$original.data(pluginName, this).parent().append($wrapper);
-		$original.wrap('<div class="' + pluginName + 'HideSelect" />');
-			
+			resetStr,
+			classOpen = pluginName + 'Open',
+			classWrapper = pluginName + 'Wrapper',
+			classDisabled = pluginName + 'Disabled',
+			selectStr = 'selected',
+			selected = 0, length;
+
+		$original.wrap('<div class="' + pluginName + 'HideSelect"/>');
+
 		function _start(){
-			$label.parent().unbind('click');
-			$original.unbind(keyBind).unbind('focusin');
-			$outerWrapper.removeClass().addClass(pluginName + 'Wrapper ' + elm.className);
-			
-			if ($original.prop('disabled')){
-				$outerWrapper.addClass(pluginName + 'Disabled');
-			} else {
-				$outerWrapper.removeClass(pluginName + 'Disabled');
-				$original.bind(keyBind, _keyActions);
-			
-				// click on label and :focus on original select will open the options box
-				// unbind in case of a refresh
-				$label.parent().bind('click' + bindSufix, _toggleOpen);
-				$original.bind('focusin' + bindSufix, function(e){ !isOpen && _open(e); });
-				_bindClick();
+			$wrapper.unbind(bindSufix);
+			$original.unbind(keyBind + ' focusin');
+			$outerWrapper.removeClass().addClass([classWrapper, $original.prop('class'), classDisabled].join(' '));
+
+			if (!$original.prop('disabled')){
+				// Not disabled, so... Removing disabled class
+				$outerWrapper.removeClass(classDisabled);
+
+				// Click on label and :focus on original select will open the options box
+				$wrapper.bind(clickBind, function(e){ isOpen ? _close(e) : _open(e) });
+				$original.bind(keyBind, _keyActions).bind('focusin' + bindSufix, function(e){ isOpen || _open(e) });
+
+				$ul = $items.find('ul');
+				$li = $ul.find('li').click(function(e) {
+					e.stopPropagation();
+					// The second parameter is to close the box after click
+					_select($(this).index(), true);
+				});
 			}
 		}
-		
+
 		function _populate() {
 			$ul.empty();
-			
+
 			var $options = $original.find('option'),
 				_$li = '',
-				selectedIdx = $options.filter(':selected').index();
+				optionsLength = $options.length,
+				idx = $options.filter(':' + selectStr).index();
 
-			if ($options.length) {
+			selected = idx < 0 ? 0 : idx;
+
+			if (optionsLength) {
 				$options.each(function(i){
 					var $me = $(this),
-						className = '';
+						className = i == selected ? selectStr : '',
+						selectText = $me.text(),
+						selectVal = $me.val();
 
 					selectItems[i] = {
-						'value': $me.val(),
-						'text': $me.text(),
-						'slug': _replaceDiacritics($me.text())
+						'value': selectVal,
+						'text': selectText,
+						'slug': _replaceDiacritics(selectText)
 					};
 
-					if (i === selectedIdx) {
-						selectItems.selected = i;
-						className = 'selected';
-					}
+					if (++i == optionsLength) className += ' last';
 
-					if ($options.length - 1 === i)
-						className += ' last';
-					
-					_$li += '<li class="' + className + '" data-value="' + selectItems[i].value + '">' + selectItems[i].text + '</li>';
+					length = i;
+
+					_$li += '<li class="' + className + '" data-value="' + selectVal + '">' + selectText + '</li>';
 				});
 
 				$ul.append(_$li);
-				$label.text(selectItems[selectItems.selected].text);
+				$label.text(selectItems[selected].text);
 			}
+
+			_start();
 		}
-		
+
 		_populate();
-		_start();
-		
+
 		function _keyActions(e) {
 			e.preventDefault();
-			var selected = selectItems.selected,
-				length = selectItems.length,
-				key = e.keyCode;
-			
+			var key = e.keyCode;
+
 			// Left / Up
-			if (/^3(7|8)$/.test(key)) _select(selected === 0 ? length - 1 : selected - 1);
-			
+			/^3[78]$/.test(key) && _select((selected > 0 ? selected : length) - 1);
+
 			// Right / Down
-			if (/^(39|40)$/.test(key)) _select(selected < length - 1 ? selected + 1 : 0);
-			
+			/^39|40$/.test(key) && _select((selected + 1) % length);
+
 			// Tab / Enter / ESC
-			if (/^(9|13|27)$/.test(key)) {
+			if (/^9|13|27$/.test(key)) {
 				e.stopPropagation();
 				_select(selected, true);
 			}
@@ -149,24 +142,20 @@
 
 		// Search in select options
 		function _keySearch(e) {
-			var key = e.keyCode || e.which;
+			var key = e.keyCode || e.which,
+				i = 0;
+
 			clearTimeout(resetStr);
-			
-			// If it's not a system, Enter or Backspace key
-			if (!/^(3(7|8|9)|40)$/.test(key)) {
-				searchStr += String.fromCharCode(key);
-				
-				var rSearch = new RegExp('^(' + searchStr + ')', 'i'),
-					k = 0,
-					l = selectItems.length;
-				
-				while (k < l) {
-					if (rSearch.test(selectItems[k].slug) || rSearch.test(selectItems[k].text)) {
-						_select(k);
-						highlight && $label.html($label.text().replace(rSearch, '<span>$1</span>'));
+
+			// If it's not a system key
+			if (key < 37 || key > 40) {
+				var rSearch = RegExp('^' + (searchStr += String.fromCharCode(key)), 'i');
+
+				while (++i < length){
+					if (rSearch.test(selectItems[i].slug) || rSearch.test(selectItems[i].text)) {
+						_select(i);
 						break;
 					}
-					k++;
 				}
 
 				resetStr = setTimeout(function(){
@@ -176,21 +165,8 @@
 				searchStr = '';
 			}
 		}
-		
+
 		$original.bind('keydown', _keySearch);
-
-		// This need to be this way so we can re-cache and re-bind if we use _reset()
-		function _bindClick() {
-			$ul = $wrapper.find('ul');
-			$li = $ul.find('li').click(function(e) {
-				e.stopPropagation();
-				// The second parameter is to close the box after click
-				_select($(this).index(), true);
-			});
-		}
-
-		// Toggle show/hide the select options
-		function _toggleOpen(e){ isOpen ? _close(e) : _open(e); }
 
 		// Open the select options box
 		function _open(e){
@@ -198,55 +174,54 @@
 			e.stopPropagation();
 
 			// Find any other opened instances of select and close it
-			$('.' + pluginName + 'Open select')[pluginName]('close');
-			
-			_isInViewport();
-			
+			$('.' + classOpen + ' select')[pluginName]('close');
+
 			isOpen = true;
-			
-			var scrollTop = $win.scrollTop();			
-			e.type === 'click' && $original.focus();
+
+			_isInViewport();
+
+			var scrollTop = $win.scrollTop();
+			e.type == 'click' && $original.focus();
 			$win.scrollTop(scrollTop);
-			
-			$doc.bind('click' + bindSufix, _close);
-			$outerWrapper.addClass(pluginName + 'Open');
-			_detectVisibility($ul.find('.selected').index());
-			
+
+			$doc.bind(clickBind, _close);
+			$outerWrapper.addClass(classOpen);
+			_detectItemVisibility(selected);
+
 			options.onOpen.call(this);
 		}
-		
+
 		// Detect is the options box is inside the window
 		function _isInViewport(){
-			var docHeight = $doc.height();
-			
-			$items.show().css('top', '');
-			
-			if ($items.top + $items.height() > docHeight || $outerWrapper.offset().top + $ul.parent().height() > $win.scrollTop() + $win.height()) {
-				$items.css('top', -$ul.parent().height());
+			if (isOpen){
+				var itemsTop = $items.offset().top,
+					itemsHeight = $items.height(),
+					wrapperTop = $wrapper.offset().top;
 
-				if ($items.offset().top - $items.height() < 0 && $wrapper.offset().top < options.maxHeight) {
-					$items.height($wrapper.offset().top - options.margin).css('top', -$ul.parent().height());
+				$items.show().css('top', '');
+
+				if (itemsTop + itemsHeight > $doc.height() || $outerWrapper.offset().top + itemsHeight > $win.scrollTop() + $win.height()) {
+					$items.css('top', -itemsHeight);
+
+					if (itemsTop - itemsHeight < 0 && wrapperTop < options.maxHeight)
+						$items.height(wrapperTop - options.margin);
 				}
-			} else {
+
 				_calculateHeight();
 			}
 		}
-		
-		$win.scroll(function(){
-			isOpen && _isInViewport();
-		});
+
+		$win.scroll(_isInViewport);
 
 		// Close the select options box
 		function _close(){
-			var selectedTxt = selectItems[selectItems.selected].text;
+			var selectedTxt = selectItems[selected].text;
 			$items.hide();
 			$original.blur();
 			selectedTxt != $label.text() && $original.change();
 			$label.text(selectedTxt);
-			$outerWrapper.removeClass(pluginName + 'Open');
+			$outerWrapper.removeClass(classOpen);
 			isOpen = false;
-			highlight && $label.html($label.text());
-
 			$doc.unbind(bindSufix);
 			options.onClose.call($original);
 		}
@@ -255,40 +230,57 @@
 		function _select(index, close) {
 			// If 'close' is false (default), the options box won't close after
 			// each selected item, this is necessary for keyboard navigation
-			$li.removeClass('selected').eq(index).addClass('selected');
-			$original.val(selectItems[index].value).find('option').eq(index).prop('selected', true);
-			_detectVisibility(index);
-			selectItems.selected = index;
+			$original.val(selectItems[selected = index].value).find('option').eq(index).prop(selectStr, true);
+			$li.removeClass(selectStr).eq(index).addClass(selectStr);
+			_detectItemVisibility(index);
 			close && _close();
 		}
 
-		// Detect if currently selected option is visible
-		// and scroll the options box to show it
-		function _detectVisibility(index) {
-			var ulParent = $ul.parent(),
+		// Detect if currently selected option is visible and scroll the options box to show it
+		function _detectItemVisibility(index) {
+			var liHeight = $li.eq(index).outerHeight(),
 				liTop = $li[index].offsetTop,
-				liHeight = $li.eq(index).outerHeight(),
-				ulScrollTop = ulParent.scrollTop(),
-				ulHeight = ulParent.height(),
-				scrollT = liTop + (liHeight * 2);
-				
-			if (scrollT > ulScrollTop + ulHeight) {
-				ulParent.scrollTop(scrollT - ulHeight);
-			} else if (liTop - liHeight < ulScrollTop) {
-				ulParent.scrollTop(liTop - liHeight);
+				itemsScrollTop = $items.scrollTop(),
+				itemsHeight = $items.height(),
+				scrollT = liTop + liHeight * 2;
+
+			if (scrollT > itemsScrollTop + itemsHeight) {
+				$items.scrollTop(scrollT - itemsHeight);
+			} else if (liTop - liHeight < itemsScrollTop) {
+				$items.scrollTop(liTop - liHeight);
 			}
 		}
-		
-		// Remove diacritics to search function proper
+
+		// Replace diacritics
+		/*
+			/[\340-\346]/g, // a
+			/[\350-\353]/g, // e
+			/[\354-\357]/g, // i
+			/[\362-\370]/g, // o
+			/[\371-\374]/g, // u
+			/[\361]/g, // n
+			/[\347]/g, // c
+			/[\377]/g // y
+		*/
 		function _replaceDiacritics(s) {
-			var k = diacritics.length;
-			while (k--) s = s.toLowerCase().replace(diacritics[k], chars[k]);
+			var k, d = '40-46 50-53 54-57 62-70 71-74 61 47 77'.replace(/\d+/g, '\\3$&').split(' ');
+			for (k in d) s = s.toLowerCase().replace(RegExp('[' + d[k] + ']', 'g'), 'aeiouncy'.charAt(k));
 			return s;
 		}
-		
+
 		function _calculateHeight() {
+			var visibleParent = $items.closest(':visible').children(),
+				tempClass = pluginName + 'TempShow';
+
+			// Set a temporary class on the hidden parent of the element
+			visibleParent.addClass(tempClass);
+
+			// Set the dimensions
 			$items.height() > options.maxHeight && $items.height(options.maxHeight);
 			$items.width($wrapper.outerWidth() - (options.border * 2));
+
+			// Remove the temporary class
+			visibleParent.removeClass(tempClass);
 		}
 
 		_calculateHeight();
@@ -297,17 +289,21 @@
 		function _destroy() {
 			$items.remove();
 			$wrapper.remove();
-			$original.unwrap('.' + pluginName + 'Wrapper').removeData(pluginName).unbind(bindSufix + ' refresh destroy open close');
+			$original.removeData(pluginName).unbind(bindSufix + ' refresh destroy open close').unwrap('.' + pluginName + 'HideSelect').unwrap('.' + classWrapper);
 		}
 
 		// Re-populate options
 		function _reset() {
 			_populate();
 			_calculateHeight();
-			_start();
 		}
 
-		$original.bind('refresh', _reset).bind('destroy', _destroy).bind('open', _open).bind('close', _close);
+		$original.bind({
+			refresh: _reset,
+			destroy: _destroy,
+			open: _open,
+			close: _close
+		});
 	};
 
 	// A really lightweight plugin wrapper around the constructor,
@@ -316,7 +312,7 @@
 		return this.each(function() {
 			if (!$.data(this, pluginName)) {
 				new Selectric(this, args ? args : options);
-			} else if (typeof args === 'string') {
+			} else if (''+args === args) {
 				$(this).trigger(args);
 			}
 		});
