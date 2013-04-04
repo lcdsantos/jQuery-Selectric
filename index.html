@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>jQuery-Selectric ϟ by lcdsantos</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/lcdsantos/jQuery-Selectric">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/lcdsantos/jQuery-Selectric/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/lcdsantos/jQuery-Selectric/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>jQuery-Selectric ϟ</h1>
+          <p>jQuery plugin for easy manipulation and customization of selects</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/lcdsantos">lcdsantos</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>jQuery Selectric ϟ</h1>
+
+<h1></h1>
+
+<p>jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.</p>
+
+<h2>How to use:</h2>
+
+<p>Make sure to include jQuery in your page:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<p>Include <strong>jQuery Selectric:</strong></p>
+
+<div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/jquery.selectric.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<p>Put styles in your CSS and change it to your taste :D</p>
+
+<div class="highlight"><pre><span class="c">/*======================================================================</span>
+<span class="c">    Selectric</span>
+<span class="c">======================================================================*/</span>
+<span class="nc">.selectricWrapper</span> <span class="p">{</span> <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span> <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">10px</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.selectricWrapper.selectricOpen</span> <span class="p">{</span> <span class="k">z-index</span><span class="o">:</span> <span class="m">9999</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.selectricHideSelect</span> <span class="p">{</span> <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span> <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.selectricHideSelect</span> <span class="nt">select</span> <span class="p">{</span> <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span> <span class="k">left</span><span class="o">:</span> <span class="m">-100</span><span class="o">%</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.selectric</span> <span class="p">{</span> <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#DDD</span><span class="p">;</span> <span class="k">background</span><span class="o">:</span> <span class="m">#F8F8F8</span><span class="p">;</span> <span class="k">width</span><span class="o">:</span> <span class="m">300px</span><span class="p">;</span> <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">2px</span><span class="p">;</span> <span class="k">cursor</span><span class="o">:</span> <span class="k">pointer</span><span class="p">;</span> <span class="k">line-height</span><span class="o">:</span> <span class="m">16px</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.selectricOpen</span> <span class="nc">.selectric</span> <span class="p">{</span> <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#CCC</span><span class="p">;</span> <span class="k">background</span><span class="o">:</span> <span class="m">#EEE</span><span class="p">;</span> <span class="k">z-index</span><span class="o">:</span> <span class="m">9999</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.selectric</span> <span class="nc">.label</span> <span class="p">{</span> <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span> <span class="k">white-space</span><span class="o">:</span> <span class="k">nowrap</span><span class="p">;</span> <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span> <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">30px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span> <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">5px</span><span class="p">;</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">13px</span><span class="p">;</span> <span class="k">color</span><span class="o">:</span> <span class="m">#444</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.selectric</span> <span class="nc">.label</span> <span class="nt">span</span> <span class="p">{</span> <span class="k">background</span><span class="o">:</span> <span class="m">#09F</span><span class="p">;</span> <span class="k">color</span><span class="o">:</span> <span class="m">#FFF</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.selectric</span> <span class="nt">span</span><span class="nc">.button</span> <span class="p">{</span> <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span> <span class="k">right</span><span class="o">:</span> <span class="m">2px</span><span class="p">;</span> <span class="k">top</span><span class="o">:</span> <span class="m">2px</span><span class="p">;</span> <span class="k">line-height</span><span class="o">:</span> <span class="m">22px</span><span class="p">;</span> <span class="k">height</span><span class="o">:</span> <span class="m">22px</span><span class="p">;</span> <span class="k">width</span><span class="o">:</span> <span class="m">23px</span><span class="p">;</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">2px</span><span class="p">;</span> <span class="k">color</span><span class="o">:</span> <span class="m">#FFF</span><span class="p">;</span> <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span> <span class="k">background</span><span class="o">:</span> <span class="m">#A7C7DC</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.hover</span> <span class="nt">span</span><span class="nc">.button</span> <span class="p">{</span> <span class="k">background</span><span class="o">:</span> <span class="m">#85B2D3</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.selectricTempShow</span> <span class="p">{</span> <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span> <span class="cp">!important</span><span class="p">;</span> <span class="k">visibility</span><span class="o">:</span> <span class="k">hidden</span> <span class="cp">!important</span><span class="p">;</span> <span class="k">display</span><span class="o">:</span> <span class="k">block</span> <span class="cp">!important</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="c">/* Items box */</span>
+<span class="nc">.selectricItems</span> <span class="nt">ul</span><span class="o">,</span>
+<span class="nc">.selectricItems</span> <span class="nt">li</span> <span class="p">{</span> <span class="k">list-style</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span> <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span> <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span> <span class="k">min-height</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">13px</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.selectricItems</span> <span class="p">{</span> <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span> <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span> <span class="k">overflow</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span> <span class="k">top</span><span class="o">:</span> <span class="m">100</span><span class="o">%</span><span class="p">;</span> <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span> <span class="k">background</span><span class="o">:</span> <span class="m">#F9F9F9</span><span class="p">;</span> <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#CCC</span><span class="p">;</span> <span class="k">z-index</span><span class="o">:</span> <span class="m">9998</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.selectricItems</span> <span class="nt">li</span> <span class="p">{</span> <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span> <span class="k">cursor</span><span class="o">:</span> <span class="k">pointer</span><span class="p">;</span> <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span> <span class="k">border-bottom</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#EEE</span><span class="p">;</span> <span class="k">color</span><span class="o">:</span> <span class="m">#666</span><span class="p">;</span> <span class="k">border-top</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#FFF</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.selectricItems</span> <span class="nt">li</span><span class="nc">.selected</span> <span class="p">{</span> <span class="k">background</span><span class="o">:</span> <span class="m">#EFEFEF</span><span class="p">;</span> <span class="k">color</span><span class="o">:</span> <span class="m">#444</span><span class="p">;</span> <span class="k">border-top</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#E0E0E0</span><span class="p">;</span> <span class="p">}</span>
+<span class="nc">.selectricItems</span> <span class="nt">li</span><span class="nd">:hover</span> <span class="p">{</span> <span class="k">background</span><span class="o">:</span> <span class="m">#F0F0F0</span><span class="p">;</span> <span class="k">color</span><span class="o">:</span> <span class="m">#444</span><span class="p">;</span> <span class="p">}</span>
+</pre></div>
+
+<p>Initialize <strong>jQuery Selectric:</strong></p>
+
+<div class="highlight"><pre><span class="nt">&lt;script&gt;</span>
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">'select'</span><span class="p">).</span><span class="nx">selectric</span><span class="p">();</span>
+<span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+<h2>Options:</h2>
+
+<table>
+<tr>
+<td><strong>Option</strong></td>
+        <td><strong>Default</strong></td>
+        <td><strong>Type</strong></td>
+        <td><strong>Description</strong></td>
+    </tr>
+<tr>
+<td>onOpen</td>
+        <td>function() {}</td>
+        <td>Function</td>
+        <td>Function called when select options is opened</td>
+    </tr>
+<tr>
+<td>onClose</td>
+        <td>function() {}</td>
+        <td>Function</td>
+        <td>Function called when select options is closed</td>
+    </tr>
+<tr>
+<td>maxHeight</td>
+        <td>300</td>
+        <td>Integer</td>
+        <td>Maximum height options box can be</td>
+    </tr>
+<tr>
+<td>keySearchTimeout</td>
+        <td>500</td>
+        <td>Integer</td>
+        <td>After this time without pressing any key, the search string is reseted</td>
+    </tr>
+<tr>
+<td>arrowButtonMarkup</td>
+        <td>&lt;span class="button"&gt;&amp;#9662;&lt;/span&gt;</td>
+        <td>String [HTML]</td>
+        <td>Markup for open options button</td>
+    </tr>
+<tr>
+<td>disableOnMobile</td>
+        <td>true</td>
+        <td>Boolean</td>
+        <td>Initialize plugin on mobile browsers</td>
+    </tr>
+<tr>
+<td>margin</td>
+        <td>5</td>
+        <td>Integer</td>
+        <td>Minimum space between opened options and window</td>
+    </tr>
+<tr>
+<td>border</td>
+        <td>1</td>
+        <td>Integer</td>
+        <td>Options box border</td>
+    </tr>
+</table><h2>Public methods:</h2>
+
+<div class="highlight"><pre><span class="nx">$</span><span class="p">(</span><span class="s1">'select'</span><span class="p">).</span><span class="nx">selectric</span><span class="p">(</span><span class="s1">'refresh'</span><span class="p">);</span> <span class="c1">// Reconstruct the instance of plugin</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">'select'</span><span class="p">).</span><span class="nx">selectric</span><span class="p">(</span><span class="s1">'destroy'</span><span class="p">);</span> <span class="c1">// Destroy Selectric and go back to normal</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">'select'</span><span class="p">).</span><span class="nx">selectric</span><span class="p">(</span><span class="s1">'open'</span><span class="p">);</span> <span class="c1">// Open options</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">'select'</span><span class="p">).</span><span class="nx">selectric</span><span class="p">(</span><span class="s1">'close'</span><span class="p">);</span> <span class="c1">// Close options</span>
+</pre></div>
+
+<h2>Browser support:</h2>
+
+<ul>
+<li>Firefox</li>
+<li>Chrome</li>
+<li>Safari</li>
+<li>Internet Explorer 7+</li>
+<li>Opera</li>
+</ul>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
