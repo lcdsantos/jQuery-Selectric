@@ -23,24 +23,24 @@ Put styles in your CSS and change it to your taste :D
 /*======================================================================
 	Selectric
 ======================================================================*/
-.selectricWrapper { position: relative; margin: 0 0 10px; }
-.selectricWrapper.selectricOpen { z-index: 9999; }
+.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; }
+.selectricOpen { z-index: 9999; }
 .selectricHideSelect { position: relative; overflow: hidden; }
 .selectricHideSelect select { position: absolute; left: -100%; }
-.selectric { border: 1px solid #DDD; background: #F8F8F8; width: 300px; position: relative; border-radius: 2px; cursor: pointer; line-height: 16px; }
-.selectricOpen .selectric { border: 1px solid #CCC; background: #EEE; z-index: 9999; }
-.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding: 5px 0 5px 5px; font-size: 13px; color: #444; }
-.selectric .label span { background: #09F; color: #FFF; }
-.selectric span.button { position: absolute; right: 2px; top: 2px; line-height: 22px; height: 22px; width: 23px; border-radius: 2px; color: #FFF; text-align: center; background: #A7C7DC; }
-.hover span.button { background: #85B2D3; }
+.selectric { border: 1px solid #DDD; background: #F8F8F8; position: relative; border-radius: 2px; cursor: pointer; }
+.selectricOpen .selectric { border-color: #CCC; background: #F0F0F0; z-index: 9999; }
+.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding: 6px 0 6px 6px; font-size: 12px; line-height: 1.5; color: #444; }
+.selectric span.button { position: absolute; right: 0; top: 0; line-height: 30px; height: 30px; width: 30px; border-radius: 2px; color: #BBB; text-align: center; }
+.hover .selectric { border-color: #CCC; }
+.hover .selectric span.button { color: #888; }
 .selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
 
 /* Items box */
 .selectricItems ul,
-.selectricItems li { list-style: none; padding: 0; margin: 0; min-height: 20px; font-size: 13px; }
+.selectricItems li { list-style: none; padding: 0; margin: 0; min-height: 20px; font-size: 12px; }
 .selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F9F9F9; border: 1px solid #CCC; z-index: 9998; }
 .selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #EEE; color: #666; border-top: 1px solid #FFF; }
-.selectricItems li.selected { background: #EFEFEF; color: #444; border-top: 1px solid #E0E0E0; }
+.selectricItems li.selected { background: #EFEFEF; color: #444; border-top-color: #E0E0E0; }
 .selectricItems li:hover { background: #F0F0F0; color: #444; }
 ```
 
@@ -89,7 +89,7 @@ $(function(){
 	</tr>
 	<tr>
 		<td>arrowButtonMarkup</td>
-		<td>&lt;span class=&quot;button&quot;&gt;&amp;#9662;&lt;/span&gt;</td>
+		<td>&lt;b class=&quot;button&quot;&gt;&amp;#9662;&lt;/b&gt;</td>
 		<td>String [HTML]</td>
 		<td>Markup for open options button</td>
 	</tr>
@@ -109,7 +109,7 @@ $(function(){
 		<td>border</td>
 		<td>1</td>
 		<td>Integer</td>
-		<td>Options box border</td>
+		<td>Options box border thickness</td>
 	</tr>
 </table>
 

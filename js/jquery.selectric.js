@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.4.5
+ * Selectric Ϟ v1.4.6
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -22,7 +22,7 @@
 			onClose: function() {},
 			maxHeight: 300,
 			keySearchTimeout: 500,
-			arrowButtonMarkup: '<span class="button">&#9662;</span>',
+			arrowButtonMarkup: '<b class="button">&#9662;</b>',
 			disableOnMobile: true,
 			margin: 5,
 			border: 1
@@ -102,9 +102,9 @@
 						selectVal = $me.val();
 
 					selectItems[i] = {
-						'value': selectVal,
-						'text': selectText,
-						'slug': _replaceDiacritics(selectText)
+						value: selectVal,
+						text: selectText,
+						slug: _replaceDiacritics(selectText)
 					};
 
 					if (++i == optionsLength) className += ' last';
@@ -161,9 +161,8 @@
 				resetStr = setTimeout(function(){
 					searchStr = '';
 				}, options.keySearchTimeout);
-			} else {
+			} else
 				searchStr = '';
-			}
 		}
 
 		$original.bind('keydown', _keySearch);
@@ -194,11 +193,9 @@
 		// Detect is the options box is inside the window
 		function _isInViewport(){
 			if (isOpen){
-				var itemsTop = $items.offset().top,
+				var itemsTop = $items.show().css('top', '').offset().top,
 					itemsHeight = $items.height(),
 					wrapperTop = $wrapper.offset().top;
-
-				$items.show().css('top', '');
 
 				if (itemsTop + itemsHeight > $doc.height() || $outerWrapper.offset().top + itemsHeight > $win.scrollTop() + $win.height()) {
 					$items.css('top', -itemsHeight);
@@ -311,7 +308,7 @@
 	$.fn[pluginName] = function (args, options) {
 		return this.each(function() {
 			if (!$.data(this, pluginName)) {
-				new Selectric(this, args ? args : options);
+				new Selectric(this, args || options);
 			} else if (''+args === args) {
 				$(this).trigger(args);
 			}
