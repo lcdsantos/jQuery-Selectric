@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.4.6
+ * Selectric Ϟ v1.4.7
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -65,17 +65,19 @@
 		function _start(){
 			$wrapper.unbind(bindSufix);
 			$original.unbind(keyBind + ' focusin');
-			$outerWrapper.removeClass().addClass([classWrapper, $original.prop('class'), classDisabled].join(' '));
+			$outerWrapper.removeClass().addClass(classWrapper + ' ' + $original.prop('class') + ' ' + classDisabled);
 
 			if (!$original.prop('disabled')){
 				// Not disabled, so... Removing disabled class
 				$outerWrapper.removeClass(classDisabled);
 
 				// Click on label and :focus on original select will open the options box
-				$wrapper.bind(clickBind, function(e){ isOpen ? _close(e) : _open(e) });
-				$original.bind(keyBind, _keyActions).bind('focusin' + bindSufix, function(e){ isOpen || _open(e) });
+				$wrapper.bind(clickBind, isOpen ? _close : _open);
+				$original.bind(keyBind, _keyActions).bind('focusin' + bindSufix, isOpen || _open);
 
-				$ul = $items.find('ul');
+				// Remove styles from items box
+				// Fix incorrect height when refreshed is triggered with fewer options
+				$ul = $items.removeAttr('style').find('ul');
 				$li = $ul.find('li').click(function(e) {
 					e.stopPropagation();
 					// The second parameter is to close the box after click
@@ -267,13 +269,14 @@
 
 		function _calculateHeight() {
 			var visibleParent = $items.closest(':visible').children(),
-				tempClass = pluginName + 'TempShow';
+				tempClass = pluginName + 'TempShow',
+				maxHeight = options.maxHeight;
 
 			// Set a temporary class on the hidden parent of the element
 			visibleParent.addClass(tempClass);
 
 			// Set the dimensions
-			$items.height() > options.maxHeight && $items.height(options.maxHeight);
+			$items.height() > maxHeight && $items.height(maxHeight);
 			$items.width($wrapper.outerWidth() - (options.border * 2));
 
 			// Remove the temporary class
