@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.4.7
+ * Selectric Ϟ v1.4.8
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -38,9 +38,7 @@
 	Selectric.prototype.init = function(options) {
 		var $wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
 			$original = $(this.element),
-			$outerWrapper = $original.data(pluginName, this).wrap('<div/>').parent().hover(function(){
-				$(this).toggleClass('hover');
-			}).append($wrapper),
+			$outerWrapper = $original.data(pluginName, this).wrap('<div/>').parent().append($wrapper),
 			selectItems = [],
 			isOpen = false,
 			$label = $wrapper.find('.label'),
@@ -65,11 +63,13 @@
 		function _start(){
 			$wrapper.unbind(bindSufix);
 			$original.unbind(keyBind + ' focusin');
-			$outerWrapper.removeClass().addClass(classWrapper + ' ' + $original.prop('class') + ' ' + classDisabled);
+			$outerWrapper[0].className = classWrapper + ' ' + $original.prop('class') + ' ' + classDisabled;
 
 			if (!$original.prop('disabled')){
-				// Not disabled, so... Removing disabled class
-				$outerWrapper.removeClass(classDisabled);
+				// Not disabled, so... Removing disabled class and bind hover
+				$outerWrapper.removeClass(classDisabled).hover(function(){
+					$(this).toggleClass('hover');
+				});
 
 				// Click on label and :focus on original select will open the options box
 				$wrapper.bind(clickBind, isOpen ? _close : _open);
@@ -79,9 +79,12 @@
 				// Fix incorrect height when refreshed is triggered with fewer options
 				$ul = $items.removeAttr('style').find('ul');
 				$li = $ul.find('li').click(function(e) {
-					e.stopPropagation();
 					// The second parameter is to close the box after click
 					_select($(this).index(), true);
+
+					// Chrome doesn't close options box if select is wrapped with a label
+					// We need to 'return false' to avoid that
+					return false;
 				});
 			}
 		}

@@ -91,6 +91,7 @@ h1 { text-align: center; }
 pre { font-size: .8em; border: 1px solid #DDD; background: #FCFCFC; padding: 6px 8px; color: #333; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
 table { width: 100%; background: #FCFCFC; }
 table td { border: 1px solid #DDD; padding: 6px 8px; }
+label p { font-size: 12px; margin: 0; }
 </style>
 
 <link rel="stylesheet" href="selectric.css">
@@ -115,13 +116,14 @@ table td { border: 1px solid #DDD; padding: 6px 8px; }
 	Selectric
 ======================================================================*/
 .selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; }
+.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; }
 .selectricOpen { z-index: 9999; }
 .selectricHideSelect { position: relative; overflow: hidden; }
 .selectricHideSelect select { position: absolute; left: -100%; }
 .selectric { border: 1px solid #DDD; background: #F8F8F8; position: relative; border-radius: 2px; cursor: pointer; }
 .selectricOpen .selectric { border-color: #CCC; background: #F0F0F0; z-index: 9999; }
 .selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding: 6px; font-size: 12px; line-height: 1.5; color: #444; }
-.selectric .button { position: absolute; right: 0; top: 0; line-height: 30px; height: 30px; width: 30px; color: #BBB; text-align: center; }
+.selectric .button { position: absolute; right: 0; top: 0; height: 30px; width: 30px; color: #BBB; text-align: center; font: normal 18px/30px sans-serif; }
 .hover .selectric { border-color: #CCC; }
 .hover .selectric .button { color: #888; }
 .selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
@@ -489,6 +491,20 @@ table td { border: 1px solid #DDD; padding: 6px 8px; }
 			<option value="apple">Apple</option>
 			<option value="banana">Banana</option>
 		</select>
+
+		<select disabled>
+			<option value="0">Select disabled</option>
+			<option value="apple">Apple</option>
+			<option value="banana">Banana</option>
+		</select>
+
+		<label>
+			<p>Wrapped in label</p>
+			<select>
+				<option value="apple">Apple</option>
+				<option value="banana">Banana</option>
+			</select>
+		</label>
 
 		<br>
 		<br>
