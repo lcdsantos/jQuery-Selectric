@@ -61,37 +61,6 @@
 
 		$original.wrap('<div class="' + pluginName + 'HideSelect"/>');
 
-		function _start(){
-			$wrapper.unbind(bindSufix);
-			$original.unbind(keyBind + ' focusin');
-			$outerWrapper[0].className = classWrapper + ' ' + $original.prop('class') + ' ' + classDisabled;
-
-			if (!$original.prop('disabled')){
-				// Not disabled, so... Removing disabled class and bind hover
-				$outerWrapper.removeClass(classDisabled).hover(function(){
-					$(this).toggleClass('hover');
-				});
-
-				// Click on label and :focus on original select will open the options box
-				$wrapper.bind(clickBind, function(e){
-					isOpen ? _close(e) : _open(e);
-				});
-				$original.bind(keyBind, _keyActions).bind('focusin' + bindSufix, isOpen || _open);
-
-				// Remove styles from items box
-				// Fix incorrect height when refreshed is triggered with fewer options
-				$ul = $items.removeAttr('style').find('ul');
-				$li = $ul.find('li').click(function(){
-					// The second parameter is to close the box after click
-					_select($(this).index(), true);
-
-					// Chrome doesn't close options box if select is wrapped with a label
-					// We need to 'return false' to avoid that
-					return false;
-				});
-			}
-		}
-
 		function _populate() {
 			$ul.empty();
 
@@ -126,7 +95,36 @@
 				$label.text(selectItems[selected].text);
 			}
 
-			_start();
+			$wrapper.unbind(bindSufix);
+			$original.unbind(keyBind + ' focusin');
+			$outerWrapper[0].className = classWrapper + ' ' + $original.prop('class') + ' ' + classDisabled;
+
+			if (!$original.prop('disabled')){
+				// Not disabled, so... Removing disabled class and bind hover
+				$outerWrapper.removeClass(classDisabled).hover(function(){
+					$(this).toggleClass('hover');
+				});
+
+				// Click on label and :focus on original select will open the options box
+				$wrapper.bind(clickBind, function(e){
+					isOpen ? _close(e) : _open(e);
+				});
+				$original.bind(keyBind, _keyActions).bind('focusin' + bindSufix, function(e){
+					isOpen || _open(e);
+				});
+
+				// Remove styles from items box
+				// Fix incorrect height when refreshed is triggered with fewer options
+				$ul = $items.removeAttr('style').find('ul');
+				$li = $ul.find('li').click(function(){
+					// The second parameter is to close the box after click
+					_select($(this).index(), true);
+
+					// Chrome doesn't close options box if select is wrapped with a label
+					// We need to 'return false' to avoid that
+					return false;
+				});
+			}
 		}
 
 		_populate();
@@ -293,7 +291,7 @@
 		function _destroy() {
 			$items.remove();
 			$wrapper.remove();
-			$original.removeData(pluginName).unbind(bindSufix + ' refresh destroy open close').unwrap('.' + pluginName + 'HideSelect').unwrap('.' + classWrapper);
+			$original.removeData(pluginName).unbind(bindSufix + ' refresh destroy open close').unwrap().unwrap();
 		}
 
 		// Re-populate options
