@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.4.8
+ * Selectric Ϟ v1.4.9
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -56,7 +56,8 @@
 			classWrapper = pluginName + 'Wrapper',
 			classDisabled = pluginName + 'Disabled',
 			selectStr = 'selected',
-			selected = 0, length;
+			selected = 0,
+			length;
 
 		$original.wrap('<div class="' + pluginName + 'HideSelect"/>');
 
@@ -72,13 +73,15 @@
 				});
 
 				// Click on label and :focus on original select will open the options box
-				$wrapper.bind(clickBind, isOpen ? _close : _open);
+				$wrapper.bind(clickBind, function(e){
+					isOpen ? _close(e) : _open(e);
+				});
 				$original.bind(keyBind, _keyActions).bind('focusin' + bindSufix, isOpen || _open);
 
 				// Remove styles from items box
 				// Fix incorrect height when refreshed is triggered with fewer options
 				$ul = $items.removeAttr('style').find('ul');
-				$li = $ul.find('li').click(function(e) {
+				$li = $ul.find('li').click(function(){
 					// The second parameter is to close the box after click
 					_select($(this).index(), true);
 
@@ -130,35 +133,26 @@
 
 		function _keyActions(e) {
 			e.preventDefault();
-			var key = e.keyCode;
 
-			// Left / Up
-			/^3[78]$/.test(key) && _select((selected > 0 ? selected : length) - 1);
-
-			// Right / Down
-			/^39|40$/.test(key) && _select((selected + 1) % length);
+			var key = e.keyCode || e.which,
+				currentItem = 0;
 
 			// Tab / Enter / ESC
 			if (/^9|13|27$/.test(key)) {
 				e.stopPropagation();
 				_select(selected, true);
 			}
-		}
 
-		// Search in select options
-		function _keySearch(e) {
-			var key = e.keyCode || e.which,
-				i = 0;
-
+			// Search in select options
 			clearTimeout(resetStr);
 
-			// If it's not a system key
+			// If it's not a directional key
 			if (key < 37 || key > 40) {
 				var rSearch = RegExp('^' + (searchStr += String.fromCharCode(key)), 'i');
 
-				while (++i < length){
-					if (rSearch.test(selectItems[i].slug) || rSearch.test(selectItems[i].text)) {
-						_select(i);
+				while (++currentItem < length){
+					if (rSearch.test(selectItems[currentItem].slug) || rSearch.test(selectItems[currentItem].text)) {
+						_select(currentItem);
 						break;
 					}
 				}
@@ -166,11 +160,18 @@
 				resetStr = setTimeout(function(){
 					searchStr = '';
 				}, options.keySearchTimeout);
-			} else
+			} else {
 				searchStr = '';
-		}
 
-		$original.bind('keydown', _keySearch);
+				if ( /^39|40$/.test(key) ){
+					// Right / Down
+					_select((selected + 1) % length);
+				} else {
+					// Left / Up
+					_select((selected > 0 ? selected : length) - 1);
+				}
+			}
+		}
 
 		// Open the select options box
 		function _open(e){
@@ -232,7 +233,7 @@
 		function _select(index, close) {
 			// If 'close' is false (default), the options box won't close after
 			// each selected item, this is necessary for keyboard navigation
-			$original.val(selectItems[selected = index].value).find('option').eq(index).prop(selectStr, true);
+			$original.prop('value', selectItems[selected = index].value).find('option').eq(index).prop(selectStr, true);
 			$li.removeClass(selectStr).eq(index).addClass(selectStr);
 			_detectItemVisibility(index);
 			close && _close();

@@ -23,12 +23,12 @@ Put styles in your CSS and change it to your taste :D
 /*======================================================================
 	Selectric
 ======================================================================*/
-.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; }
-.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; }
+.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }
+.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
 .selectricOpen { z-index: 9999; }
 .selectricHideSelect { position: relative; overflow: hidden; }
 .selectricHideSelect select { position: absolute; left: -100%; }
-.selectric { border: 1px solid #DDD; background: #F8F8F8; position: relative; border-radius: 2px; cursor: pointer; }
+.selectric { border: 1px solid #DDD; background: #F8F8F8; position: relative; border-radius: 2px; }
 .selectricOpen .selectric { border-color: #CCC; background: #F0F0F0; z-index: 9999; }
 .selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding: 6px; font-size: 12px; line-height: 1.5; color: #444; }
 .selectric .button { position: absolute; right: 0; top: 0; height: 30px; width: 30px; color: #BBB; text-align: center; font: normal 18px/30px sans-serif; }
@@ -39,7 +39,7 @@ Put styles in your CSS and change it to your taste :D
 /* Items box */
 .selectricItems ul,
 .selectricItems li { list-style: none; padding: 0; margin: 0; min-height: 20px; line-height: 20px; font-size: 12px; }
-.selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F9F9F9; border: 1px solid #CCC; z-index: 9998; }
+.selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F9F9F9; border: 1px solid #CCC; z-index: 9998; box-shadow: 0 0 10px -6px; }
 .selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #EEE; color: #666; border-top: 1px solid #FFF; }
 .selectricItems li.selected { background: #EFEFEF; color: #444; border-top-color: #E0E0E0; }
 .selectricItems li:hover { background: #F0F0F0; color: #444; }
