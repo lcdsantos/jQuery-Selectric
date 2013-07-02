@@ -1,5 +1,4 @@
 #jQuery Selectric ϟ
-===================
 
 jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.
 
