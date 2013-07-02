@@ -2,6 +2,10 @@
 
 jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.
 
+* Keyboard navigation (Up/Down/Left/Right/String search)
+* Easily customizable
+* Pretty lightweight (3,3KB minified and 1,9KB minified/gzip)
+
 ##How to use:
 
 Make sure to include jQuery in your page:
