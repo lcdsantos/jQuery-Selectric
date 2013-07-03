@@ -6,12 +6,14 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 * Easily customizable
 * Pretty lightweight (3,3KB minified and 1,9KB minified/gzip)
 
+###[Demo](http://lcdsantos.github.io/jQuery-Selectric/)
+
 ##How to use:
 
 Make sure to include jQuery in your page:
 
 ```html
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 ```
 
 Include **jQuery Selectric:**
