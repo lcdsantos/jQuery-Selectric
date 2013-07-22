@@ -2,6 +2,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="Fast, simple and light jQuery plugin to customize HTML selects">
+<meta name="robots" content="all">
 <title>jQuery Selectric</title>
 <style type="text/css">
 html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background: #F0F0F0; }
@@ -86,12 +88,54 @@ td { vertical-align: top; }
 /* =============================================================================
    General Styles
    ========================================================================== */
-h1 { text-align: center; }
+
+.header { text-align: center; padding-bottom: 20px; }
+.header h1 { text-align: center; }
+.header h1 img { vertical-align: text-bottom; }
 .center { width: 860px; margin: 0 auto; padding: 20px; }
-pre { font-size: .8em; border: 1px solid #DDD; background: #FCFCFC; padding: 6px 8px; color: #333; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
-table { width: 100%; background: #FCFCFC; }
+
+pre { font-size: .8em; border: 1px solid #DDD; background: #f9f9f9; padding: 6px 8px; color: #333; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
+table { width: 100%; background: #f9f9f9; }
 table td { border: 1px solid #DDD; padding: 6px 8px; }
 label p { font-size: 12px; margin: 0; }
+
+.clear { clear: both; }
+
+.button-group { text-align: center; padding: 10px 0 0; }
+
+.bt {
+	background: #ff7a4d; /* Old browsers */
+	background-repeat: no-repeat;
+	background-image: -moz-linear-gradient(top,  #ffa64d 0%, #ff7a4d 100%); /* FF3.6+ */
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffa64d), color-stop(100%,#ff7a4d)); /* Chrome,Safari4+ */
+	background-image: -webkit-linear-gradient(top,  #ffa64d 0%,#ff7a4d 100%); /* Chrome10+,Safari5.1+ */
+	background-image: -o-linear-gradient(top,  #ffa64d 0%,#ff7a4d 100%); /* Opera 11.10+ */
+	background-image: -ms-linear-gradient(top,  #ffa64d 0%,#ff7a4d 100%); /* IE10+ */
+	background-image: linear-gradient(to bottom,  #ffa64d 0%,#ff7a4d 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa64d', endColorstr='#ff7a4d',GradientType=0 ); /* IE6-8 */
+	border: 1px solid #ff7a4d;
+	padding: 20px 30px;
+	display: inline-block; vertical-align: top; zoom: 1; *display: inline;
+	color: #FFF;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px #999;
+	        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px #999;
+	-webkit-transition: all .1s; -moz-transition: all .1s; -ms-transition: all .1s; -o-transition: all .1s; transition: all .1s;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+	text-decoration: none;
+}
+.bt:hover {
+	background-position: 0 -20px;
+	color: #FFF;
+}
+.bt:active {
+	background-position: 0 -60px;
+}
+.bt:visited { color: #FFF; }
+
+.copy { font-size: 12px; color: #999; border-top: 1px solid #E5E5E5; box-shadow: 0 1px 0 0 #FFF; }
+.copy a { color: #444; text-decoration: none; }
+.copy a:hover { color: #F60; }
 </style>
 
 <link rel="stylesheet" href="selectric.css">
@@ -99,49 +143,61 @@ label p { font-size: 12px; margin: 0; }
 </head>
 <body>
 	<div class="center">
-		<h1>jQuery Selectric <span style="font-family:Georgia, 'Times New Roman', Times, serif">ϟ</span></h1>
+		<div class="header">
+			<h1>jQuery Selectric <img src="img/icon.png" alt="Selectric"></h1>
+			<p>Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.</p>
+		</div>
 
-		<p>Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.</p>
+		<ul class="features">
+			<li>Keyboard navigation (Up/Down/Left/Right/String search)</li>
+			<li>Easily customizable</li>
+			<li>Pretty lightweight (3,3KB minified and 1,9KB minified/gzip)</li>
+		</ul>
 
 		<h2>How to use</h2>
 
 		<p>1. Make sure to include jQuery in your page:</p>
-		<pre>&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js&quot;&gt;&lt;/script&gt;</pre>
+		<pre style="background:#f9f9f9;color:#080808">&lt;<span style="color:#bf4f24">script</span> <span style="color:#bf4f24">src</span>=<span style="color:#0b6125">"//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"</span>>&lt;/<span style="color:#bf4f24">script</span>></pre>
 
 		<p>2. Include <strong>jQuery Selectric:</strong></p>
-		<pre>&lt;script src=&quot;js/jquery.selectric.min.js&quot;&gt;&lt;/script&gt;</pre>
+		<pre style="background:#f9f9f9;color:#080808">&lt;<span style="color:#bf4f24">script</span> <span style="color:#bf4f24">src</span>=<span style="color:#0b6125">"js/jquery.selectric.min.js"</span>>&lt;/<span style="color:#bf4f24">script</span>></pre>
 
 		<p>3. Put styles in your CSS and change it to your taste :D</p>
-		<pre>/*======================================================================
-	Selectric
-======================================================================*/
-.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }
-.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-.selectricOpen { z-index: 9999; }
-.selectricHideSelect { position: relative; overflow: hidden; }
-.selectricHideSelect select { position: absolute; left: -100%; }
-.selectric { border: 1px solid #DDD; background: #F8F8F8; position: relative; border-radius: 2px; }
-.selectricOpen .selectric { border-color: #CCC; background: #F0F0F0; z-index: 9999; }
-.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding: 6px; font-size: 12px; line-height: 1.5; color: #444; }
-.selectric .button { position: absolute; right: 0; top: 0; height: 30px; width: 30px; color: #BBB; text-align: center; font: normal 18px/30px sans-serif; }
-.hover .selectric { border-color: #CCC; }
-.hover .selectric .button { color: #888; }
-.selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
+		<pre style="background:#f9f9f9;color:#080808"><span style="color:#5a525f;font-style:italic">/*======================================================================
+    Selectric
+======================================================================*/</span>
+<span style="color:#bf4f24">.selectricWrapper</span> { <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">relative</span>; <span style="color:#691c97">margin</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span> <span style="color:#811f24;font-weight:700">0</span> <span style="color:#811f24;font-weight:700">10<span style="color:#794938">px</span></span>; <span style="color:#691c97">width</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">300<span style="color:#794938">px</span></span>; <span style="color:#691c97">cursor</span><span style="color:#794938">:</span> <span style="color:#b4371f">pointer</span>; }
+<span style="color:#bf4f24">.selectricDisabled</span> { filter<span style="color:#794938">:</span> alpha(opacity=<span style="color:#811f24;font-weight:700">50</span>); <span style="color:#691c97">opacity</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0.5</span>; <span style="color:#691c97">cursor</span><span style="color:#794938">:</span> <span style="color:#b4371f">default</span>; -webkit-touch-callout<span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; -webkit-user-select<span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; -khtml-user-select<span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; -moz-user-select<span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; -ms-user-select<span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; user-select<span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; }
+<span style="color:#bf4f24">.selectricOpen</span> { <span style="color:#691c97">z-index</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">9999</span>; }
+<span style="color:#bf4f24">.selectricHideSelect</span> { <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">relative</span>; <span style="color:#691c97">overflow</span><span style="color:#794938">:</span> <span style="color:#b4371f">hidden</span>; }
+<span style="color:#bf4f24">.selectricHideSelect</span> <span style="color:#bf4f24">select</span> { <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">absolute</span>; <span style="color:#691c97">left</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">-100<span style="color:#794938">%</span></span>; }
+<span style="color:#bf4f24">.selectric</span> { <span style="color:#691c97">border</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">1<span style="color:#794938">px</span></span> <span style="color:#b4371f">solid</span> <span style="color:#811f24;font-weight:700">#DDD</span>; <span style="color:#691c97">background</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#F8F8F8</span>; <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">relative</span>; <span style="color:#691c97">border-radius</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">2<span style="color:#794938">px</span></span>; }
+<span style="color:#bf4f24">.selectricOpen</span> <span style="color:#bf4f24">.selectric</span> { <span style="color:#691c97">border-color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#CCC</span>; <span style="color:#691c97">background</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#F0F0F0</span>; <span style="color:#691c97">z-index</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">9999</span>; }
+<span style="color:#bf4f24">.selectric</span> <span style="color:#bf4f24">.label</span> { <span style="color:#691c97">display</span><span style="color:#794938">:</span> <span style="color:#b4371f">block</span>; <span style="color:#691c97">white-space</span><span style="color:#794938">:</span> <span style="color:#b4371f">nowrap</span>; <span style="color:#691c97">overflow</span><span style="color:#794938">:</span> <span style="color:#b4371f">hidden</span>; <span style="color:#691c97">margin</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span> <span style="color:#811f24;font-weight:700">30<span style="color:#794938">px</span></span> <span style="color:#811f24;font-weight:700">0</span> <span style="color:#811f24;font-weight:700">0</span>; <span style="color:#691c97">padding</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">6<span style="color:#794938">px</span></span>; <span style="color:#691c97">font-size</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">12<span style="color:#794938">px</span></span>; <span style="color:#691c97">line-height</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">1.5</span>; <span style="color:#691c97">color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#444</span>; }
+<span style="color:#bf4f24">.selectric</span> <span style="color:#bf4f24">.button</span> { <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">absolute</span>; <span style="color:#691c97">right</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span>; <span style="color:#691c97">top</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span>; <span style="color:#691c97">height</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">30<span style="color:#794938">px</span></span>; <span style="color:#691c97">width</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">30<span style="color:#794938">px</span></span>; <span style="color:#691c97">color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#BBB</span>; <span style="color:#691c97">text-align</span><span style="color:#794938">:</span> <span style="color:#b4371f">center</span>; <span style="color:#691c97">font</span><span style="color:#794938">:</span> <span style="color:#b4371f">normal</span> <span style="color:#811f24;font-weight:700">18<span style="color:#794938">px</span></span>/<span style="color:#811f24;font-weight:700">30<span style="color:#794938">px</span></span> <span style="color:#b4371f">sans-serif</span>; }
+<span style="color:#bf4f24">.hover</span> <span style="color:#bf4f24">.selectric</span> { <span style="color:#691c97">border-color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#CCC</span>; }
+<span style="color:#bf4f24">.hover</span> <span style="color:#bf4f24">.selectric</span> <span style="color:#bf4f24">.button</span> { <span style="color:#691c97">color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#888</span>; }
+<span style="color:#bf4f24">.selectricTempShow</span> { <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">absolute</span> <span style="color:#794938">!important</span>; <span style="color:#691c97">visibility</span><span style="color:#794938">:</span> <span style="color:#b4371f">hidden</span> <span style="color:#794938">!important</span>; <span style="color:#691c97">display</span><span style="color:#794938">:</span> <span style="color:#b4371f">block</span> <span style="color:#794938">!important</span>; }
 
-/* Items box */
-.selectricItems ul,
-.selectricItems li { list-style: none; padding: 0; margin: 0; min-height: 20px; line-height: 20px; font-size: 12px; }
-.selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F9F9F9; border: 1px solid #CCC; z-index: 9998; box-shadow: 0 0 10px -6px; }
-.selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #EEE; color: #666; border-top: 1px solid #FFF; }
-.selectricItems li.selected { background: #EFEFEF; color: #444; border-top-color: #E0E0E0; }
-.selectricItems li:hover { background: #F0F0F0; color: #444; }</pre>
+<span style="color:#5a525f;font-style:italic">/* Items box */</span>
+<span style="color:#bf4f24">.selectricItems</span> <span style="color:#bf4f24">ul</span>,
+<span style="color:#bf4f24">.selectricItems</span> <span style="color:#bf4f24">li</span> { <span style="color:#691c97">list-style</span><span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; <span style="color:#691c97">padding</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span>; <span style="color:#691c97">margin</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span>; <span style="color:#691c97">min-height</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">20<span style="color:#794938">px</span></span>; <span style="color:#691c97">line-height</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">20<span style="color:#794938">px</span></span>; <span style="color:#691c97">font-size</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">12<span style="color:#794938">px</span></span>; }
+<span style="color:#bf4f24">.selectricItems</span> { <span style="color:#691c97">display</span><span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">absolute</span>; <span style="color:#691c97">overflow</span><span style="color:#794938">:</span> <span style="color:#b4371f">auto</span>; <span style="color:#691c97">top</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">100<span style="color:#794938">%</span></span>; <span style="color:#691c97">left</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span>; <span style="color:#691c97">background</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#F9F9F9</span>; <span style="color:#691c97">border</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">1<span style="color:#794938">px</span></span> <span style="color:#b4371f">solid</span> <span style="color:#811f24;font-weight:700">#CCC</span>; <span style="color:#691c97">z-index</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">9998</span>; <span style="color:#691c97">box-shadow</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span> <span style="color:#811f24;font-weight:700">0</span> <span style="color:#811f24;font-weight:700">10<span style="color:#794938">px</span></span> <span style="color:#811f24;font-weight:700">-6<span style="color:#794938">px</span></span>; }
+<span style="color:#bf4f24">.selectricItems</span> <span style="color:#bf4f24">li</span> { <span style="color:#691c97">padding</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">5<span style="color:#794938">px</span></span>; <span style="color:#691c97">cursor</span><span style="color:#794938">:</span> <span style="color:#b4371f">pointer</span>; <span style="color:#691c97">display</span><span style="color:#794938">:</span> <span style="color:#b4371f">block</span>; <span style="color:#691c97">border-bottom</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">1<span style="color:#794938">px</span></span> <span style="color:#b4371f">solid</span> <span style="color:#811f24;font-weight:700">#EEE</span>; <span style="color:#691c97">color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#666</span>; <span style="color:#691c97">border-top</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">1<span style="color:#794938">px</span></span> <span style="color:#b4371f">solid</span> <span style="color:#811f24;font-weight:700">#FFF</span>; }
+<span style="color:#bf4f24">.selectricItems</span> <span style="color:#bf4f24">li</span><span style="color:#bf4f24">.selected</span> { <span style="color:#691c97">background</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#EFEFEF</span>; <span style="color:#691c97">color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#444</span>; <span style="color:#691c97">border-top-color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#E0E0E0</span>; }
+<span style="color:#bf4f24">.selectricItems</span> <span style="color:#bf4f24">li</span><span style="color:#bf4f24">:hover</span> { <span style="color:#691c97">background</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#F0F0F0</span>; <span style="color:#691c97">color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#444</span>; }</pre>
 
 		<p>4. Initialize <strong>jQuery Selectric:</strong></p>
-		<pre>$(function(){
-	$('select').selectric();
+		<pre style="background:#f9f9f9;color:#080808"><span style="color:#691c97">$</span>(<span style="color:#a71d5d;font-style:italic">function</span>(){
+    <span style="color:#794938">$</span>(<span style="color:#0b6125">'select'</span>).selectric();
 });</pre>
 
 		<h2>Options</h2>
+		<p>You can pass a options object as the first parameters when you call the plugin. For example:</p>
+		<pre style="background:#f9f9f9;color:#080808"><span style="color:#794938">$</span>(<span style="color:#0b6125">'select'</span>).selectric({
+    maxHeight: <span style="color:#811f24;font-weight:700">200</span>
+});</pre>
+
 		<table>
 			<tr>
 				<td><strong>Option</strong></td>
@@ -200,12 +256,10 @@ label p { font-size: 12px; margin: 0; }
 		</table>
 
 		<h2>Public methods</h2>
-		<pre>&lt;script&gt;
-	$('select').selectric('refresh'); // Reconstruct the instance of plugin
-	$('select').selectric('destroy'); // Destroy select and go back to normal
-	$('select').selectric('open'); // Open options
-	$('select').selectric('close'); // Close options
-&lt;/script&gt;</pre>
+		<pre style="background:#f9f9f9;color:#080808"><span style="color:#691c97">$</span>('<span style="color:#bf4f24">select</span>').selectric(<span style="color:#0b6125">'refresh'</span>); <span style="color:#5a525f;font-style:italic">// Reconstruct the instance of plugin</span>
+<span style="color:#691c97">$</span>('<span style="color:#bf4f24">select</span>').selectric(<span style="color:#0b6125">'destroy'</span>); <span style="color:#5a525f;font-style:italic">// Destroy select and go back to normal</span>
+<span style="color:#691c97">$</span>('<span style="color:#bf4f24">select</span>').selectric(<span style="color:#0b6125">'open'</span>); <span style="color:#5a525f;font-style:italic">// Open options</span>
+<span style="color:#691c97">$</span>('<span style="color:#bf4f24">select</span>').selectric(<span style="color:#0b6125">'close'</span>); <span style="color:#5a525f;font-style:italic">// Close options</span></pre>
 
 		<h2>Browser support</h2>
 
@@ -220,7 +274,7 @@ label p { font-size: 12px; margin: 0; }
 		<h2>Demo</h2>
 
 		<select name="countries" id="countries">
-			<option value="">Select with big option Mauris nec orci ut tortor consectetuer dapibus Mauris nec orci ut tortor consectetuer dapibus</option>
+			<option value="">Select with big option mauris nec orci ut tortor consectetuer dapibus Mauris nec orci ut tortor consectetuer dapibus</option>
 			<option value="AD">Andorra</option>
 			<option value="AE">United Arab Emirates</option>
 			<option value="AF">Afghanistan</option>
@@ -498,274 +552,271 @@ label p { font-size: 12px; margin: 0; }
 			<option value="banana">Banana</option>
 		</select>
 
-		<label>
-			<p>Wrapped in label</p>
-			<select>
-				<option value="AD">Andorra</option>
-				<option value="AE">United Arab Emirates</option>
-				<option value="AF">Afghanistan</option>
-				<option value="AG">Antigua and Barbuda</option>
-				<option value="AI">Anguilla</option>
-				<option value="AL">Albania</option>
-				<option value="AM">Armenia</option>
-				<option value="AN">Netherlands Antilles</option>
-				<option value="AO">Angola</option>
-				<option value="AQ">Antarctica</option>
-				<option value="AR">Argentina</option>
-				<option value="AS">American Samoa</option>
-				<option value="AT">Austria</option>
-				<option value="AU">Australia</option>
-				<option value="AW">Aruba</option>
-				<option value="AX">Åland Islands</option>
-				<option value="AZ">Azerbaijan</option>
-				<option value="BA">Bosnia and Herzegovina</option>
-				<option value="BB">Barbados</option>
-				<option value="BD">Bangladesh</option>
-				<option value="BE">Belgium</option>
-				<option value="BF">Burkina Faso</option>
-				<option value="BG">Bulgaria</option>
-				<option value="BH">Bahrain</option>
-				<option value="BI">Burundi</option>
-				<option value="BJ">Benin</option>
-				<option value="BL">Saint Barthélemy</option>
-				<option value="BM">Bermuda</option>
-				<option value="BN">Brunei</option>
-				<option value="BO">Bolivia</option>
-				<option value="BQ">British Antarctic Territory</option>
-				<option value="BR">Brazil</option>
-				<option value="BS">Bahamas</option>
-				<option value="BT">Bhutan</option>
-				<option value="BV">Bouvet Island</option>
-				<option value="BW">Botswana</option>
-				<option value="BY">Belarus</option>
-				<option value="BZ">Belize</option>
-				<option value="CA">Canada</option>
-				<option value="CC">Cocos [Keeling] Islands</option>
-				<option value="CD">Congo - Kinshasa</option>
-				<option value="CF">Central African Republic</option>
-				<option value="CG">Congo - Brazzaville</option>
-				<option value="CH">Switzerland</option>
-				<option value="CI">Côte d’Ivoire</option>
-				<option value="CK">Cook Islands</option>
-				<option value="CL">Chile</option>
-				<option value="CM">Cameroon</option>
-				<option value="CN">China</option>
-				<option value="CO">Colombia</option>
-				<option value="CR">Costa Rica</option>
-				<option value="CS">Serbia and Montenegro</option>
-				<option value="CT">Canton and Enderbury Islands</option>
-				<option value="CU">Cuba</option>
-				<option value="CV">Cape Verde</option>
-				<option value="CX">Christmas Island</option>
-				<option value="CY">Cyprus</option>
-				<option value="CZ">Czech Republic</option>
-				<option value="DD">East Germany</option>
-				<option value="DE">Germany</option>
-				<option value="DJ">Djibouti</option>
-				<option value="DK">Denmark</option>
-				<option value="DM">Dominica</option>
-				<option value="DO">Dominican Republic</option>
-				<option value="DZ">Algeria</option>
-				<option value="EC">Ecuador</option>
-				<option value="EE">Estonia</option>
-				<option value="EG">Egypt</option>
-				<option value="EH">Western Sahara</option>
-				<option value="ER">Eritrea</option>
-				<option value="ES">Spain</option>
-				<option value="ET">Ethiopia</option>
-				<option value="FI">Finland</option>
-				<option value="FJ">Fiji</option>
-				<option value="FK">Falkland Islands</option>
-				<option value="FM">Micronesia</option>
-				<option value="FO">Faroe Islands</option>
-				<option value="FQ">French Southern and Antarctic Territories</option>
-				<option value="FR">France</option>
-				<option value="FX">Metropolitan France</option>
-				<option value="GA">Gabon</option>
-				<option value="GB">United Kingdom</option>
-				<option value="GD">Grenada</option>
-				<option value="GE">Georgia</option>
-				<option value="GF">French Guiana</option>
-				<option value="GG">Guernsey</option>
-				<option value="GH">Ghana</option>
-				<option value="GI">Gibraltar</option>
-				<option value="GL">Greenland</option>
-				<option value="GM">Gambia</option>
-				<option value="GN">Guinea</option>
-				<option value="GP">Guadeloupe</option>
-				<option value="GQ">Equatorial Guinea</option>
-				<option value="GR">Greece</option>
-				<option value="GS">South Georgia and the South Sandwich Islands</option>
-				<option value="GT">Guatemala</option>
-				<option value="GU">Guam</option>
-				<option value="GW">Guinea-Bissau</option>
-				<option value="GY">Guyana</option>
-				<option value="HK">Hong Kong SAR China</option>
-				<option value="HM">Heard Island and McDonald Islands</option>
-				<option value="HN">Honduras</option>
-				<option value="HR">Croatia</option>
-				<option value="HT">Haiti</option>
-				<option value="HU">Hungary</option>
-				<option value="ID">Indonesia</option>
-				<option value="IE">Ireland</option>
-				<option value="IL">Israel</option>
-				<option value="IM">Isle of Man</option>
-				<option value="IN">India</option>
-				<option value="IO">British Indian Ocean Territory</option>
-				<option value="IQ">Iraq</option>
-				<option value="IR">Iran</option>
-				<option value="IS">Iceland</option>
-				<option value="IT">Italy</option>
-				<option value="JE">Jersey</option>
-				<option value="JM">Jamaica</option>
-				<option value="JO">Jordan</option>
-				<option value="JP">Japan</option>
-				<option value="JT">Johnston Island</option>
-				<option value="KE">Kenya</option>
-				<option value="KG">Kyrgyzstan</option>
-				<option value="KH">Cambodia</option>
-				<option value="KI">Kiribati</option>
-				<option value="KM">Comoros</option>
-				<option value="KN">Saint Kitts and Nevis</option>
-				<option value="KP">North Korea</option>
-				<option value="KR">South Korea</option>
-				<option value="KW">Kuwait</option>
-				<option value="KY">Cayman Islands</option>
-				<option value="KZ">Kazakhstan</option>
-				<option value="LA">Laos</option>
-				<option value="LB">Lebanon</option>
-				<option value="LC">Saint Lucia</option>
-				<option value="LI">Liechtenstein</option>
-				<option value="LK">Sri Lanka</option>
-				<option value="LR">Liberia</option>
-				<option value="LS">Lesotho</option>
-				<option value="LT">Lithuania</option>
-				<option value="LU">Luxembourg</option>
-				<option value="LV">Latvia</option>
-				<option value="LY">Libya</option>
-				<option value="MA">Morocco</option>
-				<option value="MC">Monaco</option>
-				<option value="MD">Moldova</option>
-				<option value="ME">Montenegro</option>
-				<option value="MF">Saint Martin</option>
-				<option value="MG">Madagascar</option>
-				<option value="MH">Marshall Islands</option>
-				<option value="MI">Midway Islands</option>
-				<option value="MK">Macedonia</option>
-				<option value="ML">Mali</option>
-				<option value="MM">Myanmar [Burma]</option>
-				<option value="MN">Mongolia</option>
-				<option value="MO">Macau SAR China</option>
-				<option value="MP">Northern Mariana Islands</option>
-				<option value="MQ">Martinique</option>
-				<option value="MR">Mauritania</option>
-				<option value="MS">Montserrat</option>
-				<option value="MT">Malta</option>
-				<option value="MU">Mauritius</option>
-				<option value="MV">Maldives</option>
-				<option value="MW">Malawi</option>
-				<option value="MX">Mexico</option>
-				<option value="MY">Malaysia</option>
-				<option value="MZ">Mozambique</option>
-				<option value="NA">Namibia</option>
-				<option value="NC">New Caledonia</option>
-				<option value="NE">Niger</option>
-				<option value="NF">Norfolk Island</option>
-				<option value="NG">Nigeria</option>
-				<option value="NI">Nicaragua</option>
-				<option value="NL">Netherlands</option>
-				<option value="NO">Norway</option>
-				<option value="NP">Nepal</option>
-				<option value="NQ">Dronning Maud Land</option>
-				<option value="NR">Nauru</option>
-				<option value="NT">Neutral Zone</option>
-				<option value="NU">Niue</option>
-				<option value="NZ">New Zealand</option>
-				<option value="OM">Oman</option>
-				<option value="PA">Panama</option>
-				<option value="PC">Pacific Islands Trust Territory</option>
-				<option value="PE">Peru</option>
-				<option value="PF">French Polynesia</option>
-				<option value="PG">Papua New Guinea</option>
-				<option value="PH">Philippines</option>
-				<option value="PK">Pakistan</option>
-				<option value="PL">Poland</option>
-				<option value="PM">Saint Pierre and Miquelon</option>
-				<option value="PN">Pitcairn Islands</option>
-				<option value="PR">Puerto Rico</option>
-				<option value="PS">Palestinian Territories</option>
-				<option value="PT">Portugal</option>
-				<option value="PU">U.S. Miscellaneous Pacific Islands</option>
-				<option value="PW">Palau</option>
-				<option value="PY">Paraguay</option>
-				<option value="PZ">Panama Canal Zone</option>
-				<option value="QA">Qatar</option>
-				<option value="RE">Réunion</option>
-				<option value="RO">Romania</option>
-				<option value="RS">Serbia</option>
-				<option value="RU">Russia</option>
-				<option value="RW">Rwanda</option>
-				<option value="SA">Saudi Arabia</option>
-				<option value="SB">Solomon Islands</option>
-				<option value="SC">Seychelles</option>
-				<option value="SD">Sudan</option>
-				<option value="SE">Sweden</option>
-				<option value="SG">Singapore</option>
-				<option value="SH">Saint Helena</option>
-				<option value="SI">Slovenia</option>
-				<option value="SJ">Svalbard and Jan Mayen</option>
-				<option value="SK">Slovakia</option>
-				<option value="SL">Sierra Leone</option>
-				<option value="SM">San Marino</option>
-				<option value="SN">Senegal</option>
-				<option value="SO">Somalia</option>
-				<option value="SR">Suriname</option>
-				<option value="ST">São Tomé and Príncipe</option>
-				<option value="SU">Union of Soviet Socialist Republics</option>
-				<option value="SV">El Salvador</option>
-				<option value="SY">Syria</option>
-				<option value="SZ">Swaziland</option>
-				<option value="TC">Turks and Caicos Islands</option>
-				<option value="TD">Chad</option>
-				<option value="TF">French Southern Territories</option>
-				<option value="TG">Togo</option>
-				<option value="TH">Thailand</option>
-				<option value="TJ">Tajikistan</option>
-				<option value="TK">Tokelau</option>
-				<option value="TL">Timor-Leste</option>
-				<option value="TM">Turkmenistan</option>
-				<option value="TN">Tunisia</option>
-				<option value="TO">Tonga</option>
-				<option value="TR">Turkey</option>
-				<option value="TT">Trinidad and Tobago</option>
-				<option value="TV">Tuvalu</option>
-				<option value="TW">Taiwan</option>
-				<option value="TZ">Tanzania</option>
-				<option value="UA">Ukraine</option>
-				<option value="UG">Uganda</option>
-				<option value="UM">U.S. Minor Outlying Islands</option>
-				<option value="US">United States</option>
-				<option value="UY">Uruguay</option>
-				<option value="UZ">Uzbekistan</option>
-				<option value="VA">Vatican City</option>
-				<option value="VC">Saint Vincent and the Grenadines</option>
-				<option value="VD">North Vietnam</option>
-				<option value="VE">Venezuela</option>
-				<option value="VG">British Virgin Islands</option>
-				<option value="VI">U.S. Virgin Islands</option>
-				<option value="VN">Vietnam</option>
-				<option value="VU">Vanuatu</option>
-				<option value="WF">Wallis and Futuna</option>
-				<option value="WK">Wake Island</option>
-				<option value="WS">Samoa</option>
-				<option value="YD">People's Democratic Republic of Yemen</option>
-				<option value="YE">Yemen</option>
-				<option value="YT">Mayotte</option>
-				<option value="ZA">South Africa</option>
-				<option value="ZM">Zambia</option>
-				<option value="ZW">Zimbabwe</option>
-			</select>
-		</label>
+		<select>
+			<option value="AD">Andorra</option>
+			<option value="AE">United Arab Emirates</option>
+			<option value="AF">Afghanistan</option>
+			<option value="AG">Antigua and Barbuda</option>
+			<option value="AI">Anguilla</option>
+			<option value="AL">Albania</option>
+			<option value="AM">Armenia</option>
+			<option value="AN">Netherlands Antilles</option>
+			<option value="AO">Angola</option>
+			<option value="AQ">Antarctica</option>
+			<option value="AR">Argentina</option>
+			<option value="AS">American Samoa</option>
+			<option value="AT">Austria</option>
+			<option value="AU">Australia</option>
+			<option value="AW">Aruba</option>
+			<option value="AX">Åland Islands</option>
+			<option value="AZ">Azerbaijan</option>
+			<option value="BA">Bosnia and Herzegovina</option>
+			<option value="BB">Barbados</option>
+			<option value="BD">Bangladesh</option>
+			<option value="BE">Belgium</option>
+			<option value="BF">Burkina Faso</option>
+			<option value="BG">Bulgaria</option>
+			<option value="BH">Bahrain</option>
+			<option value="BI">Burundi</option>
+			<option value="BJ">Benin</option>
+			<option value="BL">Saint Barthélemy</option>
+			<option value="BM">Bermuda</option>
+			<option value="BN">Brunei</option>
+			<option value="BO">Bolivia</option>
+			<option value="BQ">British Antarctic Territory</option>
+			<option value="BR">Brazil</option>
+			<option value="BS">Bahamas</option>
+			<option value="BT">Bhutan</option>
+			<option value="BV">Bouvet Island</option>
+			<option value="BW">Botswana</option>
+			<option value="BY">Belarus</option>
+			<option value="BZ">Belize</option>
+			<option value="CA">Canada</option>
+			<option value="CC">Cocos [Keeling] Islands</option>
+			<option value="CD">Congo - Kinshasa</option>
+			<option value="CF">Central African Republic</option>
+			<option value="CG">Congo - Brazzaville</option>
+			<option value="CH">Switzerland</option>
+			<option value="CI">Côte d’Ivoire</option>
+			<option value="CK">Cook Islands</option>
+			<option value="CL">Chile</option>
+			<option value="CM">Cameroon</option>
+			<option value="CN">China</option>
+			<option value="CO">Colombia</option>
+			<option value="CR">Costa Rica</option>
+			<option value="CS">Serbia and Montenegro</option>
+			<option value="CT">Canton and Enderbury Islands</option>
+			<option value="CU">Cuba</option>
+			<option value="CV">Cape Verde</option>
+			<option value="CX">Christmas Island</option>
+			<option value="CY">Cyprus</option>
+			<option value="CZ">Czech Republic</option>
+			<option value="DD">East Germany</option>
+			<option value="DE">Germany</option>
+			<option value="DJ">Djibouti</option>
+			<option value="DK">Denmark</option>
+			<option value="DM">Dominica</option>
+			<option value="DO">Dominican Republic</option>
+			<option value="DZ">Algeria</option>
+			<option value="EC">Ecuador</option>
+			<option value="EE">Estonia</option>
+			<option value="EG">Egypt</option>
+			<option value="EH">Western Sahara</option>
+			<option value="ER">Eritrea</option>
+			<option value="ES">Spain</option>
+			<option value="ET">Ethiopia</option>
+			<option value="FI">Finland</option>
+			<option value="FJ">Fiji</option>
+			<option value="FK">Falkland Islands</option>
+			<option value="FM">Micronesia</option>
+			<option value="FO">Faroe Islands</option>
+			<option value="FQ">French Southern and Antarctic Territories</option>
+			<option value="FR">France</option>
+			<option value="FX">Metropolitan France</option>
+			<option value="GA">Gabon</option>
+			<option value="GB">United Kingdom</option>
+			<option value="GD">Grenada</option>
+			<option value="GE">Georgia</option>
+			<option value="GF">French Guiana</option>
+			<option value="GG">Guernsey</option>
+			<option value="GH">Ghana</option>
+			<option value="GI">Gibraltar</option>
+			<option value="GL">Greenland</option>
+			<option value="GM">Gambia</option>
+			<option value="GN">Guinea</option>
+			<option value="GP">Guadeloupe</option>
+			<option value="GQ">Equatorial Guinea</option>
+			<option value="GR">Greece</option>
+			<option value="GS">South Georgia and the South Sandwich Islands</option>
+			<option value="GT">Guatemala</option>
+			<option value="GU">Guam</option>
+			<option value="GW">Guinea-Bissau</option>
+			<option value="GY">Guyana</option>
+			<option value="HK">Hong Kong SAR China</option>
+			<option value="HM">Heard Island and McDonald Islands</option>
+			<option value="HN">Honduras</option>
+			<option value="HR">Croatia</option>
+			<option value="HT">Haiti</option>
+			<option value="HU">Hungary</option>
+			<option value="ID">Indonesia</option>
+			<option value="IE">Ireland</option>
+			<option value="IL">Israel</option>
+			<option value="IM">Isle of Man</option>
+			<option value="IN">India</option>
+			<option value="IO">British Indian Ocean Territory</option>
+			<option value="IQ">Iraq</option>
+			<option value="IR">Iran</option>
+			<option value="IS">Iceland</option>
+			<option value="IT">Italy</option>
+			<option value="JE">Jersey</option>
+			<option value="JM">Jamaica</option>
+			<option value="JO">Jordan</option>
+			<option value="JP">Japan</option>
+			<option value="JT">Johnston Island</option>
+			<option value="KE">Kenya</option>
+			<option value="KG">Kyrgyzstan</option>
+			<option value="KH">Cambodia</option>
+			<option value="KI">Kiribati</option>
+			<option value="KM">Comoros</option>
+			<option value="KN">Saint Kitts and Nevis</option>
+			<option value="KP">North Korea</option>
+			<option value="KR">South Korea</option>
+			<option value="KW">Kuwait</option>
+			<option value="KY">Cayman Islands</option>
+			<option value="KZ">Kazakhstan</option>
+			<option value="LA">Laos</option>
+			<option value="LB">Lebanon</option>
+			<option value="LC">Saint Lucia</option>
+			<option value="LI">Liechtenstein</option>
+			<option value="LK">Sri Lanka</option>
+			<option value="LR">Liberia</option>
+			<option value="LS">Lesotho</option>
+			<option value="LT">Lithuania</option>
+			<option value="LU">Luxembourg</option>
+			<option value="LV">Latvia</option>
+			<option value="LY">Libya</option>
+			<option value="MA">Morocco</option>
+			<option value="MC">Monaco</option>
+			<option value="MD">Moldova</option>
+			<option value="ME">Montenegro</option>
+			<option value="MF">Saint Martin</option>
+			<option value="MG">Madagascar</option>
+			<option value="MH">Marshall Islands</option>
+			<option value="MI">Midway Islands</option>
+			<option value="MK">Macedonia</option>
+			<option value="ML">Mali</option>
+			<option value="MM">Myanmar [Burma]</option>
+			<option value="MN">Mongolia</option>
+			<option value="MO">Macau SAR China</option>
+			<option value="MP">Northern Mariana Islands</option>
+			<option value="MQ">Martinique</option>
+			<option value="MR">Mauritania</option>
+			<option value="MS">Montserrat</option>
+			<option value="MT">Malta</option>
+			<option value="MU">Mauritius</option>
+			<option value="MV">Maldives</option>
+			<option value="MW">Malawi</option>
+			<option value="MX">Mexico</option>
+			<option value="MY">Malaysia</option>
+			<option value="MZ">Mozambique</option>
+			<option value="NA">Namibia</option>
+			<option value="NC">New Caledonia</option>
+			<option value="NE">Niger</option>
+			<option value="NF">Norfolk Island</option>
+			<option value="NG">Nigeria</option>
+			<option value="NI">Nicaragua</option>
+			<option value="NL">Netherlands</option>
+			<option value="NO">Norway</option>
+			<option value="NP">Nepal</option>
+			<option value="NQ">Dronning Maud Land</option>
+			<option value="NR">Nauru</option>
+			<option value="NT">Neutral Zone</option>
+			<option value="NU">Niue</option>
+			<option value="NZ">New Zealand</option>
+			<option value="OM">Oman</option>
+			<option value="PA">Panama</option>
+			<option value="PC">Pacific Islands Trust Territory</option>
+			<option value="PE">Peru</option>
+			<option value="PF">French Polynesia</option>
+			<option value="PG">Papua New Guinea</option>
+			<option value="PH">Philippines</option>
+			<option value="PK">Pakistan</option>
+			<option value="PL">Poland</option>
+			<option value="PM">Saint Pierre and Miquelon</option>
+			<option value="PN">Pitcairn Islands</option>
+			<option value="PR">Puerto Rico</option>
+			<option value="PS">Palestinian Territories</option>
+			<option value="PT">Portugal</option>
+			<option value="PU">U.S. Miscellaneous Pacific Islands</option>
+			<option value="PW">Palau</option>
+			<option value="PY">Paraguay</option>
+			<option value="PZ">Panama Canal Zone</option>
+			<option value="QA">Qatar</option>
+			<option value="RE">Réunion</option>
+			<option value="RO">Romania</option>
+			<option value="RS">Serbia</option>
+			<option value="RU">Russia</option>
+			<option value="RW">Rwanda</option>
+			<option value="SA">Saudi Arabia</option>
+			<option value="SB">Solomon Islands</option>
+			<option value="SC">Seychelles</option>
+			<option value="SD">Sudan</option>
+			<option value="SE">Sweden</option>
+			<option value="SG">Singapore</option>
+			<option value="SH">Saint Helena</option>
+			<option value="SI">Slovenia</option>
+			<option value="SJ">Svalbard and Jan Mayen</option>
+			<option value="SK">Slovakia</option>
+			<option value="SL">Sierra Leone</option>
+			<option value="SM">San Marino</option>
+			<option value="SN">Senegal</option>
+			<option value="SO">Somalia</option>
+			<option value="SR">Suriname</option>
+			<option value="ST">São Tomé and Príncipe</option>
+			<option value="SU">Union of Soviet Socialist Republics</option>
+			<option value="SV">El Salvador</option>
+			<option value="SY">Syria</option>
+			<option value="SZ">Swaziland</option>
+			<option value="TC">Turks and Caicos Islands</option>
+			<option value="TD">Chad</option>
+			<option value="TF">French Southern Territories</option>
+			<option value="TG">Togo</option>
+			<option value="TH">Thailand</option>
+			<option value="TJ">Tajikistan</option>
+			<option value="TK">Tokelau</option>
+			<option value="TL">Timor-Leste</option>
+			<option value="TM">Turkmenistan</option>
+			<option value="TN">Tunisia</option>
+			<option value="TO">Tonga</option>
+			<option value="TR">Turkey</option>
+			<option value="TT">Trinidad and Tobago</option>
+			<option value="TV">Tuvalu</option>
+			<option value="TW">Taiwan</option>
+			<option value="TZ">Tanzania</option>
+			<option value="UA">Ukraine</option>
+			<option value="UG">Uganda</option>
+			<option value="UM">U.S. Minor Outlying Islands</option>
+			<option value="US">United States</option>
+			<option value="UY">Uruguay</option>
+			<option value="UZ">Uzbekistan</option>
+			<option value="VA">Vatican City</option>
+			<option value="VC">Saint Vincent and the Grenadines</option>
+			<option value="VD">North Vietnam</option>
+			<option value="VE">Venezuela</option>
+			<option value="VG">British Virgin Islands</option>
+			<option value="VI">U.S. Virgin Islands</option>
+			<option value="VN">Vietnam</option>
+			<option value="VU">Vanuatu</option>
+			<option value="WF">Wallis and Futuna</option>
+			<option value="WK">Wake Island</option>
+			<option value="WS">Samoa</option>
+			<option value="YD">People's Democratic Republic of Yemen</option>
+			<option value="YE">Yemen</option>
+			<option value="YT">Mayotte</option>
+			<option value="ZA">South Africa</option>
+			<option value="ZM">Zambia</option>
+			<option value="ZW">Zimbabwe</option>
+		</select>
 
 		<br>
 		<br>
@@ -773,6 +824,13 @@ label p { font-size: 12px; margin: 0; }
 		<br>
 		<br>
 		<br>
+
+		<div class="copy">
+			<p style="float: left;">Project maintained by <b>Leonardo Santos</b> <br>
+				<a href="https://github.com/lcdsantos">Github</a> &bull; <a href="https://twitter.com/lcdsantos">Twitter</a> &bull; <a href="mailto:leocs.1991@gmail.com">Email</a></p>
+
+			<p style="float: right;">Hosted on GitHub Pages</p>
+		</div>
 
 	</div>
 
@@ -780,9 +838,9 @@ label p { font-size: 12px; margin: 0; }
 <script>window.jQuery || document.write('<script src="js/jquery.min.js">\x3C/script>')</script>
 <script src="js/jquery.selectric.js"></script>
 <script>
-$(function(){
-	$('select').selectric();
-});
+	$(function(){
+		$('select').selectric();
+	});
 </script>
 </body>
 </html>

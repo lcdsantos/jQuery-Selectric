@@ -13,7 +13,7 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 Make sure to include jQuery in your page:
 
 ```html
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 ```
 
 Include **jQuery Selectric:**
@@ -29,7 +29,7 @@ Put styles in your CSS and change it to your taste :D
 	Selectric
 ======================================================================*/
 .selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }
-.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
 .selectricOpen { z-index: 9999; }
 .selectricHideSelect { position: relative; overflow: hidden; }
 .selectricHideSelect select { position: absolute; left: -100%; }
@@ -37,8 +37,8 @@ Put styles in your CSS and change it to your taste :D
 .selectricOpen .selectric { border-color: #CCC; background: #F0F0F0; z-index: 9999; }
 .selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding: 6px; font-size: 12px; line-height: 1.5; color: #444; }
 .selectric .button { position: absolute; right: 0; top: 0; height: 30px; width: 30px; color: #BBB; text-align: center; font: normal 18px/30px sans-serif; }
-.hover .selectric { border-color: #CCC; }
-.hover .selectric .button { color: #888; }
+.selectricHover .selectric { border-color: #CCC; }
+.selectricHover .selectric .button { color: #888; }
 .selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
 
 /* Items box */

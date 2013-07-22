@@ -9,17 +9,18 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.4.9
+ * Selectric Ϟ v1.4.11 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
  */
 
-;(function ($, window, undefined) {
+;(function ($, window) {
 	var pluginName = 'selectric',
+		emptyFn = function(){},
 		opts = {
-			onOpen: function() {},
-			onClose: function() {},
+			onOpen: emptyFn,
+			onClose: emptyFn,
 			maxHeight: 300,
 			keySearchTimeout: 500,
 			arrowButtonMarkup: '<b class="button">&#9662;</b>',
@@ -57,7 +58,7 @@
 			classDisabled = pluginName + 'Disabled',
 			selectStr = 'selected',
 			selected = 0,
-			length;
+			optionsLength;
 
 		$original.wrap('<div class="' + pluginName + 'HideSelect"/>');
 
@@ -66,29 +67,25 @@
 
 			var $options = $original.find('option'),
 				_$li = '',
-				optionsLength = $options.length,
 				idx = $options.filter(':' + selectStr).index();
 
 			selected = idx < 0 ? 0 : idx;
 
-			if (optionsLength) {
+			if ( optionsLength = $options.length ) {
 				$options.each(function(i){
 					var $me = $(this),
 						className = i == selected ? selectStr : '',
-						selectText = $me.text(),
-						selectVal = $me.val();
+						selectText = $me.text();
 
 					selectItems[i] = {
-						value: selectVal,
+						value: $me.val(),
 						text: selectText,
 						slug: _replaceDiacritics(selectText)
 					};
 
 					if (++i == optionsLength) className += ' last';
 
-					length = i;
-
-					_$li += '<li class="' + className + '" data-value="' + selectVal + '">' + selectText + '</li>';
+					_$li += '<li class="' + className + '">' + selectText + '</li>';
 				});
 
 				$ul.append(_$li);
@@ -97,12 +94,12 @@
 
 			$wrapper.unbind(bindSufix);
 			$original.unbind(keyBind + ' focusin');
-			$outerWrapper[0].className = classWrapper + ' ' + $original.prop('class') + ' ' + classDisabled;
+			$outerWrapper.prop('class', classWrapper + ' ' + $original.prop('class') + ' ' + classDisabled);
 
 			if (!$original.prop('disabled')){
 				// Not disabled, so... Removing disabled class and bind hover
 				$outerWrapper.removeClass(classDisabled).hover(function(){
-					$(this).toggleClass('hover');
+					$(this).toggleClass(pluginName + 'Hover');
 				});
 
 				// Click on label and :focus on original select will open the options box
@@ -132,11 +129,10 @@
 		function _keyActions(e) {
 			e.preventDefault();
 
-			var key = e.keyCode || e.which,
-				currentItem = 0;
+			var key = e.keyCode || e.which;
 
 			// Tab / Enter / ESC
-			if (/^9|13|27$/.test(key)) {
+			if (/^(9|13|27)$/.test(key)) {
 				e.stopPropagation();
 				_select(selected, true);
 			}
@@ -148,12 +144,10 @@
 			if (key < 37 || key > 40) {
 				var rSearch = RegExp('^' + (searchStr += String.fromCharCode(key)), 'i');
 
-				while (++currentItem < length){
-					if (rSearch.test(selectItems[currentItem].slug) || rSearch.test(selectItems[currentItem].text)) {
-						_select(currentItem);
-						break;
-					}
-				}
+				$.each(selectItems, function(i, elm){
+					if (rSearch.test(elm.slug) || rSearch.test(elm.text))
+						_select(i);
+				});
 
 				resetStr = setTimeout(function(){
 					searchStr = '';
@@ -161,13 +155,8 @@
 			} else {
 				searchStr = '';
 
-				if ( /^39|40$/.test(key) ){
-					// Right / Down
-					_select((selected + 1) % length);
-				} else {
-					// Left / Up
-					_select((selected > 0 ? selected : length) - 1);
-				}
+				// Right / Down : Left / Up
+				_select( /^(39|40)$/.test(key) ? (selected + 1) % optionsLength : (selected > 0 ? selected : optionsLength) - 1);
 			}
 		}
 
