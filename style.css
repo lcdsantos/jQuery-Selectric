@@ -8,11 +8,11 @@ body { margin: 0; font-size: 1em; line-height: 1.4; }
 /* =============================================================================
    Links
    ========================================================================== */
-a { color: #00e; }
-a:visited { color: #551a8b; }
-a:hover { color: #06e; }
+/* a { color: #00e; } */
+/* a:visited { color: #551a8b; }
+a:hover { color: #06e; } */
 a:focus { outline: thin dotted; }
-a:hover, a:active { outline: 0; }
+/* a:hover, a:active { outline: 0; } */
 
 /* =============================================================================
    Typography
@@ -76,7 +76,6 @@ input:invalid, textarea:invalid { background-color: #f0dddd; }
 table { border-collapse: collapse; border-spacing: 0; }
 td { vertical-align: top; }
 
-
 /* =============================================================================
    General Styles
    ========================================================================== */
@@ -122,7 +121,11 @@ label p { font-size: 12px; margin: 0; }
 .bt:active {
 	background-position: 0 -60px;
 }
+.bt:focus { outline: thin dotted #F90; }
 .bt:visited { color: #FFF; }
+
+.link { color: #999; font-size: 14px; margin: 10px; display: inline-block; vertical-align: top; zoom: 1; *display: inline; text-decoration: none; }
+.link:hover { color: #F60; }
 
 .copy { font-size: 12px; color: #999; border-top: 1px solid #E5E5E5; box-shadow: 0 1px 0 0 #FFF; }
 .copy a { color: #444; text-decoration: none; }
