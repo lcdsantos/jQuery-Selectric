@@ -9,13 +9,13 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.4.11 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.4.12 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
  */
 
-;(function ($, window) {
+;(function ($) {
 	var pluginName = 'selectric',
 		emptyFn = function(){},
 		opts = {
@@ -42,9 +42,9 @@
 			$outerWrapper = $original.data(pluginName, this).wrap('<div/>').parent().append($wrapper),
 			selectItems = [],
 			isOpen = false,
-			$label = $wrapper.find('.label'),
+			$label = $('.label', $wrapper),
 			$items = $('<div class="' + pluginName + 'Items"><ul/></div>').appendTo($outerWrapper),
-			$ul = $items.find('ul'),
+			$ul = $('ul', $items),
 			$li,
 			bindSufix = '.sl',
 			$doc = $(document),
@@ -65,16 +65,17 @@
 		function _populate() {
 			$ul.empty();
 
-			var $options = $original.find('option'),
+			var $options = $('option', $original),
 				_$li = '',
 				idx = $options.filter(':' + selectStr).index();
 
 			selected = idx < 0 ? 0 : idx;
 
 			if ( optionsLength = $options.length ) {
+				// Build options markup
 				$options.each(function(i){
 					var $me = $(this),
-						className = i == selected ? selectStr : '',
+						className = (i == selected ? selectStr : '') + (i == optionsLength - 1 ? ' last' : ''),
 						selectText = $me.text();
 
 					selectItems[i] = {
@@ -83,8 +84,6 @@
 						slug: _replaceDiacritics(selectText)
 					};
 
-					if (++i == optionsLength) className += ' last';
-
 					_$li += '<li class="' + className + '">' + selectText + '</li>';
 				});
 
@@ -92,8 +91,8 @@
 				$label.text(selectItems[selected].text);
 			}
 
-			$wrapper.unbind(bindSufix);
-			$original.unbind(keyBind + ' focusin');
+			$wrapper.off(bindSufix);
+			$original.off(keyBind + ' focusin');
 			$outerWrapper.prop('class', classWrapper + ' ' + $original.prop('class') + ' ' + classDisabled);
 
 			if (!$original.prop('disabled')){
@@ -103,17 +102,18 @@
 				});
 
 				// Click on label and :focus on original select will open the options box
-				$wrapper.bind(clickBind, function(e){
+				$wrapper.on(clickBind, function(e){
 					isOpen ? _close(e) : _open(e);
 				});
-				$original.bind(keyBind, _keyActions).bind('focusin' + bindSufix, function(e){
+				$original.on(keyBind, _keyActions).on('focusin' + bindSufix, function(e){
 					isOpen || _open(e);
 				});
 
 				// Remove styles from items box
 				// Fix incorrect height when refreshed is triggered with fewer options
 				$ul = $items.removeAttr('style').find('ul');
-				$li = $ul.find('li').click(function(){
+				// $li = $ul.find('li').click(function(){
+				$li = $('li', $ul).click(function(){
 					// The second parameter is to close the box after click
 					_select($(this).index(), true);
 
@@ -122,6 +122,8 @@
 					return false;
 				});
 			}
+
+			_calculateHeight();
 		}
 
 		_populate();
@@ -145,7 +147,7 @@
 				var rSearch = RegExp('^' + (searchStr += String.fromCharCode(key)), 'i');
 
 				$.each(selectItems, function(i, elm){
-					if (rSearch.test(elm.slug) || rSearch.test(elm.text))
+					if (rSearch.test([elm.slug, elm.text]))
 						_select(i);
 				});
 
@@ -176,7 +178,7 @@
 			e.type == 'click' && $original.focus();
 			$win.scrollTop(scrollTop);
 
-			$doc.bind(clickBind, _close);
+			$doc.on(clickBind, _close);
 			$outerWrapper.addClass(classOpen);
 			_detectItemVisibility(selected);
 
@@ -212,7 +214,7 @@
 			$label.text(selectedTxt);
 			$outerWrapper.removeClass(classOpen);
 			isOpen = false;
-			$doc.unbind(bindSufix);
+			$doc.off(bindSufix);
 			options.onClose.call($original);
 		}
 
@@ -234,11 +236,11 @@
 				itemsHeight = $items.height(),
 				scrollT = liTop + liHeight * 2;
 
-			if (scrollT > itemsScrollTop + itemsHeight) {
-				$items.scrollTop(scrollT - itemsHeight);
-			} else if (liTop - liHeight < itemsScrollTop) {
-				$items.scrollTop(liTop - liHeight);
-			}
+			$items.scrollTop(
+				(scrollT > itemsScrollTop + itemsHeight) ? scrollT - itemsHeight :
+					(liTop - liHeight < itemsScrollTop) ? liTop - liHeight :
+						itemsScrollTop
+			);
 		}
 
 		// Replace diacritics
@@ -252,14 +254,14 @@
 			/[\347]/g, // c
 			/[\377]/g // y
 		*/
-		function _replaceDiacritics(s) {
-			var k, d = '40-46 50-53 54-57 62-70 71-74 61 47 77'.replace(/\d+/g, '\\3$&').split(' ');
-			for (k in d) s = s.toLowerCase().replace(RegExp('[' + d[k] + ']', 'g'), 'aeiouncy'.charAt(k));
+		function _replaceDiacritics(s, k, d) {
+			for (k in d = '40-46 50-53 54-57 62-70 71-74 61 47 77'.replace(/\d+/g, '\\3$&').split(' '))
+				s = s.toLowerCase().replace(RegExp('[' + d[k] + ']', 'g'), 'aeiouncy'.charAt(k));
 			return s;
 		}
 
 		function _calculateHeight() {
-			var visibleParent = $items.closest(':visible').children(),
+			var visibleParent = $items.closest(':visible').children().not(':visible'),
 				tempClass = pluginName + 'TempShow',
 				maxHeight = options.maxHeight;
 
@@ -274,23 +276,15 @@
 			visibleParent.removeClass(tempClass);
 		}
 
-		_calculateHeight();
-
 		// Unbind and remove
 		function _destroy() {
 			$items.remove();
 			$wrapper.remove();
-			$original.removeData(pluginName).unbind(bindSufix + ' refresh destroy open close').unwrap().unwrap();
+			$original.removeData(pluginName).off(bindSufix + ' refresh destroy open close').unwrap().unwrap();
 		}
 
-		// Re-populate options
-		function _reset() {
-			_populate();
-			_calculateHeight();
-		}
-
-		$original.bind({
-			refresh: _reset,
+		$original.on({
+			refresh: _populate,
 			destroy: _destroy,
 			open: _open,
 			close: _close
@@ -308,4 +302,4 @@
 			}
 		});
 	};
-}(jQuery, window));
+}(jQuery));
