@@ -106,12 +106,6 @@ $(function(){
 		<td>Initialize plugin on mobile browsers</td>
 	</tr>
 	<tr>
-		<td>margin</td>
-		<td>5</td>
-		<td>Integer</td>
-		<td>Minimum space between opened options and window</td>
-	</tr>
-	<tr>
 		<td>border</td>
 		<td>1</td>
 		<td>Integer</td>

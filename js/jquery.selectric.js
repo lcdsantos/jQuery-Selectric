@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.4.12 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.4.13 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -25,7 +25,6 @@
 			keySearchTimeout: 500,
 			arrowButtonMarkup: '<b class="button">&#9662;</b>',
 			disableOnMobile: true,
-			margin: 5,
 			border: 1
 		};
 
@@ -39,11 +38,11 @@
 	Selectric.prototype.init = function(options) {
 		var $wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
 			$original = $(this.element),
-			$outerWrapper = $original.data(pluginName, this).wrap('<div/>').parent().append($wrapper),
+			$items = $('<div class="' + pluginName + 'Items"><ul/></div>'),
+			$outerWrapper = $original.data(pluginName, this).wrap('<div>').parent().append($wrapper).append($items),
 			selectItems = [],
 			isOpen = false,
 			$label = $('.label', $wrapper),
-			$items = $('<div class="' + pluginName + 'Items"><ul/></div>').appendTo($outerWrapper),
 			$ul = $('ul', $items),
 			$li,
 			bindSufix = '.sl',
@@ -54,20 +53,24 @@
 			searchStr = '',
 			resetStr,
 			classOpen = pluginName + 'Open',
-			classWrapper = pluginName + 'Wrapper',
 			classDisabled = pluginName + 'Disabled',
 			selectStr = 'selected',
 			selected = 0,
-			optionsLength;
+			optionsLength,
+			itemsHeight;
 
-		$original.wrap('<div class="' + pluginName + 'HideSelect"/>');
+		$original.wrap('<div class="' + pluginName + 'HideSelect">');
 
 		function _populate() {
 			$ul.empty();
 
 			var $options = $('option', $original),
 				_$li = '',
-				idx = $options.filter(':' + selectStr).index();
+				idx = $options.filter(':' + selectStr).index(),
+				vis = ':visible',
+				visibleParent = $items.closest(vis).children().not(vis),
+				tempClass = pluginName + 'TempShow',
+				maxHeight = options.maxHeight;
 
 			selected = idx < 0 ? 0 : idx;
 
@@ -91,9 +94,8 @@
 				$label.text(selectItems[selected].text);
 			}
 
-			$wrapper.off(bindSufix);
-			$original.off(keyBind + ' focusin');
-			$outerWrapper.prop('class', classWrapper + ' ' + $original.prop('class') + ' ' + classDisabled);
+			$wrapper.add($original).off(bindSufix);
+			$outerWrapper.prop('class', pluginName + 'Wrapper ' + $original.prop('class') + ' ' + classDisabled);
 
 			if (!$original.prop('disabled')){
 				// Not disabled, so... Removing disabled class and bind hover
@@ -123,7 +125,15 @@
 				});
 			}
 
-			_calculateHeight();
+			// Calculate options box height
+			// Set a temporary class on the hidden parent of the element
+			visibleParent.addClass(tempClass);
+
+			// Set the dimensions
+			$items.width($wrapper.outerWidth() - (options.border * 2)).height() > maxHeight && $items.height(maxHeight);
+
+			// Remove the temporary class
+			visibleParent.removeClass(tempClass);
 		}
 
 		_populate();
@@ -158,7 +168,7 @@
 				searchStr = '';
 
 				// Right / Down : Left / Up
-				_select( /^(39|40)$/.test(key) ? (selected + 1) % optionsLength : (selected > 0 ? selected : optionsLength) - 1);
+				_select(/^(39|40)$/.test(key) ? (selected + 1) % optionsLength : (selected > 0 ? selected : optionsLength) - 1);
 			}
 		}
 
@@ -171,6 +181,7 @@
 			$('.' + classOpen + ' select')[pluginName]('close');
 
 			isOpen = true;
+			itemsHeight = $items.show().height();
 
 			_isInViewport();
 
@@ -188,22 +199,10 @@
 		// Detect is the options box is inside the window
 		function _isInViewport(){
 			if (isOpen){
-				var itemsTop = $items.show().css('top', '').offset().top,
-					itemsHeight = $items.height(),
-					wrapperTop = $wrapper.offset().top;
-
-				if (itemsTop + itemsHeight > $doc.height() || $outerWrapper.offset().top + itemsHeight > $win.scrollTop() + $win.height()) {
-					$items.css('top', -itemsHeight);
-
-					if (itemsTop - itemsHeight < 0 && wrapperTop < options.maxHeight)
-						$items.height(wrapperTop - options.margin);
-				}
-
-				_calculateHeight();
+				$items.css('top', ($outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + $win.height()) ? -itemsHeight : '');
+				setTimeout(_isInViewport, 100);
 			}
 		}
-
-		$win.scroll(_isInViewport);
 
 		// Close the select options box
 		function _close(){
@@ -258,22 +257,6 @@
 			for (k in d = '40-46 50-53 54-57 62-70 71-74 61 47 77'.replace(/\d+/g, '\\3$&').split(' '))
 				s = s.toLowerCase().replace(RegExp('[' + d[k] + ']', 'g'), 'aeiouncy'.charAt(k));
 			return s;
-		}
-
-		function _calculateHeight() {
-			var visibleParent = $items.closest(':visible').children().not(':visible'),
-				tempClass = pluginName + 'TempShow',
-				maxHeight = options.maxHeight;
-
-			// Set a temporary class on the hidden parent of the element
-			visibleParent.addClass(tempClass);
-
-			// Set the dimensions
-			$items.height() > maxHeight && $items.height(maxHeight);
-			$items.width($wrapper.outerWidth() - (options.border * 2));
-
-			// Remove the temporary class
-			visibleParent.removeClass(tempClass);
 		}
 
 		// Unbind and remove
