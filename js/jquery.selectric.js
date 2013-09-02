@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.4.13 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.4.14 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -36,8 +36,8 @@
 	}
 
 	Selectric.prototype.init = function(options) {
-		var $wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
-			$original = $(this.element),
+		var $original = $(this.element),
+			$wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
 			$items = $('<div class="' + pluginName + 'Items"><ul/></div>'),
 			$outerWrapper = $original.data(pluginName, this).wrap('<div>').parent().append($wrapper).append($items),
 			selectItems = [],
@@ -54,43 +54,37 @@
 			resetStr,
 			classOpen = pluginName + 'Open',
 			classDisabled = pluginName + 'Disabled',
+			tempClass = pluginName + 'TempShow',
 			selectStr = 'selected',
-			selected = 0,
-			optionsLength,
+			selected,
 			itemsHeight;
 
 		$original.wrap('<div class="' + pluginName + 'HideSelect">');
 
-		function _populate() {
-			$ul.empty();
-
+		function _populate(){
 			var $options = $('option', $original),
 				_$li = '',
-				idx = $options.filter(':' + selectStr).index(),
-				vis = ':visible',
-				visibleParent = $items.closest(vis).children().not(vis),
-				tempClass = pluginName + 'TempShow',
-				maxHeight = options.maxHeight;
+				visibleParent = $items.closest(':visible').children().not(':visible'),
+				maxHeight = options.maxHeight,
+				optionsLength;
 
-			selected = idx < 0 ? 0 : idx;
+			selected = $options.filter(':' + selectStr).index();
 
 			if ( optionsLength = $options.length ) {
 				// Build options markup
-				$options.each(function(i){
-					var $me = $(this),
-						className = (i == selected ? selectStr : '') + (i == optionsLength - 1 ? ' last' : ''),
-						selectText = $me.text();
+				$options.each(function(i, elm){
+					var selectText = $(elm).text();
 
 					selectItems[i] = {
-						value: $me.val(),
+						value: $(elm).val(),
 						text: selectText,
 						slug: _replaceDiacritics(selectText)
 					};
 
-					_$li += '<li class="' + className + '">' + selectText + '</li>';
+					_$li += '<li class="' + (i == selected ? selectStr : '') + (i == optionsLength - 1 ? ' last' : '') + '">' + selectText + '</li>';
 				});
 
-				$ul.append(_$li);
+				$ul.empty().append(_$li);
 				$label.text(selectItems[selected].text);
 			}
 
@@ -107,15 +101,45 @@
 				$wrapper.on(clickBind, function(e){
 					isOpen ? _close(e) : _open(e);
 				});
-				$original.on(keyBind, _keyActions).on('focusin' + bindSufix, function(e){
+				$original.on(keyBind, function(e){
+					e.preventDefault();
+
+					var key = e.keyCode || e.which;
+
+					// Tab / Enter / ESC
+					if (/^(9|13|27)$/.test(key)) {
+						e.stopPropagation();
+						_select(selected, true);
+					}
+
+					// Search in select options
+					clearTimeout(resetStr);
+
+					// If it's not a directional key
+					if (key < 37 || key > 40) {
+						var rSearch = RegExp('^' + (searchStr += String.fromCharCode(key)), 'i');
+
+						$.each(selectItems, function(i, elm){
+							if (rSearch.test([elm.slug, elm.text]))
+								_select(i);
+						});
+
+						resetStr = setTimeout(function(){
+							searchStr = '';
+						}, options.keySearchTimeout);
+					} else {
+						searchStr = '';
+
+						// Right / Down : Left / Up
+						_select(/^(39|40)$/.test(key) ? (selected + 1) % optionsLength : (selected > 0 ? selected : optionsLength) - 1);
+					}
+				}).on('focusin' + bindSufix, function(e){
 					isOpen || _open(e);
 				});
 
 				// Remove styles from items box
 				// Fix incorrect height when refreshed is triggered with fewer options
-				$ul = $items.removeAttr('style').find('ul');
-				// $li = $ul.find('li').click(function(){
-				$li = $('li', $ul).click(function(){
+				$li = $('li', $items.removeAttr('style')).click(function(){
 					// The second parameter is to close the box after click
 					_select($(this).index(), true);
 
@@ -137,40 +161,6 @@
 		}
 
 		_populate();
-
-		function _keyActions(e) {
-			e.preventDefault();
-
-			var key = e.keyCode || e.which;
-
-			// Tab / Enter / ESC
-			if (/^(9|13|27)$/.test(key)) {
-				e.stopPropagation();
-				_select(selected, true);
-			}
-
-			// Search in select options
-			clearTimeout(resetStr);
-
-			// If it's not a directional key
-			if (key < 37 || key > 40) {
-				var rSearch = RegExp('^' + (searchStr += String.fromCharCode(key)), 'i');
-
-				$.each(selectItems, function(i, elm){
-					if (rSearch.test([elm.slug, elm.text]))
-						_select(i);
-				});
-
-				resetStr = setTimeout(function(){
-					searchStr = '';
-				}, options.keySearchTimeout);
-			} else {
-				searchStr = '';
-
-				// Right / Down : Left / Up
-				_select(/^(39|40)$/.test(key) ? (selected + 1) % optionsLength : (selected > 0 ? selected : optionsLength) - 1);
-			}
-		}
 
 		// Open the select options box
 		function _open(e){
@@ -208,17 +198,16 @@
 		function _close(){
 			var selectedTxt = selectItems[selected].text;
 			$items.hide();
-			$original.blur();
 			selectedTxt != $label.text() && $original.change();
 			$label.text(selectedTxt);
 			$outerWrapper.removeClass(classOpen);
 			isOpen = false;
 			$doc.off(bindSufix);
-			options.onClose.call($original);
+			options.onClose.call($original.blur());
 		}
 
 		// Select option
-		function _select(index, close) {
+		function _select(index, close){
 			// If 'close' is false (default), the options box won't close after
 			// each selected item, this is necessary for keyboard navigation
 			$original.prop('value', selectItems[selected = index].value).find('option').eq(index).prop(selectStr, true);
@@ -253,9 +242,12 @@
 			/[\347]/g, // c
 			/[\377]/g // y
 		*/
-		function _replaceDiacritics(s, k, d) {
-			for (k in d = '40-46 50-53 54-57 62-70 71-74 61 47 77'.replace(/\d+/g, '\\3$&').split(' '))
+		function _replaceDiacritics(s) {
+			var k, d = '40-46 50-53 54-57 62-70 71-74 61 47 77'.replace(/\d+/g, '\\3$&').split(' ');
+
+			for (k in d)
 				s = s.toLowerCase().replace(RegExp('[' + d[k] + ']', 'g'), 'aeiouncy'.charAt(k));
+
 			return s;
 		}
 
