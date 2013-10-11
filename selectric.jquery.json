@@ -1,11 +1,10 @@
 {
-    "name": "Selectric",
+    "name": "selectric",
     "title": "jQuery Selectric",
     "description": "Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects",
     "keywords": [
         "select",
         "selectbox",
-        "select box",
         "dropdown",
         "form",
         "input",
