@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="description" content="Fast, simple and light jQuery plugin to customize HTML selects">
-<meta name="robots" content="all">
-<title>jQuery Selectric</title>
-<link rel="shortcut icon" type="image/x-icon" href="favicon.ico?V=4">
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="selectric.css">
+	<meta charset="UTF-8">
+	<meta name="description" content="Fast, simple and light jQuery plugin to customize HTML selects">
+	<meta name="robots" content="all">
+	<title>jQuery Selectric</title>
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico?v=5">
+	<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="selectric.css">
+	<link rel="stylesheet" href="prism.css">
 </head>
 <body>
+
+<div class="header">
+	<h1>jQuery Selectric <img src="img/icon.png" alt="Selectric"></h1>
+	<p>Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects</p>
+</div>
+
 	<div class="center">
-		<div class="header">
-			<h1>jQuery Selectric <img src="img/icon.png" alt="Selectric"></h1>
-			<p>Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.</p>
-		</div>
+
 
 		<ul class="features">
 			<li>Keyboard navigation (Up/Down/Left/Right/String search)</li>
@@ -34,47 +39,47 @@
 		<h2>How to use</h2>
 
 		<p>1. Make sure to include jQuery in your page:</p>
-		<pre style="background:#f9f9f9;color:#080808">&lt;<span style="color:#bf4f24">script</span> <span style="color:#bf4f24">src</span>=<span style="color:#0b6125">"//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"</span>>&lt;/<span style="color:#bf4f24">script</span>></pre>
+		<pre><code class="language-markup">&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js&quot;&gt;&lt;/script&gt;</code></pre>
 
 		<p>2. Include <strong>jQuery Selectric:</strong></p>
-		<pre style="background:#f9f9f9;color:#080808">&lt;<span style="color:#bf4f24">script</span> <span style="color:#bf4f24">src</span>=<span style="color:#0b6125">"js/jquery.selectric.min.js"</span>>&lt;/<span style="color:#bf4f24">script</span>></pre>
+		<pre><code class="language-markup">&lt;script src=&quot;js/jquery.selectric.min.js&quot;&gt;&lt;/script&gt;</code></pre>
 
 		<p>3. Put styles in your CSS and change it to your taste :D</p>
-		<pre style="background:#f9f9f9;color:#080808"><span style="color:#5a525f;font-style:italic">/*======================================================================
-    Selectric
-======================================================================*/</span>
-<span style="color:#bf4f24">.selectricWrapper</span> { <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">relative</span>; <span style="color:#691c97">margin</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span> <span style="color:#811f24;font-weight:700">0</span> <span style="color:#811f24;font-weight:700">10<span style="color:#794938">px</span></span>; <span style="color:#691c97">width</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">300<span style="color:#794938">px</span></span>; <span style="color:#691c97">cursor</span><span style="color:#794938">:</span> <span style="color:#b4371f">pointer</span>; }
-<span style="color:#bf4f24">.selectricDisabled</span> { filter<span style="color:#794938">:</span> alpha(opacity=<span style="color:#811f24;font-weight:700">50</span>); <span style="color:#691c97">opacity</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0.5</span>; <span style="color:#691c97">cursor</span><span style="color:#794938">:</span> <span style="color:#b4371f">default</span>; -webkit-touch-callout<span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; -webkit-user-select<span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; -moz-user-select<span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; -ms-user-select<span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; user-select<span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; }
-<span style="color:#bf4f24">.selectricOpen</span> { <span style="color:#691c97">z-index</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">9999</span>; }
-<span style="color:#bf4f24">.selectricHideSelect</span> { <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">relative</span>; <span style="color:#691c97">overflow</span><span style="color:#794938">:</span> <span style="color:#b4371f">hidden</span>; }
-<span style="color:#bf4f24">.selectricHideSelect</span> <span style="color:#bf4f24">select</span> { <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">absolute</span>; <span style="color:#691c97">left</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">-100<span style="color:#794938">%</span></span>; }
-<span style="color:#bf4f24">.selectric</span> { <span style="color:#691c97">border</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">1<span style="color:#794938">px</span></span> <span style="color:#b4371f">solid</span> <span style="color:#811f24;font-weight:700">#DDD</span>; <span style="color:#691c97">background</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#F8F8F8</span>; <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">relative</span>; <span style="color:#691c97">border-radius</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">2<span style="color:#794938">px</span></span>; }
-<span style="color:#bf4f24">.selectricOpen</span> <span style="color:#bf4f24">.selectric</span> { <span style="color:#691c97">border-color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#CCC</span>; <span style="color:#691c97">background</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#F0F0F0</span>; <span style="color:#691c97">z-index</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">9999</span>; }
-<span style="color:#bf4f24">.selectric</span> <span style="color:#bf4f24">.label</span> { <span style="color:#691c97">display</span><span style="color:#794938">:</span> <span style="color:#b4371f">block</span>; <span style="color:#691c97">white-space</span><span style="color:#794938">:</span> <span style="color:#b4371f">nowrap</span>; <span style="color:#691c97">overflow</span><span style="color:#794938">:</span> <span style="color:#b4371f">hidden</span>; <span style="color:#691c97">margin</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span> <span style="color:#811f24;font-weight:700">30<span style="color:#794938">px</span></span> <span style="color:#811f24;font-weight:700">0</span> <span style="color:#811f24;font-weight:700">0</span>; <span style="color:#691c97">padding</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">6<span style="color:#794938">px</span></span>; <span style="color:#691c97">font-size</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">12<span style="color:#794938">px</span></span>; <span style="color:#691c97">line-height</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">1.5</span>; <span style="color:#691c97">color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#444</span>; }
-<span style="color:#bf4f24">.selectric</span> <span style="color:#bf4f24">.button</span> { <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">absolute</span>; <span style="color:#691c97">right</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span>; <span style="color:#691c97">top</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span>; <span style="color:#691c97">height</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">30<span style="color:#794938">px</span></span>; <span style="color:#691c97">width</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">30<span style="color:#794938">px</span></span>; <span style="color:#691c97">color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#BBB</span>; <span style="color:#691c97">text-align</span><span style="color:#794938">:</span> <span style="color:#b4371f">center</span>; <span style="color:#691c97">font</span><span style="color:#794938">:</span> <span style="color:#b4371f">normal</span> <span style="color:#811f24;font-weight:700">18<span style="color:#794938">px</span></span>/<span style="color:#811f24;font-weight:700">30<span style="color:#794938">px</span></span> <span style="color:#b4371f">sans-serif</span>; }
-<span style="color:#bf4f24">.selectricHover</span> <span style="color:#bf4f24">.selectric</span> { <span style="color:#691c97">border-color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#CCC</span>; }
-<span style="color:#bf4f24">.selectricHover</span> <span style="color:#bf4f24">.selectric</span> <span style="color:#bf4f24">.button</span> { <span style="color:#691c97">color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#888</span>; }
-<span style="color:#bf4f24">.selectricTempShow</span> { <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">absolute</span> <span style="color:#794938">!important</span>; <span style="color:#691c97">visibility</span><span style="color:#794938">:</span> <span style="color:#b4371f">hidden</span> <span style="color:#794938">!important</span>; <span style="color:#691c97">display</span><span style="color:#794938">:</span> <span style="color:#b4371f">block</span> <span style="color:#794938">!important</span>; }
+		<pre data-src="selectric.css"></pre>
+		<!-- <pre><code class="language-css">/*======================================================================
+			Selectric
+		======================================================================*/
+		.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }
+		.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+		.selectricOpen { z-index: 9999; }
+		.selectricHideSelect { position: relative; overflow: hidden; }
+		.selectricHideSelect select { position: absolute; left: -100%; }
+		.selectric { border: 1px solid #DDD; background: #F8F8F8; position: relative; border-radius: 2px; }
+		.selectricOpen .selectric { border-color: #CCC; background: #F0F0F0; z-index: 9999; }
+		.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding: 6px; font-size: 12px; line-height: 1.5; color: #444; }
+		.selectric .button { position: absolute; right: 0; top: 0; height: 30px; width: 30px; color: #BBB; text-align: center; font: normal 18px/30px sans-serif; }
+		.selectricHover .selectric { border-color: #CCC; }
+		.selectricHover .selectric .button { color: #888; }
+		.selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
 
-<span style="color:#5a525f;font-style:italic">/* Items box */</span>
-<span style="color:#bf4f24">.selectricItems</span> <span style="color:#bf4f24">ul</span>,
-<span style="color:#bf4f24">.selectricItems</span> <span style="color:#bf4f24">li</span> { <span style="color:#691c97">list-style</span><span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; <span style="color:#691c97">padding</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span>; <span style="color:#691c97">margin</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span>; <span style="color:#691c97">min-height</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">20<span style="color:#794938">px</span></span>; <span style="color:#691c97">line-height</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">20<span style="color:#794938">px</span></span>; <span style="color:#691c97">font-size</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">12<span style="color:#794938">px</span></span>; }
-<span style="color:#bf4f24">.selectricItems</span> { <span style="color:#691c97">display</span><span style="color:#794938">:</span> <span style="color:#b4371f">none</span>; <span style="color:#691c97">position</span><span style="color:#794938">:</span> <span style="color:#b4371f">absolute</span>; <span style="color:#691c97">overflow</span><span style="color:#794938">:</span> <span style="color:#b4371f">auto</span>; <span style="color:#691c97">top</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">100<span style="color:#794938">%</span></span>; <span style="color:#691c97">left</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span>; <span style="color:#691c97">background</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#F9F9F9</span>; <span style="color:#691c97">border</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">1<span style="color:#794938">px</span></span> <span style="color:#b4371f">solid</span> <span style="color:#811f24;font-weight:700">#CCC</span>; <span style="color:#691c97">z-index</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">9998</span>; <span style="color:#691c97">box-shadow</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">0</span> <span style="color:#811f24;font-weight:700">0</span> <span style="color:#811f24;font-weight:700">10<span style="color:#794938">px</span></span> <span style="color:#811f24;font-weight:700">-6<span style="color:#794938">px</span></span>; }
-<span style="color:#bf4f24">.selectricItems</span> <span style="color:#bf4f24">li</span> { <span style="color:#691c97">padding</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">5<span style="color:#794938">px</span></span>; <span style="color:#691c97">cursor</span><span style="color:#794938">:</span> <span style="color:#b4371f">pointer</span>; <span style="color:#691c97">display</span><span style="color:#794938">:</span> <span style="color:#b4371f">block</span>; <span style="color:#691c97">border-bottom</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">1<span style="color:#794938">px</span></span> <span style="color:#b4371f">solid</span> <span style="color:#811f24;font-weight:700">#EEE</span>; <span style="color:#691c97">color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#666</span>; <span style="color:#691c97">border-top</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">1<span style="color:#794938">px</span></span> <span style="color:#b4371f">solid</span> <span style="color:#811f24;font-weight:700">#FFF</span>; }
-<span style="color:#bf4f24">.selectricItems</span> <span style="color:#bf4f24">li</span><span style="color:#bf4f24">.selected</span> { <span style="color:#691c97">background</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#EFEFEF</span>; <span style="color:#691c97">color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#444</span>; <span style="color:#691c97">border-top-color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#E0E0E0</span>; }
-<span style="color:#bf4f24">.selectricItems</span> <span style="color:#bf4f24">li</span><span style="color:#bf4f24">:hover</span> { <span style="color:#691c97">background</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#F0F0F0</span>; <span style="color:#691c97">color</span><span style="color:#794938">:</span> <span style="color:#811f24;font-weight:700">#444</span>; }
-</pre>
+		/* Items box */
+		.selectricItems ul,
+		.selectricItems li { list-style: none; padding: 0; margin: 0; min-height: 20px; line-height: 20px; font-size: 12px; }
+		.selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F9F9F9; border: 1px solid #CCC; z-index: 9998; box-shadow: 0 0 10px -6px; }
+		.selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #EEE; color: #666; border-top: 1px solid #FFF; }
+		.selectricItems li.selected { background: #EFEFEF; color: #444; border-top-color: #E0E0E0; }
+		.selectricItems li:hover { background: #F0F0F0; color: #444; }</code></pre> -->
 
 		<p>4. Initialize <strong>jQuery Selectric:</strong></p>
-		<pre style="background:#f9f9f9;color:#080808"><span style="color:#691c97">$</span>(<span style="color:#a71d5d;font-style:italic">function</span>(){
-    <span style="color:#794938">$</span>(<span style="color:#0b6125">'select'</span>).selectric();
-});</pre>
+		<pre><code class="language-javascript">$(function(){
+    $('select').selectric();
+});</code></pre>
 
 		<h2>Options</h2>
 		<p>You can pass a options object as the first parameters when you call the plugin. For example:</p>
-		<pre style="background:#f9f9f9;color:#080808"><span style="color:#794938">$</span>(<span style="color:#0b6125">'select'</span>).selectric({
-    maxHeight: <span style="color:#811f24;font-weight:700">200</span>
-});</pre>
+		<pre><code class="language-javascript">$('select').selectric({
+    maxHeight: 200
+});</code></pre>
 
 		<table>
 			<tr>
@@ -134,10 +139,10 @@
 		</table>
 
 		<h2>Public methods</h2>
-		<pre style="background:#f9f9f9;color:#080808"><span style="color:#691c97">$</span>('<span style="color:#bf4f24">select</span>').selectric(<span style="color:#0b6125">'refresh'</span>); <span style="color:#5a525f;font-style:italic">// Reconstruct the instance of plugin</span>
-<span style="color:#691c97">$</span>('<span style="color:#bf4f24">select</span>').selectric(<span style="color:#0b6125">'destroy'</span>); <span style="color:#5a525f;font-style:italic">// Destroy select and go back to normal</span>
-<span style="color:#691c97">$</span>('<span style="color:#bf4f24">select</span>').selectric(<span style="color:#0b6125">'open'</span>); <span style="color:#5a525f;font-style:italic">// Open options</span>
-<span style="color:#691c97">$</span>('<span style="color:#bf4f24">select</span>').selectric(<span style="color:#0b6125">'close'</span>); <span style="color:#5a525f;font-style:italic">// Close options</span></pre>
+		<pre><code class="language-javascript">$('select').selectric('refresh'); // Reconstruct the instance of plugin
+$('select').selectric('destroy'); // Destroy select and go back to normal
+$('select').selectric('open'); // Open options
+$('select').selectric('close'); // Close options</code></pre>
 
 		<h2>Browser support</h2>
 
@@ -149,7 +154,8 @@
 			<li>Opera</li>
 		</ul>
 
-		<h2>Demo</h2>
+		<h2>Basic demo</h2>
+		<h4><a href="demo.html">view more advanced demos and customization →</a></h4>
 
 		<select name="countries" id="countries">
 			<option value="">Select with big option mauris nec orci ut tortor consectetuer dapibus Mauris nec orci ut tortor consectetuer dapibus</option>
@@ -698,10 +704,6 @@
 
 		<br>
 		<br>
-		<br>
-		<br>
-		<br>
-		<br>
 
 		<div class="copy">
 			<p style="float: left;">Project maintained by <b>Leonardo Santos</b> <br>
@@ -714,7 +716,8 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="js/jquery.min.js">\x3C/script>')</script>
-<script src="js/jquery.selectric.min.js"></script>
+<script src="js/jquery.selectric.js"></script>
+<script src="prism.js"></script>
 <script>
 	$(function(){
 		$('select').selectric();
