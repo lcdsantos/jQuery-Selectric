@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.5 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.5.1 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -113,10 +113,11 @@
 					$wrapper.on(clickBind, function(e){
 						isOpen ? _close(e) : _open(e);
 					});
+
 					$original.on(keyBind, function(e){
 						e.preventDefault();
 
-						var key = e.keyCode || e.which;
+						var key = e.which;
 
 						// Tab / Enter / ESC
 						if (/^(9|13|27)$/.test(key)) {
@@ -260,7 +261,7 @@
 	// preventing against multiple instantiations
 	$.fn[pluginName] = function(args, options) {
 		return this.each(function() {
-			if (!$.data(this, pluginName)) {
+			if (!$(this).data(pluginName)) {
 				// new Selectric(this, args || options);
 				init(this, args || options);
 			} else if (''+args === args) {
