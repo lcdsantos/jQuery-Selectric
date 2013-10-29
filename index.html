@@ -13,6 +13,25 @@
 </head>
 <body>
 
+	<div id="fb-root"></div>
+	<script>
+		(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) return;
+			js = d.createElement(s); js.id = id;
+			js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=146929405493694";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+
+		!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+
+		(function() {
+			var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+			po.src = 'https://apis.google.com/js/plusone.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+		})();
+	</script>
+
 	<div class="header">
 		<h1>jQuery Selectric <img src="img/icon.png" alt="Selectric"></h1>
 		<p>Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects</p>
@@ -33,6 +52,24 @@
 			<a href="https://raw.github.com/lcdsantos/jQuery-Selectric/master/js/jquery.selectric.js" class="link">jquery.selectric.js</a>
 			<a href="https://raw.github.com/lcdsantos/jQuery-Selectric/master/js/jquery.selectric.min.js" class="link">jquery.selectric.min.js</a>
 		</div>
+
+		<ul class="social-buttons">
+			<li class="gh-btn">
+				<iframe width="80" height="30" title="Star on GitHub" src="http://ghbtns.com/github-btn.html?user=lcdsantos&repo=jQuery-Selectric&type=watch&count=true"></iframe>
+			</li>
+
+			<li class="tweet-btn">
+				<a href="https://twitter.com/share" class="twitter-share-button" data-text="jQuery Selectric - Easy to use and lightweight jQuery plugin to help stylizing HTML selects" data-via="lcdsantos" data-related="lcdsantos">Tweet</a>
+			</li>
+
+			<li class="fb-btn">
+				<div class="fb-like" data-href="http://lcdsantos.github.io/jQuery-Selectric/" data-width="The pixel width of the plugin" data-height="The pixel height of the plugin" data-colorscheme="light" data-layout="button_count" data-action="like" data-show-faces="false" data-send="false"></div>
+			</li>
+
+			<li class="gplus-btn">
+				<div class="g-plusone" data-annotation="inline" data-width="80" data-size="medium"></div>
+			</li>
+		</ul>
 
 		<h2>How to use</h2>
 
@@ -70,13 +107,13 @@
 
 		<p>4. Initialize <strong>jQuery Selectric:</strong></p>
 		<pre><code class="language-javascript">$(function(){
-    $('select').selectric();
+		$('select').selectric();
 });</code></pre>
 
 		<h2>Options</h2>
 		<p>You can pass a options object as the first parameters when you call the plugin. For example:</p>
 		<pre><code class="language-javascript">$('select').selectric({
-    maxHeight: 200
+		maxHeight: 200
 });</code></pre>
 
 		<table>
