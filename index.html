@@ -10,27 +10,17 @@
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="selectric.css">
 	<link rel="stylesheet" href="prism.css">
+
+	<meta property="og:title" content="jQuery Selectric">
+	<meta property="og:type" content="website">
+	<meta property="og:description" content="Fast, simple and light jQuery plugin to customize HTML selects">
+	<meta property="og:url" content="http://lcdsantos.github.io/jQuery-Selectric/">
+	<meta property="og:site_name" content="jQuery Selectric">
+	<meta property="og:image" content="share.jpg">
 </head>
 <body>
 
 	<div id="fb-root"></div>
-	<script>
-		(function(d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) return;
-			js = d.createElement(s); js.id = id;
-			js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=146929405493694";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-
-		!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
-
-		(function() {
-			var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-			po.src = 'https://apis.google.com/js/plusone.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-		})();
-	</script>
 
 	<div class="header">
 		<h1>jQuery Selectric <img src="img/icon.png" alt="Selectric"></h1>
@@ -63,7 +53,7 @@
 			</li>
 
 			<li class="fb-btn">
-				<div class="fb-like" data-href="http://lcdsantos.github.io/jQuery-Selectric/" data-width="The pixel width of the plugin" data-height="The pixel height of the plugin" data-colorscheme="light" data-layout="button_count" data-action="like" data-show-faces="false" data-send="false"></div>
+				<div class="fb-like" data-href="http://lcdsantos.github.io/jQuery-Selectric/" data-colorscheme="light" data-layout="button_count" data-action="like" data-show-faces="false" data-send="false"></div>
 			</li>
 
 			<li class="gplus-btn">
@@ -765,6 +755,12 @@ $('select').selectric('close'); // Close options</code></pre>
 
 	ga('create', 'UA-42240250-1', 'lcdsantos.github.io');
 	ga('send', 'pageview');
+
+	function getScript(a,b,c,e){var d=a.getElementsByTagName(b)[0];a.getElementById(c)||(a=a.createElement(b),a.id=c,a.src=e,d.parentNode.insertBefore(a,d))};
+
+	getScript(document, 'script', 'facebook-jssdk', '//connect.facebook.net/en_US/all.js#xfbml=1&appId=146929405493694');
+	getScript(document, 'script', 'twitter-wjs', '//platform.twitter.com/widgets.js');
+	getScript(document, 'script', 'googleplus-wjs', '//apis.google.com/js/plusone.js');
 </script>
 </body>
 </html>

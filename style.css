@@ -494,4 +494,5 @@ h4 a:hover { color: #444; }
 
 .social-buttons { list-style: none; margin: 20px auto 30px; text-align: center; }
 .social-buttons li { display: inline-block; vertical-align: top; zoom: 1; *display: inline; margin: 0 5px; width: 80px; }
+.social-buttons a { color: #FFF; }
 .gh-btn iframe { border: 0; overflow: hidden; }
