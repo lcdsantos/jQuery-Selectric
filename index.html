@@ -32,12 +32,16 @@
 			<li>Keyboard navigation (Up/Down/Left/Right/Word search)</li>
 			<li>Easily customizable</li>
 			<li>Pretty lightweight (3KB minified and 1,7KB minified/gzip)</li>
+			<li>Options box always stay visible</li>
+			<li>Doesn't rely on external libraries (besides jQuery)</li>
+			<li>Word search works with western latin characters set (e.g.: á, ñ, ç...)</li>
 		</ul>
 
 		<div class="button-group">
+			<a href="demo.html" class="bt">Demos</a>
 			<a target="_blank" href="https://github.com/lcdsantos/jQuery-Selectric" class="bt">View on Github</a>
-			<a href="https://github.com/lcdsantos/jQuery-Selectric/zipball/master" class="bt">Download (ZIP)</a>
-			<a href="https://github.com/lcdsantos/jQuery-Selectric/tarball/master" class="bt">Download (TAR)</a>
+			<a target="_blank" href="https://github.com/lcdsantos/jQuery-Selectric/zipball/master" class="bt">Download (ZIP)</a>
+			<a target="_blank" href="https://github.com/lcdsantos/jQuery-Selectric/tarball/master" class="bt">Download (TAR)</a>
 			<div class="clear"></div>
 			<a href="https://raw.github.com/lcdsantos/jQuery-Selectric/master/js/jquery.selectric.js" class="link">jquery.selectric.js</a>
 			<a href="https://raw.github.com/lcdsantos/jQuery-Selectric/master/js/jquery.selectric.min.js" class="link">jquery.selectric.min.js</a>
@@ -69,7 +73,7 @@
 		<p>2. Include <strong>jQuery Selectric:</strong></p>
 		<pre><code class="language-markup">&lt;script src=&quot;js/jquery.selectric.min.js&quot;&gt;&lt;/script&gt;</code></pre>
 
-		<p>3. Put styles in your CSS and change it to your taste :D</p>
+		<p>3. Put styles in your CSS and change it to your taste :D <span class="note">(please refer to our <a href="demo.html">demo page</a> for more themes and other customizations)</span></p>
 		<pre data-src="selectric.css"></pre>
 		<!-- <pre><code class="language-css">/*======================================================================
 			Selectric
@@ -97,13 +101,13 @@
 
 		<p>4. Initialize <strong>jQuery Selectric:</strong></p>
 		<pre><code class="language-javascript">$(function(){
-		$('select').selectric();
+	$('select').selectric();
 });</code></pre>
 
 		<h2>Options</h2>
 		<p>You can pass a options object as the first parameters when you call the plugin. For example:</p>
 		<pre><code class="language-javascript">$('select').selectric({
-		maxHeight: 200
+	maxHeight: 200
 });</code></pre>
 
 		<table>
