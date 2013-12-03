@@ -18,6 +18,7 @@
 .selectricItems ul,
 .selectricItems li { list-style: none; padding: 0; margin: 0; min-height: 20px; line-height: 20px; font-size: 12px; }
 .selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F9F9F9; border: 1px solid #CCC; z-index: 9998; box-shadow: 0 0 10px -6px; }
+.selectricOpen .selectricItems { display: block; }
 .selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #EEE; color: #666; border-top: 1px solid #FFF; }
 .selectricItems li.selected { background: #EFEFEF; color: #444; border-top-color: #E0E0E0; }
 .selectricItems li:hover { background: #F0F0F0; color: #444; }
