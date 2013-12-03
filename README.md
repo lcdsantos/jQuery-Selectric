@@ -5,6 +5,9 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 * Keyboard navigation (Up/Down/Left/Right/Word search)
 * Easily customizable
 * Pretty lightweight (3KB minified and 1,7KB minified/gzip)
+* Options box always stay visible
+* Doesn't rely on external libraries (besides jQuery)
+* Word search works with western latin characters set (e.g.: á, ñ, ç...)
 
 ###[Demo](http://lcdsantos.github.io/jQuery-Selectric/)
 
@@ -45,6 +48,7 @@ Put styles in your CSS and change it to your taste :D
 .selectricItems ul,
 .selectricItems li { list-style: none; padding: 0; margin: 0; min-height: 20px; line-height: 20px; font-size: 12px; }
 .selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F9F9F9; border: 1px solid #CCC; z-index: 9998; box-shadow: 0 0 10px -6px; }
+.selectricOpen .selectricItems { display: block; }
 .selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #EEE; color: #666; border-top: 1px solid #FFF; }
 .selectricItems li.selected { background: #EFEFEF; color: #444; border-top-color: #E0E0E0; }
 .selectricItems li:hover { background: #F0F0F0; color: #444; }
@@ -110,6 +114,12 @@ $(function(){
 		<td>1</td>
 		<td>Integer</td>
 		<td>Options box border thickness</td>
+	</tr>
+	<tr>
+		<td>openOnHover</td>
+		<td>false</td>
+		<td>Boolean</td>
+		<td>Open select box on hover, instead of click</td>
 	</tr>
 </table>
 
