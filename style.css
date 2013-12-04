@@ -81,7 +81,7 @@ td { vertical-align: top; }
    ========================================================================== */
 h1, h2, h3, h4 { font-weight: normal; font-family: 'Ubuntu', sans-serif; }
 
-.header { text-align: center; padding-bottom: 20px; background: url(img/header.jpg) no-repeat 50% 50%; -webkit-background-size: cover; background-size: cover; height: 400px; color: #F0F0F0; overflow: hidden; box-shadow: 0 1px 2px 1px #999; }
+.header { text-align: center; padding-bottom: 20px; background: url(img/header.jpg) no-repeat 50% 50%; -webkit-background-size: cover; background-size: cover; height: 400px; color: #F0F0F0; overflow: hidden; box-shadow: 0 1px 2px 1px #999; min-width: 900px; }
 .header h1 { text-align: center; text-shadow: 0 1px 1px #666; font-size: 42px; margin: 120px 0 20px; }
 .header h1 img { position: relative; top: -3px; }
 .header p { text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); font-size: 22px; width: 600px; margin: auto; font-family: 'Ubuntu', sans-serif; }
