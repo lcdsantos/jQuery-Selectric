@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.5.2 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.5.5 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -46,7 +46,8 @@
               arrowButtonMarkup: '<b class="button">&#9662;</b>',
               disableOnMobile: true,
               border: 1,
-              openOnHover: false
+              openOnHover: false,
+              expandToItemText: false
             }, options);
 
         if (options.disableOnMobile && /android|ip(hone|od|ad)/i.test(navigator.userAgent)) return;
@@ -73,7 +74,8 @@
             selectStr = 'selected',
             selected,
             itemsHeight,
-            closeTimer;
+            closeTimer,
+            finalWidth;
 
         function _populate() {
           var $options = $('option', $original.wrap('<div class="' + pluginName + 'HideSelect">')),
@@ -87,15 +89,19 @@
           if ( optionsLength = $options.length ) {
             // Build options markup
             $options.each(function(i, elm){
-              var selectText = $(elm).text();
+              var selectText = $(elm).text(),
+                  selectDisabled = $(elm).prop('disabled');
 
               selectItems[i] = {
                 value: $(elm).val(),
                 text: selectText,
-                slug: _replaceDiacritics(selectText)
+                slug: _replaceDiacritics(selectText),
+                disabled: selectDisabled
               };
 
-              _$li += '<li class="' + (i == selected ? selectStr : '') + (i == optionsLength - 1 ? ' last' : '') + '">' + selectText + '</li>';
+              // _$li += '<li class="' + (i == selected ? selectStr : '') + (i == optionsLength - 1 ? ' last' : '') + '">' + selectText + '</li>';
+              _$li += '<li class="' + (i == selected ? selectStr : '') + (i == optionsLength - 1 ? ' last' : '') + (selectDisabled ? ' disabled' : '') + '">' + selectText + '</li>';
+
             });
 
             $ul.empty().append(_$li);
@@ -149,11 +155,29 @@
                 searchStr = '';
 
                 // Right / Down : Left / Up
-                _select(/^(39|40)$/.test(key) ? (selected + 1) % optionsLength : (selected > 0 ? selected : optionsLength) - 1);
+                _select(/^(39|40)$/.test(key) ? nextEnabledItem(selected) : previousEnabledItem(selected));
               }
             }).on('focusin' + bindSufix, function(e){
               isOpen || _open(e);
             });
+
+            function nextEnabledItem(idx){
+              var next = (idx + 1) % optionsLength;
+
+              while (selectItems[next].disabled)
+                next++;
+
+              return next;
+            }
+
+            function previousEnabledItem(idx){
+              var previous = (idx > 0 ? idx : optionsLength) - 1;
+
+              while ( selectItems[previous].disabled )
+                previous--;
+
+              return previous;
+            }
 
             // Remove styles from items box
             // Fix incorrect height when refreshed is triggered with fewer options
@@ -171,8 +195,24 @@
           // Set a temporary class on the hidden parent of the element
           visibleParent.addClass(tempClass);
 
-          // Set the dimensions
-          $items.width($wrapper.outerWidth() - (options.border * 2)).height() > maxHeight && $items.height(maxHeight);
+          var wrapperWidth = $wrapper.outerWidth() - (options.border * 2);
+
+          // Set the dimensions, minimum is wrapper width, expand for long items if option is true
+          if ( !options.expandToItemText || wrapperWidth > $items.outerWidth() )
+            finalWidth = wrapperWidth;
+          else {
+            // Make sure the scrollbar width is included
+            $items.css('overflow', 'scroll');
+
+            // Set a really long width for $outerWrapper
+            $outerWrapper.width(9e4);
+            finalWidth = $items.outerWidth();
+            // Set scroll bar to auto
+            $items.css('overflow', '');
+            $outerWrapper.width('');
+          }
+
+          $items.width(finalWidth).height() > maxHeight && $items.height(maxHeight);
 
           // Remove the temporary class
           visibleParent.removeClass(tempClass);
@@ -189,7 +229,7 @@
           $('.' + classOpen + ' select')[pluginName]('close');
 
           isOpen = true;
-          itemsHeight = $items.height();
+          itemsHeight = $items.outerHeight();
 
           _isInViewport();
 
@@ -234,6 +274,9 @@
 
         // Select option
         function _select(index, close) {
+          // element is disabled, cant click it
+          if (selectItems[index].disabled) return;
+
           // If 'close' is false (default), the options box won't close after
           // each selected item, this is necessary for keyboard navigation
           $original.prop('value', selectItems[selected = index].value).find('option').eq(index).prop(selectStr, true);
