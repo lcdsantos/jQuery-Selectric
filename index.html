@@ -106,12 +106,11 @@ label p { font-size: 12px; margin: 0; }
 .bt {
 	background: #ff7a4d; /* Old browsers */
 	background-repeat: no-repeat;
-	background-image: -moz-linear-gradient(top, #ffa64d 0%, #ff7a4d 100%); /* FF3.6+ */
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffa64d), color-stop(100%,#ff7a4d)); /* Chrome,Safari4+ */
-	background-image: -webkit-linear-gradient(top, #ffa64d 0%,#ff7a4d 100%); /* Chrome10+,Safari5.1+ */
-	background-image: -o-linear-gradient(top, #ffa64d 0%,#ff7a4d 100%); /* Opera 11.10+ */
-	background-image: -ms-linear-gradient(top, #ffa64d 0%,#ff7a4d 100%); /* IE10+ */
-	background-image: linear-gradient(to bottom, #ffa64d 0%,#ff7a4d 100%); /* W3C */
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffa64d), to(#ff7a4d));
+	background-image: -webkit-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
+	background-image: -moz-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
+	background-image: -o-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
+	background-image: linear-gradient(#ffa64d 0%, #ff7a4d 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa64d', endColorstr='#ff7a4d',GradientType=0 ); /* IE6-8 */
 	border: 1px solid #ff7a4d;
 	padding: 20px 30px;
@@ -246,6 +245,13 @@ label p { font-size: 12px; margin: 0; }
 				<td>false</td>
 				<td>Boolean</td>
 				<td>Open select box on hover, instead of click</td>
+			</tr>
+
+			<tr>
+				<td>expandToItemText</td>
+				<td>false</td>
+				<td>Boolean</td>
+				<td>Expand options box past wrapper</td>
 			</tr>
 		</table>
 
@@ -814,12 +820,25 @@ $('select').selectric('close'); // Close options</code></pre>
 
 		<br>
 		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
 
 		<div class="copy">
 			<p style="float: left;">Project maintained by <b>Leonardo Santos</b> <br>
 				<a href="https://github.com/lcdsantos">Github</a> &bull; <a href="https://twitter.com/lcdsantos">Twitter</a> &bull; <a href="mailto:leocs.1991@gmail.com">Email</a></p>
 		</div>
-
 	</div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>

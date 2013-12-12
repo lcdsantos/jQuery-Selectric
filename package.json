@@ -1,0 +1,9 @@
+{
+  "name": "jquery-selectric",
+  "version": "1.5.5",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.7"
+  }
+}
