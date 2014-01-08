@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.5.6 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.5.7 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -54,12 +54,11 @@
 
         var $original = $(element),
             $wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
-            $items = $('<div class="' + pluginName + 'Items" tabindex="-1"><ul/></div>'),
+            $items = $('<div class="' + pluginName + 'Items" tabindex="-1"></div>'),
             $outerWrapper = $original.data(pluginName, options).wrap('<div>').parent().append($wrapper).append($items),
             selectItems = [],
             isOpen = false,
             $label = $('.label', $wrapper),
-            $ul = $('ul', $items),
             $li,
             bindSufix = '.sl',
             $doc = $(document),
@@ -80,7 +79,7 @@
 
         function _populate() {
           var $options = $('option', $original.wrap('<div class="' + pluginName + 'HideSelect">')),
-              _$li = '',
+              _$li = '<ul>',
               visibleParent = $items.closest(':visible').children().not(':visible'),
               maxHeight = options.maxHeight,
               optionsLength,
@@ -106,7 +105,8 @@
               _$li += '<li class="' + (i == selected ? selectStr : '') + (i == optionsLength - 1 ? ' last' : '') + (selectDisabled ? ' disabled' : '') + '">' + selectText + '</li>';
             });
 
-            $ul.empty().append(_$li);
+            $items.html(_$li + '</ul>');
+
             $label.text(selectItems[selected].text);
           }
 
@@ -254,7 +254,7 @@
           $outerWrapper.addClass(classOpen);
           _detectItemVisibility(selected);
 
-          options.onOpen.call(this);
+          options.onOpen.call(this, element);
         }
 
         // Detect is the options box is inside the window
@@ -284,7 +284,7 @@
 
           isOpen = false;
 
-          options.onClose.call(this);
+          options.onClose.call(this, element);
         }
 
         // Select option
