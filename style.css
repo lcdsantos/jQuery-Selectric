@@ -81,6 +81,10 @@ td { vertical-align: top; }
    ========================================================================== */
 h1, h2, h3, h4 { font-weight: normal; font-family: 'Ubuntu', sans-serif; }
 
+.cf:before, .cf:after { content: " "; display: table; }
+.clear, .cf:after { clear: both; }
+.cf { *zoom: 1; }
+
 .header { text-align: center; padding-bottom: 20px; background: url(img/header.jpg) no-repeat 50% 50%; -webkit-background-size: cover; background-size: cover; height: 400px; color: #F0F0F0; overflow: hidden; box-shadow: 0 1px 2px 1px #999; min-width: 900px; }
 .header h1 { text-align: center; text-shadow: 0 1px 1px #666; font-size: 42px; margin: 120px 0 20px; }
 .header h1 img { position: relative; top: -3px; }
@@ -103,8 +107,6 @@ label p { font-size: 12px; margin: 0; }
 .copy a { color: #444; text-decoration: none; }
 .copy a:hover { color: #F60; }
 
-.clear { clear: both; }
-
 .button-group { text-align: center; padding: 10px 0 0; }
 
 h4 { margin: -22px 0 22px; }
@@ -114,9 +116,7 @@ h4 a:hover { color: #444; }
 .bt {
 	background: #ff7a4d; /* Old browsers */
 	background-repeat: no-repeat;
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffa64d), to(#ff7a4d));
 	background-image: -webkit-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
-	background-image: -moz-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
 	background-image: -o-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
 	background-image: linear-gradient(#ffa64d 0%, #ff7a4d 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa64d', endColorstr='#ff7a4d',GradientType=0 ); /* IE6-8 */
@@ -126,9 +126,9 @@ h4 a:hover { color: #444; }
 	color: #FFF;
 	border-radius: 4px;
 	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px #999;
-			box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px #999;
+					box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px #999;
 	-webkit-transition: .1s;
-			transition: .1s;
+					transition: .1s;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
 	text-decoration: none;
 }
@@ -141,6 +141,36 @@ h4 a:hover { color: #444; }
 }
 .bt:focus { outline: thin dotted #F90; }
 .bt:visited { color: #FFF; }
+
+.features { font-size: 0; padding: 0 0 30px; margin: 0 -20px; width: 720px; margin: auto; }
+.features li { width: 340px; display: inline-block; vertical-align: middle; zoom: 1; *display: inline; padding: 10px; }
+.features li p { margin: 0; width: 280px; font-size: 16px; display: inline-block; vertical-align: middle; zoom: 1; *display: inline; font-family: 'Ubuntu', sans-serif; }
+.features li .ico {
+	display: inline-block; vertical-align: middle; zoom: 1; *display: inline;
+	/* float: left; */
+	width: 43px;
+	height: 43px;
+	margin: 0 15px 0 0;
+	background: #ff7a4d; /* Old browsers */
+	background-repeat: no-repeat;
+	background-image: -webkit-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
+	background-image: -o-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
+	background-image: linear-gradient(#ffa64d 0%, #ff7a4d 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa64d', endColorstr='#ff7a4d',GradientType=0 ); /* IE6-8 */
+	border: 1px solid #ff7a4d;
+	border-radius: 50%;
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px #999;
+					box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px #999;
+}
+.features li .ico b { display: block; width: 45px; height: 45px; background: url(img/features-icons.png) no-repeat; }
+
+.features li .ico-keyboard b { background-position: 0 0; }
+.features li .ico-custom b { background-position: 0 -45px; }
+.features li .ico-lightweight b { background-position: 0 -90px; }
+.features li .ico-options b { background-position: 0 -135px; }
+.features li .ico-jquery b { background-position: 0 -180px; }
+.features li .ico-latinchar b { background-position: 0 -225px; }
+
 
 .go-back h1 { border-bottom: 1px solid #F0F0F0; margin: 0; padding: 20px 0 30px; }
 .go-back h1 a { color: #333; text-decoration: none; }
@@ -159,9 +189,7 @@ h4 a:hover { color: #444; }
 .demo button {
 	background: #ff7a4d; /* Old browsers */
 	background-repeat: no-repeat;
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffa64d), to(#ff7a4d));
 	background-image: -webkit-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
-	background-image: -moz-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
 	background-image: -o-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
 	background-image: linear-gradient(#ffa64d 0%, #ff7a4d 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa64d', endColorstr='#ff7a4d',GradientType=0 ); /* IE6-8 */
@@ -173,9 +201,9 @@ h4 a:hover { color: #444; }
 	font-size: 14px;
 	border-radius: 4px;
 	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px #999;
-			box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px #999;
+					box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px #999;
 	-webkit-transition: .1s;
-			transition: .1s;
+					transition: .1s;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
 	text-decoration: none;
 }
@@ -215,9 +243,7 @@ h4 a:hover { color: #444; }
 .theme-roller .bt-download {
 	background: #ff7a4d; /* Old browsers */
 	background-repeat: no-repeat;
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffa64d), to(#ff7a4d));
 	background-image: -webkit-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
-	background-image: -moz-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
 	background-image: -o-linear-gradient(#ffa64d 0%, #ff7a4d 100%);
 	background-image: linear-gradient(#ffa64d 0%, #ff7a4d 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffa64d', endColorstr='#ff7a4d',GradientType=0 ); /* IE6-8 */
@@ -290,9 +316,9 @@ h4 a:hover { color: #444; }
 	border: solid 1px #CCC;
 	box-shadow: 0 0 20px rgba(0, 0, 0, .2);
 	z-index: 99999;
-	-moz-box-sizing: content-box;
 	-webkit-box-sizing: content-box;
-	box-sizing: content-box;
+		 -moz-box-sizing: content-box;
+					box-sizing: content-box;
 	display: none;
 }
 
@@ -415,9 +441,9 @@ h4 a:hover { color: #444; }
 	height: 8px;
 	border-radius: 8px;
 	border: solid 2px white;
-	-moz-box-sizing: content-box;
 	-webkit-box-sizing: content-box;
-	box-sizing: content-box;
+		 -moz-box-sizing: content-box;
+					box-sizing: content-box;
 }
 
 .minicolors-picker {
@@ -429,9 +455,9 @@ h4 a:hover { color: #444; }
 	background: white;
 	border: solid 1px black;
 	margin-top: -2px;
-	-moz-box-sizing: content-box;
 	-webkit-box-sizing: content-box;
-	box-sizing: content-box;
+		 -moz-box-sizing: content-box;
+					box-sizing: content-box;
 }
 
 /* Inline controls */

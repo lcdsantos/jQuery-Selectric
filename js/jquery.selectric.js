@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.5.5 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.5.7 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -54,12 +54,11 @@
 
         var $original = $(element),
             $wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
-            $items = $('<div class="' + pluginName + 'Items" tabindex="-1"><ul/></div>'),
+            $items = $('<div class="' + pluginName + 'Items" tabindex="-1"></div>'),
             $outerWrapper = $original.data(pluginName, options).wrap('<div>').parent().append($wrapper).append($items),
             selectItems = [],
             isOpen = false,
             $label = $('.label', $wrapper),
-            $ul = $('ul', $items),
             $li,
             bindSufix = '.sl',
             $doc = $(document),
@@ -73,45 +72,48 @@
             tempClass = pluginName + 'TempShow',
             selectStr = 'selected',
             selected,
+            currValue,
             itemsHeight,
             closeTimer,
             finalWidth;
 
         function _populate() {
           var $options = $('option', $original.wrap('<div class="' + pluginName + 'HideSelect">')),
-              _$li = '',
+              _$li = '<ul>',
               visibleParent = $items.closest(':visible').children().not(':visible'),
               maxHeight = options.maxHeight,
-              optionsLength;
+              optionsLength,
+              selectedElm = $options.filter(':' + selectStr);
 
-          selected = $options.filter(':' + selectStr).index();
+          selected = selectedElm.index();
+          currValue = selected;
 
           if ( optionsLength = $options.length ) {
             // Build options markup
-            $options.each(function(i, elm){
-              var selectText = $(elm).text(),
-                  selectDisabled = $(elm).prop('disabled');
+            $options.each(function(i){
+              var $elm = $(this),
+                  selectText = $elm.text(),
+                  selectDisabled = $elm.prop('disabled');
 
               selectItems[i] = {
-                value: $(elm).val(),
+                value: $elm.val(),
                 text: selectText,
                 slug: _replaceDiacritics(selectText),
                 disabled: selectDisabled
               };
 
-              // _$li += '<li class="' + (i == selected ? selectStr : '') + (i == optionsLength - 1 ? ' last' : '') + '">' + selectText + '</li>';
               _$li += '<li class="' + (i == selected ? selectStr : '') + (i == optionsLength - 1 ? ' last' : '') + (selectDisabled ? ' disabled' : '') + '">' + selectText + '</li>';
-
             });
 
-            $ul.empty().append(_$li);
+            $items.html(_$li + '</ul>');
+
             $label.text(selectItems[selected].text);
           }
 
           $wrapper.add($original).off(bindSufix);
           $outerWrapper.prop('class', pluginName + 'Wrapper ' + $original.prop('class') + ' ' + classDisabled);
 
-          if (!$original.prop('disabled')){
+          if ( !$original.prop('disabled') ){
             // Not disabled, so... Removing disabled class and bind hover
             $outerWrapper.removeClass(classDisabled).hover(function(){
               $(this).toggleClass(pluginName + 'Hover');
@@ -121,7 +123,7 @@
             options.openOnHover && $wrapper.on('mouseenter' + bindSufix, _open);
 
             $wrapper.on(clickBind, function(e){
-              isOpen ? _close(e) : _open(e);
+              isOpen ? _close() : _open(e);
             });
 
             $original.on(keyBind, function(e){
@@ -164,7 +166,7 @@
             function nextEnabledItem(idx){
               var next = (idx + 1) % optionsLength;
 
-              while (selectItems[next].disabled)
+              while ( selectItems[next].disabled )
                 next++;
 
               return next;
@@ -233,12 +235,14 @@
 
           _isInViewport();
 
+          // Prevent window jump when focusing original select
           var scrollTop = $win.scrollTop();
           e.type == 'click' && $original.focus();
           $win.scrollTop(scrollTop);
 
           $doc.off(bindSufix).on(clickBind, _close);
 
+          // Delay close effect when openOnHover is true
           clearTimeout(closeTimer);
           if (options.openOnHover){
             $outerWrapper.off(bindSufix).on('mouseleave' + bindSufix, function(e){
@@ -246,10 +250,11 @@
             });
           }
 
+          // Toggle options box visibility
           $outerWrapper.addClass(classOpen);
           _detectItemVisibility(selected);
 
-          options.onOpen.call(this);
+          options.onOpen.call(this, element);
         }
 
         // Detect is the options box is inside the window
@@ -261,25 +266,34 @@
         }
 
         // Close the select options box
-        function _close() {
-          var selectedTxt = selectItems[selected].text;
-          selectedTxt != $label.text() && $original.change();
-          $label.text(selectedTxt);
+        function _close(e) {
+          if ( currValue != selected ){
+            // Apply changed value to original select
+            $original.prop('selectedIndex', currValue = selected);
 
+            // Only trigger change event if function call came from a click
+            if ( !e || e.type != 'click' )
+              $original.change();
+          }
+
+          // Change label text
+          $label.text(selectItems[selected].text);
+
+          // Remove visible class to hide options box
           $outerWrapper.removeClass(classOpen);
+
           isOpen = false;
 
-          options.onClose.call(this);
+          options.onClose.call(this, element);
         }
 
         // Select option
         function _select(index, close) {
-          // element is disabled, cant click it
-          if (selectItems[index].disabled) return;
+          // element is disabled, can't click it
+          if ( selectItems[selected = index].disabled ) return;
 
           // If 'close' is false (default), the options box won't close after
           // each selected item, this is necessary for keyboard navigation
-          $original.prop('value', selectItems[selected = index].value).find('option').eq(index).prop(selectStr, true);
           $li.removeClass(selectStr).eq(index).addClass(selectStr);
           _detectItemVisibility(index);
           close && _close();
