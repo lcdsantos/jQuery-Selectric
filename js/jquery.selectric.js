@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.5.8 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.5.9 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -163,14 +163,14 @@
             });
 
             function nextEnabledItem(idx, next){
-              if ( selectItems[ next = idx + 1 ].disabled )
+              if ( selectItems[ next = (idx + 1) % optionsLength ].disabled )
                 while ( selectItems[ next = (next + 1) % optionsLength ].disabled ){}
 
               return next;
             }
 
             function previousEnabledItem(idx, previous){
-              if ( selectItems[ previous = idx - 1 ].disabled )
+              if ( selectItems[ previous = (idx > 0 ? idx : optionsLength) - 1 ].disabled )
                 while ( selectItems[ previous = (previous > 0 ? previous : optionsLength) - 1 ].disabled ){}
 
               return previous;
