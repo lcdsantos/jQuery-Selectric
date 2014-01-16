@@ -1,7 +1,7 @@
 /*======================================================================
 	Selectric
 ======================================================================*/
-.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; perspective: 800px; }
+.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }
 .selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
 .selectricOpen { z-index: 9999; }
 .selectricHideSelect { position: relative; overflow: hidden; }
