@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.5.7 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.5.8 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -55,7 +55,7 @@
         var $original = $(element),
             $wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
             $items = $('<div class="' + pluginName + 'Items" tabindex="-1"></div>'),
-            $outerWrapper = $original.data(pluginName, options).wrap('<div>').parent().append($wrapper).append($items),
+            $outerWrapper = $original.data(pluginName, options).wrap('<div>').parent().append($wrapper.add($items)),
             selectItems = [],
             isOpen = false,
             $label = $('.label', $wrapper),
@@ -80,7 +80,7 @@
         function _populate() {
           var $options = $('option', $original.wrap('<div class="' + pluginName + 'HideSelect">')),
               _$li = '<ul>',
-              visibleParent = $items.closest(':visible').children().not(':visible'),
+              visibleParent = $items.closest(':visible').children(':hidden'),
               maxHeight = options.maxHeight,
               optionsLength,
               selectedElm = $options.filter(':' + selectStr);
@@ -129,14 +129,13 @@
             $original.on(keyBind, function(e){
               var key = e.which;
 
+              key != 9 && e.preventDefault();
+
               // Tab / Enter / ESC
               if (/^(9|13|27)$/.test(key)) {
                 e.stopPropagation();
                 _select(selected, true);
               }
-
-              // Enter / ESC
-              /^(13|27)$/.test(key) && e.preventDefault();
 
               // Search in select options
               clearTimeout(resetStr);
@@ -146,7 +145,7 @@
                 var rSearch = RegExp('^' + (searchStr += String.fromCharCode(key)), 'i');
 
                 $.each(selectItems, function(i, elm){
-                  if (rSearch.test([elm.slug, elm.text]))
+                  if (rSearch.test([elm.slug, elm.text]) && !elm.disabled )
                     _select(i);
                 });
 
@@ -156,27 +155,23 @@
               } else {
                 searchStr = '';
 
-                // Right / Down : Left / Up
-                _select(/^(39|40)$/.test(key) ? nextEnabledItem(selected) : previousEnabledItem(selected));
+                // Left / Up : Right / Down
+                _select(/^3(7|8)$/.test(key) ? previousEnabledItem(selected) : nextEnabledItem(selected) );
               }
             }).on('focusin' + bindSufix, function(e){
               isOpen || _open(e);
             });
 
-            function nextEnabledItem(idx){
-              var next = (idx + 1) % optionsLength;
-
-              while ( selectItems[next].disabled )
-                next++;
+            function nextEnabledItem(idx, next){
+              if ( selectItems[ next = idx + 1 ].disabled )
+                while ( selectItems[ next = (next + 1) % optionsLength ].disabled ){}
 
               return next;
             }
 
-            function previousEnabledItem(idx){
-              var previous = (idx > 0 ? idx : optionsLength) - 1;
-
-              while ( selectItems[previous].disabled )
-                previous--;
+            function previousEnabledItem(idx, previous){
+              if ( selectItems[ previous = idx - 1 ].disabled )
+                while ( selectItems[ previous = (previous > 0 ? previous : optionsLength) - 1 ].disabled ){}
 
               return previous;
             }
@@ -240,13 +235,13 @@
           e.type == 'click' && $original.focus();
           $win.scrollTop(scrollTop);
 
-          $doc.off(bindSufix).on(clickBind, _close);
+          $doc.on(clickBind, _close);
 
           // Delay close effect when openOnHover is true
-          clearTimeout(closeTimer);
           if (options.openOnHover){
-            $outerWrapper.off(bindSufix).on('mouseleave' + bindSufix, function(e){
-              closeTimer = setTimeout(function(){ $doc.click() }, 500);
+            clearTimeout(closeTimer);
+            $outerWrapper.off(bindSufix).on('mouseleave' + bindSufix, function(){
+              closeTimer = setTimeout(_close, 500);
             });
           }
 
@@ -254,7 +249,8 @@
           $outerWrapper.addClass(classOpen);
           _detectItemVisibility(selected);
 
-          options.onOpen.call(this, element);
+          // options.onOpen.call(this, element);
+          options.onOpen(element);
         }
 
         // Detect is the options box is inside the window
@@ -276,6 +272,9 @@
               $original.change();
           }
 
+          // Remove click on document
+          $doc.off(bindSufix);
+
           // Change label text
           $label.text(selectItems[selected].text);
 
@@ -284,19 +283,20 @@
 
           isOpen = false;
 
-          options.onClose.call(this, element);
+          // options.onClose.call(this, element);
+          options.onClose(element);
         }
 
         // Select option
         function _select(index, close) {
-          // element is disabled, can't click it
-          if ( selectItems[selected = index].disabled ) return;
-
-          // If 'close' is false (default), the options box won't close after
-          // each selected item, this is necessary for keyboard navigation
-          $li.removeClass(selectStr).eq(index).addClass(selectStr);
-          _detectItemVisibility(index);
-          close && _close();
+          // If element is disabled, can't select it
+          if ( !selectItems[selected = index].disabled ){
+            // If 'close' is false (default), the options box won't close after
+            // each selected item, this is necessary for keyboard navigation
+            $li.removeClass(selectStr).eq(index).addClass(selectStr);
+            _detectItemVisibility(index);
+            close && _close();
+          }
         }
 
         // Detect if currently selected option is visible and scroll the options box to show it
