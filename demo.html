@@ -6,37 +6,9 @@
 	<meta name="robots" content="all">
 	<title>jQuery Selectric</title>
 	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico?v=5">
-	<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Ubuntu">
 	<link rel="stylesheet" href="style.css">
-	<style id="theme">
-		/*======================================================================
-			Selectric
-		======================================================================*/
-		.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }
-		.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-		.selectricOpen { z-index: 9999; }
-		.selectricHideSelect { position: relative; overflow: hidden; }
-		.selectricHideSelect select { position: absolute; left: -100%; }
-		.selectric { border: 1px solid #DDD; background: #F8F8F8; position: relative; border-radius: 2px; }
-		.selectricOpen .selectric { border-color: #CCC; background: #F0F0F0; z-index: 9999; }
-		.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding: 6px; font-size: 12px; color: #444; min-height: 18px; }
-		.selectric .button { position: absolute; right: 0; top: 0; height: 30px; width: 30px; color: #BBB; text-align: center; font: normal 18px/30px sans-serif; }
-		.selectricHover .selectric { border-color: #CCC; }
-		.selectricHover .selectric .button { color: #888; }
-		.selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
-	</style>
-	<style id="items-style">
-		/* Items box */
-		.selectricItems ul,
-		.selectricItems li { list-style: none; padding: 0; margin: 0; min-height: 20px; line-height: 20px; font-size: 12px; }
-		.selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F9F9F9; border: 1px solid #CCC; z-index: 9998; box-shadow: 0 0 10px -6px; }
-		.selectricOpen .selectricItems { display: block; }
-		.selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #EEE; color: #666; border-top: 1px solid #FFF; }
-		.selectricItems li.selected { background: #EFEFEF; color: #444; border-top-color: #E0E0E0; }
-		.selectricItems li:hover { background: #F0F0F0; color: #444; }
-	</style>
 	<link rel="stylesheet" href="prism.css">
-
 	<meta property="og:title" content="jQuery Selectric">
 	<meta property="og:type" content="website">
 	<meta property="og:description" content="Fast, simple and light jQuery plugin to customize HTML selects">
@@ -45,6 +17,61 @@
 	<meta property="og:image" content="http://lcdsantos.github.io/jQuery-Selectric/share.jpg">
 </head>
 <body>
+	<style id="theme"></style>
+	<style id="items-style">
+	/* Items box */
+
+	.selectricItems {
+		display: none;
+		position: absolute;
+		overflow: auto;
+		top: 100%;
+		left: 0;
+		background: #F9F9F9;
+		border: 1px solid #CCC;
+		z-index: 9998;
+		-webkit-box-shadow: 0 0 10px -6px;
+		box-shadow: 0 0 10px -6px;
+	}
+
+	.selectricItems ul,
+	.selectricItems li {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		min-height: 20px;
+		line-height: 20px;
+		font-size: 12px;
+	}
+
+	.selectricItems li {
+		padding: 5px;
+		cursor: pointer;
+		display: block;
+		border-bottom: 1px solid #EEE;
+		color: #666;
+		border-top: 1px solid #FFF;
+	}
+
+	.selectricItems li.selected {
+		background: #EFEFEF;
+		color: #444;
+		border-top-color: #E0E0E0;
+	}
+
+	.selectricItems li:hover {
+		background: #F0F0F0;
+		color: #444;
+	}
+
+	.selectricItems li.disabled {
+		background: #F5F5F5;
+		color: #BBB;
+		border-top-color: #FAFAFA;
+		cursor: default;
+	}
+	</style>
+
 	<div class="center">
 		<div class="go-back">
 			<h1><a href="index.html">jQuery Selectric <img src="img/icon.png" alt="Selectric"></a></h1>
@@ -136,13 +163,18 @@
 			</div>
 
 			<div class="code">
-				<pre><code class="language-javascript">$('#callbacks').change(function(){
+				<pre><code class="language-javascript">// You can bind to change event on original element
+$('#callbacks').change(function(){
 	alert('Change');
 });
 
 $('#callbacks').selectric({
 	onOpen: function(){
 		alert('Open');
+	},
+	// Or set an onChange function
+	onChange: function(){
+	  alert('Change');
 	},
 	onClose: function(){
 		alert('Close');
@@ -178,6 +210,7 @@ $('#callbacks').selectric({
 				<option value="flat-dark-blue">Flat (dark blue)</option>
 				<option value="flat-red">Flat (red)</option>
 				<option value="flat-light-blue">Flat (light blue)</option>
+				<option value="flat-radiant-orchid">Flat (radiant orchid)</option>
 				<option value="custom">Custom</option>
 			</select>
 		</form>
@@ -234,366 +267,508 @@ $('#callbacks').selectric({
 			</div>
 		</div>
 
-		<a href="#" target="_blank" class="bt-download" download="selectric.css"><span class="ico-download"></span> Download CSS</a>
+		<a href="#" target="_blank" class="bt bt-download" download="selectric.css"><span class="ico-download"></span> Download CSS</a>
 		<a href="#" target="_blank" class="bt-view-raw" onclick="window.open(this.href, 'raw-css', 'width=720,height=480,scrollbars=1'); return false;"><span>&#x203a;</span> View RAW CSS</a>
 	</div>
 
-	<div style="display: none;">
-		<div id="default">
-		.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }
-		.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-		.selectricOpen { z-index: 9999; }
-		.selectricHideSelect { position: relative; overflow: hidden; }
-		.selectricHideSelect select { position: absolute; left: -100%; }
-		.selectric { border: 1px solid #DDD; background: #F8F8F8; position: relative; border-radius: 2px; }
-		.selectricOpen .selectric { border-color: #CCC; background: #F0F0F0; z-index: 9999; }
-		.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding: 6px; font-size: 12px; line-height: 1.5; color: #444; }
-		.selectric .button { position: absolute; right: 0; top: 0; height: 30px; width: 30px; color: #DDD; text-align: center; font: normal 18px/30px sans-serif; }
-		.selectricHover .selectric { border-color: #CCC; }
-		.selectricHover .selectric .button { color: #888; }
-		.selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
-		</div>
+<div style="display: none;">
+<div id="shared-prop">
+	/*=====================================================================
+		Selectric
+	======================================================================*/
 
-		<div id="modern">
-		.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }
-		.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-		.selectricOpen { z-index: 9999; }
-		.selectricHideSelect { position: relative; overflow: hidden; }
-		.selectricHideSelect select { position: absolute; left: -100%; }
-		.selectric { background-color: #f5f5f5; background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6); background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6)); background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6); background-image: -o-linear-gradient(top, #ffffff, #e6e6e6); background-image: linear-gradient(to bottom, #ffffff, #e6e6e6); background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0); border-color: #e6e6e6 #e6e6e6 #bfbfbf; border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); *background-color: #e6e6e6; filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); border: 1px solid #cccccc; *border: 0; border-bottom-color: #b3b3b3; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; position: relative; }
-		.selectricOpen .selectric { border-color: #CCC; background: #F0F0F0; z-index: 9999; }
-		.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding: 6px; font-size: 12px; line-height: 1.5; color: #444; }
-		.selectric .button { position: absolute; right: 0; top: 0; height: 30px; width: 30px; color: #BBB; text-align: center; font: normal 18px/30px sans-serif; }
-		.selectricHover .selectric { border-color: #CCC; }
-		.selectricHover .selectric .button { color: #888; }
-		.selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
-		</div>
+	.selectricWrapper {
+		position: relative;
+		margin: 0 0 10px;
+		width: 300px;
+		cursor: pointer;
+	}
 
-		<div id="modern-v2">
-		.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }
-		.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-		.selectricOpen { z-index: 9999; }
-		.selectricHideSelect { position: relative; overflow: hidden; }
-		.selectricHideSelect select { position: absolute; left: -100%; }
-		.selectric { box-shadow: 0 1px 2px 0 #DDD, 0 1px 0 0 #fff inset; background: #e9e9e9; background: -webkit-linear-gradient(#f9f9f9 0%, #EEE 100%); background: -moz-linear-gradient(#f9f9f9 0%, #EEE 100%); background: -o-linear-gradient(#f9f9f9 0%, #EEE 100%); background: linear-gradient(#f9f9f9 0%, #EEE 100%); border: 1px solid #CCC; border-radius: 4px; position: relative; }
-		.selectricOpen .selectric { background: #F0F0F0; z-index: 9999; }
-		.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 38px 0 0; padding: 6px; font-size: 12px; line-height: 1.5; color: #555; text-shadow: 0 1px #FFF; }
-		.selectric .button { position: absolute; right: 0; top: 0; height: 30px; width: 30px; color: #999; text-align: center; font: normal 18px/30px sans-serif; border-left: 1px solid #D2D2D2; }
-		.selectric .button:before { content: " "; float: left; height: 100%; border-right: 1px solid #FFF; }
-		.selectricHover .selectric { border-color: #CCC; }
-		.selectricHover .selectric .button { color: #888; }
-		.selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
-		</div>
+	.selectricDisabled {
+		filter: alpha(opacity=50);
+		opacity: 0.5;
+		cursor: default;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
 
-		<div id="flat-dark-blue">
-		.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }
-		.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-		.selectricOpen { z-index: 9999; }
-		.selectricHideSelect { position: relative; overflow: hidden; }
-		.selectricHideSelect select { position: absolute; left: -100%; }
-		.selectric { background: #333745; position: relative; border-radius: 6px; }
-		.selectricOpen .selectric { background: #242836; z-index: 9999; }
-		.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 38px 0 0; padding: 10px; font-size: 12px; line-height: 1.5; color: #FFF; }
-		.selectric .button { position: absolute; right: 0; top: 0; height: 38px; width: 38px; color: #FFF; text-align: center; font: normal 18px/38px sans-serif; }
-		.selectricHover .selectric { border-color: #CCC; }
-		.selectricHover .selectric .button { color: #888; }
-		.selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
-		</div>
+	.selectricOpen {
+		z-index: 9999;
+	}
 
-		<div id="flat-red">
-		.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }
-		.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-		.selectricOpen { z-index: 9999; }
-		.selectricHideSelect { position: relative; overflow: hidden; }
-		.selectricHideSelect select { position: absolute; left: -100%; }
-		.selectric { background: #EA2E49; position: relative; border-radius: 6px; }
-		.selectricOpen .selectric { background: #D11530; z-index: 9999; }
-		.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 38px 0 0; padding: 10px; font-size: 12px; line-height: 1.5; color: #FFF; }
-		.selectric .button { position: absolute; right: 0; top: 0; height: 38px; width: 38px; color: #FFF; text-align: center; font: normal 18px/38px sans-serif; }
-		.selectricHover .selectric { border-color: #CCC; }
-		.selectricHover .selectric .button { color: #CCC; }
-		.selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
-		</div>
+	.selectricOpen .selectricItems {
+		display: block;
+	}
 
-		<div id="flat-light-blue">
-		.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }
-		.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-		.selectricOpen { z-index: 9999; }
-		.selectricHideSelect { position: relative; overflow: hidden; }
-		.selectricHideSelect select { position: absolute; left: -100%; }
-		.selectric { background: #00A1D9; position: relative; border-radius: 6px; }
-		.selectricOpen .selectric { background: #0088C0; z-index: 9999; }
-		.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 38px 0 0; padding: 10px; font-size: 12px; line-height: 1.5; color: #FFF; }
-		.selectric .button { position: absolute; right: 0; top: 0; height: 38px; width: 38px; color: #FFF; text-align: center; font: normal 18px/38px sans-serif; }
-		.selectricHover .selectric { border-color: #CCC; }
-		.selectricHover .selectric .button { color: #CCC; }
-		.selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
-		</div>
-	</div>
+	.selectricHideSelect {
+		position: relative;
+		overflow: hidden;
+		width: 0;
+		height: 0;
+	}
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/jquery.min.js">\x3C/script>')</script>
+	.selectricHideSelect select {
+		position: absolute;
+		left: -100%;
+		display: none;
+	}
+
+	.selectricInput {
+		position: absolute !important;
+		top: 0 !important;
+		left: 0 !important;
+		overflow: hidden !important;
+		clip: rect(0, 0, 0, 0) !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		width: 1px !important;
+		height: 1px !important;
+		outline: none !important;
+		border: none !important;
+		_font: 0/0 a;
+		background: none !important;
+	}
+
+	.selectricTempShow {
+		position: absolute !important;
+		visibility: hidden !important;
+		display: block !important;
+	}
+</div>
+
+<div id="default">
+	.selectricOpen .selectric {
+		border-color: #CCC;
+		background: #F0F0F0;
+		z-index: 9999;
+	}
+
+	.selectric {
+		border: 1px solid #DDD;
+		background: #F8F8F8;
+		position: relative;
+		border-radius: 2px;
+	}
+
+	.selectric .label {
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		margin: 0 30px 0 0;
+		padding: 6px;
+		font-size: 12px;
+		line-height: 18px;
+		color: #444;
+		min-height: 18px;
+	}
+
+	.selectric .button {
+		display: block;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 30px;
+		height: 30px;
+		color: #BBB;
+		text-align: center;
+		font: 0/0 a;
+		/* IE Fix */
+		*font: 20px/30px Lucida Sans Unicode, Arial Unicode MS, Arial;
+	}
+
+	.selectric .button:after {
+		content: " ";
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		margin: auto;
+		width: 0;
+		height: 0;
+		border: 4px solid transparent;
+		border-top-color: #BBB;
+		border-bottom: none;
+	}
+
+	.selectricHover .selectric {
+		border-color: #CCC;
+	}
+
+	.selectricHover .selectric .button {
+		color: #888;
+	}
+
+	.selectricHover .selectric .button:after {
+		border-top-color: #888;
+	}
+</div>
+
+<div id="modern">
+	.selectricOpen .selectric {
+		border-color: #CCC;
+		background: #F0F0F0;
+		z-index: 9999;
+	}
+
+	.selectric {
+		background-color: #f5f5f5;
+		background-image: -webkit-linear-gradient(#fff, #e6e6e6);
+		background-image: -o-linear-gradient(#fff, #e6e6e6);
+		background-image: linear-gradient(#fff, #e6e6e6);
+		background-repeat: repeat-x;
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
+		border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+		border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+		*background-color: #e6e6e6;
+		filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+		border: 1px solid #cccccc;
+		*border: 0;
+		border-bottom-color: #b3b3b3;
+		border-radius: 3px;
+		position: relative;
+	}
+
+	.selectric .label {
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		margin: 0 30px 0 0;
+		padding: 6px;
+		font-size: 12px;
+		line-height: 18px;
+		color: #444;
+		min-height: 18px;
+	}
+
+	.selectric .button {
+		display: block;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 30px;
+		height: 30px;
+		color: #BBB;
+		text-align: center;
+		font: 0/0 a;
+		/* IE Fix */
+		*font: 20px/30px Lucida Sans Unicode, Arial Unicode MS, Arial;
+	}
+
+	.selectric .button:after {
+		content: " ";
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		margin: auto;
+		width: 0;
+		height: 0;
+		border: 4px solid transparent;
+		border-top-color: #BBB;
+		border-bottom: none;
+	}
+
+	.selectricHover .selectric {
+		border-color: #CCC;
+	}
+
+	.selectricHover .selectric .button {
+		color: #888;
+	}
+
+	.selectricHover .selectric .button:after {
+		border-top-color: #888;
+	}
+</div>
+
+<div id="modern-v2">
+	.selectricOpen .selectric {
+		border-color: #CCC;
+		background: #F0F0F0;
+		z-index: 9999;
+	}
+
+	.selectricOpen .selectricItems {
+		display: block;
+	}
+
+	.selectric {
+		box-shadow: 0 1px 2px 0 #DDD, 0 1px 0 0 #FFF inset;
+		background: #E9E9E9;
+		background: -webkit-linear-gradient(#F9F9F9, #EEE);
+		background: -o-linear-gradient(#F9F9F9, #EEE);
+		background: linear-gradient(#F9F9F9, #EEE);
+		border: 1px solid #CCC;
+		border-radius: 4px;
+		position: relative;
+	}
+
+	.selectric .label {
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		margin: 0 30px 0 0;
+		padding: 6px;
+		font-size: 12px;
+		line-height: 18px;
+		color: #444;
+		min-height: 18px;
+		text-shadow: 0 1px #FFF;
+	}
+
+	.selectric .button {
+		position: absolute;
+		right: 0;
+		top: 0;
+		height: 30px;
+		width: 30px;
+		font: 0/0 a;
+		border-left: 1px solid #D2D2D2;
+	}
+
+	.selectric .button:after {
+		content: " ";
+		zoom: 1;
+		position: absolute;
+		overflow: hidden;
+		top: 13px;
+		right: 12px;
+		width: 0;
+		height: 0;
+		border: 4px solid transparent;
+		border-top-color: #BBB;
+		border-bottom: none;
+	}
+
+	.selectric .button:before {
+		content: " ";
+		float: left;
+		height: 100%;
+		border-right: 1px solid #FFF;
+	}
+
+	.selectricHover .selectric {
+		border-color: #CCC;
+	}
+
+	.selectricHover .selectric .button {
+		color: #888;
+	}
+
+	.selectricHover .selectric .button:after {
+		border-top-color: #888;
+	}
+</div>
+
+<div id="flat-dark-blue">
+	.selectricOpen .selectric {
+		background: #242836;
+		z-index: 9999;
+	}
+
+	.selectricOpen .selectricItems {
+		display: block;
+	}
+
+	.selectric {
+		background: #333745;
+		position: relative;
+		border-radius: 6px;
+	}
+
+	.selectric .label {
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		margin: 0 40px 0 0;
+		padding: 6px 10px;
+		font-size: 12px;
+		line-height: 26px;
+		color: #FFF;
+		min-height: 26px;
+	}
+
+	.selectric .button {
+		zoom: 1;
+		position: absolute;
+		font: 0/0 a;
+		overflow: hidden;
+		margin: auto;
+		top: 0;
+		right: 16px;
+		bottom: 0;
+		width: 0;
+		height: 0;
+		border: 4px solid transparent;
+		border-top-color: #FFF;
+		border-bottom: none;
+	}
+
+	.selectricHover .selectric .button {
+		border-top-color: #DDD;
+	}
+</div>
+
+<div id="flat-red">
+	.selectricOpen .selectric {
+		background: #D11530;
+		z-index: 9999;
+	}
+
+	.selectricOpen .selectricItems {
+		display: block;
+	}
+
+	.selectric {
+		background: #EA2E49;
+		position: relative;
+		border-radius: 6px;
+	}
+
+	.selectric .label {
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		margin: 0 40px 0 0;
+		padding: 6px 10px;
+		font-size: 12px;
+		line-height: 26px;
+		color: #FFF;
+		min-height: 26px;
+	}
+
+	.selectric .button {
+		zoom: 1;
+		position: absolute;
+		font: 0/0 a;
+		overflow: hidden;
+		margin: auto;
+		top: 0;
+		right: 16px;
+		bottom: 0;
+		width: 0;
+		height: 0;
+		border: 4px solid transparent;
+		border-top-color: #FFF;
+		border-bottom: none;
+	}
+
+	.selectricHover .selectric .button {
+		border-top-color: #DDD;
+	}
+</div>
+
+<div id="flat-light-blue">
+	.selectricOpen .selectric {
+		background: #0088C0;
+		z-index: 9999;
+	}
+
+	.selectricOpen .selectricItems {
+		display: block;
+	}
+
+	.selectric {
+		background: #00A1D9;
+		position: relative;
+		border-radius: 6px;
+	}
+
+	.selectric .label {
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		margin: 0 40px 0 0;
+		padding: 6px 10px;
+		font-size: 12px;
+		line-height: 26px;
+		color: #FFF;
+		min-height: 26px;
+	}
+
+	.selectric .button {
+		zoom: 1;
+		position: absolute;
+		font: 0/0 a;
+		overflow: hidden;
+		margin: auto;
+		top: 0;
+		right: 16px;
+		bottom: 0;
+		width: 0;
+		height: 0;
+		border: 4px solid transparent;
+		border-top-color: #FFF;
+		border-bottom: none;
+	}
+
+	.selectricHover .selectric .button {
+		border-top-color: #DDD;
+	}
+</div>
+
+<div id="flat-radiant-orchid">
+	.selectricOpen .selectric {
+		background: #934585;
+		z-index: 9999;
+	}
+
+	.selectricOpen .selectricItems {
+		display: block;
+	}
+
+	.selectric {
+		background: #B163A3;
+		position: relative;
+		border-radius: 6px;
+	}
+
+	.selectric .label {
+		display: block;
+		white-space: nowrap;
+		overflow: hidden;
+		margin: 0 40px 0 0;
+		padding: 6px 10px;
+		font-size: 12px;
+		line-height: 26px;
+		color: #FFF;
+		min-height: 26px;
+	}
+
+	.selectric .button {
+		zoom: 1;
+		position: absolute;
+		font: 0/0 a;
+		overflow: hidden;
+		margin: auto;
+		top: 0;
+		right: 16px;
+		bottom: 0;
+		width: 0;
+		height: 0;
+		border: 4px solid transparent;
+		border-top-color: #FFF;
+		border-bottom: none;
+	}
+
+	.selectricHover .selectric .button {
+		border-top-color: #DDD;
+	}
+</div>
+</div>
+
+<script src="js/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="js/jquery.selectric.js"></script>
 <script src="prism.js"></script>
 <script src="js/jquery.minicolors.min.js"></script>
+<script src="js/demo.js"></script>
 <script>
-	$(function(){
-		var theme = $('#theme'),
-				format = function(f){var a=arguments;return(""+f).replace(/\{(?:(\d+)|(\w+))\}/g,function(s,i,p){return p&&a[1]?a[1][p]:a[i]})},
-				shadeColor = function(color, percent){
-					// strip the leading # if it's there
-					var color = color.replace(/^\s*#|\s*$/g, '');
-
-					// convert 3 char codes --> 6, e.g. `E0F` --> `EE00FF`
-					if (color.length == 3){
-						color = color.replace(/(.)/g, '$1$1');
-					}
-
-					var num = parseInt(color, 16),
-							amt = Math.round(2.55 * percent),
-							R   = (num >> 16) + amt,
-							B   = (num >> 8 & 0x00FF) + amt,
-							G   = (num & 0x0000FF) + amt;
-
-					return "#" +
-						(0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (B<255?B<1?0:B:255)*0x100 + (G<255?G<1?0:G:255)).toString(16).slice(1);
-				}
-
-		$('.custom').hide();
-
-		$('#presets').change(function(e) {
-			e.preventDefault();
-
-			if ( $(this).val() == 'custom' ){
-				$('.custom').slideDown();
-
-				theme.html( $('#default').html() );
-			} else {
-				$('.custom').slideUp();
-
-				theme.html( $('#' + $(this).val()).html() );
-			}
-
-			buildDownloadLink();
-		});
-
-		var borderWidth    = '',
-				borderRadius   = '',
-				height         = '',
-				indent         = '',
-				baseColor      = '',
-				secondaryColor = '',
-				labelColor     = '',
-				buttonSize     = '',
-				buttonBgColor  = '',
-				buttonRadius   = '';
-
-		$('#border-width-slider').find('.slider').slider({
-			value: $('#border-width-slider').find('.slider').data('val'),
-			max: 10,
-			animate: true,
-			step: 1,
-			slide: function( event, ui ) {
-				borderWidth = ui.value;
-				showCurrentValue($('#border-width-slider'), borderWidth);
-				updateCss();
-			},
-			create: createSlider
-		});
-
-		$('#border-round-slider').find('.slider').slider({
-			value: $('#border-round-slider').find('.slider').data('val'),
-			max: 100,
-			animate: true,
-			step: 1,
-			slide: function( event, ui ) {
-				borderRadius = ui.value;
-				showCurrentValue($('#border-round-slider'), borderRadius);
-				updateCss();
-			},
-			create: createSlider
-		});
-
-		$('#height-slider').find('.slider').slider({
-			min: 22,
-			max: 50,
-			animate: true,
-			step: 1,
-			slide: function( event, ui ) {
-				height = ui.value;
-				showCurrentValue($('#height-slider'), height);
-				updateCss();
-			},
-			create: createSlider
-		});
-
-		$('#indent-slider').find('.slider').slider({
-			min: 6,
-			max: 30,
-			animate: true,
-			step: 1,
-			slide: function( event, ui ) {
-				indent = ui.value;
-				showCurrentValue($('#indent-slider'), indent);
-				updateCss();
-			},
-			create: createSlider
-		});
-
-		$('#button-size-slider').find('.slider').slider({
-			min: 12,
-			max: 40,
-			animate: true,
-			step: 1,
-			slide: function( event, ui ) {
-				buttonSize = ui.value;
-				showCurrentValue($('#button-size-slider'), buttonSize);
-				updateCss();
-			},
-			create: createSlider
-		});
-
-		$('#button-round-slider').find('.slider').slider({
-			max: 100,
-			animate: true,
-			step: 1,
-			slide: function( event, ui ) {
-				buttonRadius = ui.value;
-				showCurrentValue($('#button-round-slider'), buttonRadius);
-				updateCss();
-			},
-			create: createSlider
-		});
-
-		$('#base-color').find('input').minicolors({
-			letterCase: 'uppercase',
-			change: function(){
-				baseColor = this.value;
-				updateCss();
-			}
-		});
-
-		$('#secondary-color').find('input').minicolors({
-			letterCase: 'uppercase',
-			change: function(){
-				secondaryColor = this.value;
-				updateCss();
-			}
-		});
-
-		$('#label-color').find('input').minicolors({
-			letterCase: 'uppercase',
-			change: function(){
-				labelColor = this.value;
-				updateCss();
-			}
-		});
-
-		$('#button-background-color').find('input').minicolors({
-			letterCase: 'uppercase',
-			change: function(){
-				buttonBgColor = this.value;
-				updateCss();
-			}
-		});
-
-		function createSlider(){
-			var value = $(this).data('val');
-
-			$(this).slider('value', value);
-			showCurrentValue( $(this).parent(), value );
-		}
-
-		function showCurrentValue(elm, value){
-			elm.find('.value').text(value + 'px');
-		}
-
-		function updateCss(){
-			var values = {
-						borderWidth         : borderWidth !== ''+borderWidth ? borderWidth : 1,
-						baseColor           : baseColor ? baseColor : '#F8F8F8',
-						secondaryColor      : secondaryColor ? secondaryColor : '#DDD',
-						labelColor          : labelColor ? labelColor : '#444',
-						borderRadius        : borderRadius ? borderRadius : 0,
-						height              : height ? height : 30,
-						innerHeight         : height ? (height - 12) : 18,
-						indent              : indent ? indent : 6,
-						hoverBaseColor      : shadeColor(baseColor ? baseColor : '#F8F8F8', -10),
-						hoverSecondaryColor : shadeColor(secondaryColor ? secondaryColor : '#DDD', -10),
-						buttonSize          : buttonSize ? buttonSize : 18,
-						buttonBgColor       : buttonBgColor ? buttonBgColor : 'none',
-						buttonRadius        : buttonRadius ? buttonRadius : 0
-					},
-					css = '.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }\n' +
-								'.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }\n' +
-								'.selectricOpen { z-index: 9999; }\n' +
-								'.selectricHideSelect { position: relative; overflow: hidden; }\n' +
-								'.selectricHideSelect select { position: absolute; left: -100%; }\n' +
-								'.selectric { border: {borderWidth}px solid {secondaryColor}; background: {baseColor}; position: relative; border-radius: {borderRadius}px; }\n' +
-								'.selectricOpen .selectric { border-color: {hoverSecondaryColor}; background: {hoverBaseColor}; z-index: 9999; }\n' +
-								'.selectric .label { height: {innerHeight}px; display: block; white-space: nowrap; overflow: hidden; margin: 0 {height}px 0 0; padding: 6px {indent}px; font-size: 12px; line-height: {innerHeight}px; color: {labelColor}; }\n' +
-								'.selectric .button { position: absolute; right: 0; top: 0; color: {secondaryColor}; text-align: center; font: normal {buttonSize}px/30px sans-serif; width: {height}px; height: {height}px; line-height: {height}px; background: {buttonBgColor}; border-radius: {buttonRadius}px; }\n' +
-								'.selectricHover .selectric { border-color: {hoverSecondaryColor}; }\n' +
-								'.selectricHover .selectric .button { color: {hoverSecondaryColor}; }\n' +
-								'.selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }';
-
-			theme.html(format(css, values));
-
-			buildDownloadLink();
-		}
-
-		function buildDownloadLink(){
-			var banner = '/*======================================================================\n' +
-										'	Selectric\n' +
-										'======================================================================*/',
-					themeCss = theme.html(),
-					itemsCss = $('#items-style').html();
-
-			$('.bt-download').prop('href', 'data:application/octet-stream;charset=utf-8,' + escape(banner + themeCss.replace(/\t/gi, '') + itemsCss.replace(/\t/gi, '')));
-			$('.bt-view-raw').prop('href', 'data:text/plain;charset=utf-8,' + escape(banner + themeCss.replace(/\t/gi, '') + itemsCss.replace(/\t/gi, '')));
-		}
-
-		buildDownloadLink();
-
-		// Demos
-		$('#basic').selectric();
-
-		$('#dynamic').selectric();
-
-		$('#bt_add_val').click(function(e){
-			e.preventDefault();
-
-			// Store the value in a variable
-			var value = $('#add_val').val();
-
-			// Append to original select
-			$('#dynamic').append('<option>' + (value ? value : 'Empty') + '</option>');
-
-			// Refresh Selectric
-			$('#dynamic').selectric('refresh');
-		});
-
-		$('#callbacks').change(function(){
-			alert('Change');
-		});
-
-		$('#callbacks').selectric({
-			onOpen: function(){
-				alert('Open');
-			},
-			onClose: function(){
-				alert('Close');
-			}
-		});
-
-		$.get('ajax.html', function(data){
-			$('#ajax').append(data).selectric();
-		});
-
-		// $('select').selectric();
-	});
-
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)

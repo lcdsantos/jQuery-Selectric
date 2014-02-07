@@ -33,7 +33,7 @@
 
 	<div class="header">
 		<h1>jQuery Selectric <img src="img/icon.png" alt="Selectric"></h1>
-		<p>Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects</p>
+		<p>Fast, simple and light jQuery plugin <br> to customize HTML selects</p>
 	</div>
 
 	<div class="center">
@@ -88,7 +88,7 @@
 			</li>
 
 			<li class="flattr-btn">
-				<div id="fbmi6pc"></div>
+				<a href="https://flattr.com/submit/auto?user_id=lcdsantos&url=http%3A%2F%2Flcdsantos.github.io%2FjQuery-Selectric%2F" target="_blank"><img src="//api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a>
 			</li>
 
 			<li class="gplus-btn">
@@ -214,7 +214,7 @@ $('select').selectric('close'); // Close options</code></pre>
 		<select>
 			<option value="">Select with big option mauris nec orci ut tortor consectetuer dapibus mauris nec orci ut tortor consectetuer dapibus</option>
 			<option value="apple">Apple</option>
-			<option value="apricot">Apricot</option>
+			<option selected value="apricot">Apricot</option>
 			<option value="banana">Banana</option>
 			<option value="bilberry">Bilberry</option>
 			<option value="blackberry">Blackberry</option>
@@ -286,7 +286,7 @@ $('select').selectric('close'); // Close options</code></pre>
 
 		<select>
 			<option value="">Select with disabled options</option>
-			<option value="apple">Apple</option>
+			<option disabled value="apple">Apple</option>
 			<option disabled value="apricot">Apricot</option>
 			<option disabled value="banana">Banana</option>
 			<option value="bilberry">Bilberry</option>
@@ -344,6 +344,21 @@ $('select').selectric('close'); // Close options</code></pre>
 			<option disabled value="watermelon">Watermelon</option>
 		</select>
 
+		<ul class="select">
+			<li>Custom element</li>
+			<li>Item 1</li>
+			<li>Item 2</li>
+			<li>Item 3</li>
+			<li>Item 4</li>
+			<li>Item 5</li>
+			<li>Item 6</li>
+			<li>Item 7</li>
+			<li>Item 8</li>
+			<li>Item 9</li>
+			<li>Item 10</li>
+			<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, aliquid alias ipsum facilis dolorum doloremque excepturi consequatur nihil earum corporis. Voluptate molestiae, natus enim soluta sapiente praesentium ex dolorem veniam.</li>
+		</ul>
+
 		<br>
 		<br>
 
@@ -362,7 +377,7 @@ $('select').selectric('close'); // Close options</code></pre>
 <script src="prism.js"></script>
 <script>
 	$(function(){
-		$('select').selectric();
+		$('select, .select').selectric();
 	});
 
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -378,8 +393,6 @@ $('select').selectric('close'); // Close options</code></pre>
 	getScript(document, 'script', 'facebook-jssdk', '//connect.facebook.net/en_US/all.js#xfbml=1&appId=146929405493694');
 	getScript(document, 'script', 'twitter-wjs', '//platform.twitter.com/widgets.js');
 	getScript(document, 'script', 'googleplus-wjs', '//apis.google.com/js/plusone.js');
-
-	(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lcdsantos&button=compact&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=20;f.width=110;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fbmi6pc');
 </script>
 </body>
 </html>

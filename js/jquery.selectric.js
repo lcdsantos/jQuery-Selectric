@@ -9,332 +9,342 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.5.9 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.6.0 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
  */
 
 ;(function ($) {
-  var pluginName = 'selectric',
-      emptyFn = function() {},
-      // Replace diacritics
-      _replaceDiacritics = function(s) {
-        /*
-          /[\340-\346]/g, // a
-          /[\350-\353]/g, // e
-          /[\354-\357]/g, // i
-          /[\362-\370]/g, // o
-          /[\371-\374]/g, // u
-          /[\361]/g, // n
-          /[\347]/g, // c
-          /[\377]/g // y
-        */
-        var k, d = '40-46 50-53 54-57 62-70 71-74 61 47 77'.replace(/\d+/g, '\\3$&').split(' ');
+	var pluginName = 'selectric',
+			// Replace diacritics
+			_replaceDiacritics = function(s) {
+				// /[\340-\346]/g, // a
+				// /[\350-\353]/g, // e
+				// /[\354-\357]/g, // i
+				// /[\362-\370]/g, // o
+				// /[\371-\374]/g, // u
+				// /[\361]/g, // n
+				// /[\347]/g, // c
+				// /[\377]/g // y
+				var k, d = '40-46 50-53 54-57 62-70 71-74 61 47 77'.replace(/\d+/g, '\\3$&').split(' ');
 
-        for (k in d)
-          s = s.toLowerCase().replace(RegExp('[' + d[k] + ']', 'g'), 'aeiouncy'.charAt(k));
+				for (k in d)
+					s = s.toLowerCase().replace(RegExp('[' + d[k] + ']', 'g'), 'aeiouncy'.charAt(k));
 
-        return s;
-      },
-      init = function(element, options) {
-        var options = $.extend({
-              onOpen: emptyFn,
-              onClose: emptyFn,
-              maxHeight: 300,
-              keySearchTimeout: 500,
-              arrowButtonMarkup: '<b class="button">&#9662;</b>',
-              disableOnMobile: true,
-              border: 1,
-              openOnHover: false,
-              expandToItemText: false
-            }, options);
+				return s;
+			},
+			init = function(element, options) {
+				var options = $.extend({
+							onOpen: $.noop,
+							onClose: $.noop,
+							onChange: $.noop,
+							maxHeight: 300,
+							keySearchTimeout: 500,
+							arrowButtonMarkup: '<b class="button">&#x25be;</b>',
+							disableOnMobile: true,
+							openOnHover: false,
+							expandToItemText: false
+						}, options);
 
-        if (options.disableOnMobile && /android|ip(hone|od|ad)/i.test(navigator.userAgent)) return;
+				if (options.disableOnMobile && /android|ip(hone|od|ad)/i.test(navigator.userAgent)) return;
 
-        var $original = $(element),
-            $wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
-            $items = $('<div class="' + pluginName + 'Items" tabindex="-1"></div>'),
-            $outerWrapper = $original.data(pluginName, options).wrap('<div>').parent().append($wrapper.add($items)),
-            selectItems = [],
-            isOpen = false,
-            $label = $('.label', $wrapper),
-            $li,
-            bindSufix = '.sl',
-            $doc = $(document),
-            $win = $(window),
-            keyBind = 'keydown' + bindSufix,
-            clickBind = 'click' + bindSufix,
-            searchStr = '',
-            resetStr,
-            classOpen = pluginName + 'Open',
-            classDisabled = pluginName + 'Disabled',
-            tempClass = pluginName + 'TempShow',
-            selectStr = 'selected',
-            selected,
-            currValue,
-            itemsHeight,
-            closeTimer,
-            finalWidth;
+				var $original = $(element),
+						_input = $('<input type="text" class="' + pluginName + 'Input"/>'),
+						$wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
+						$items = $('<div class="' + pluginName + 'Items" tabindex="-1"></div>'),
+						$outerWrapper = $original.data(pluginName, true).wrap('<div>').parent().append($wrapper.add($items).add(_input)),
+						selectItems = [],
+						isOpen,
+						$label = $('.label', $wrapper),
+						$li,
+						bindSufix = '.sl',
+						$doc = $(document),
+						$win = $(window),
+						clickBind = 'click' + bindSufix,
+						resetStr,
+						classOpen = pluginName + 'Open',
+						classDisabled = pluginName + 'Disabled',
+						tempClass = pluginName + 'TempShow',
+						selectStr = 'selected',
+						selected,
+						currValue,
+						itemsHeight,
+						closeTimer,
+						finalWidth,
+						optionsLength,
+						inputEvt = 'oninput' in _input[0] ? 'input' : 'keyup';
 
-        function _populate() {
-          var $options = $('option', $original.wrap('<div class="' + pluginName + 'HideSelect">')),
-              _$li = '<ul>',
-              visibleParent = $items.closest(':visible').children(':hidden'),
-              maxHeight = options.maxHeight,
-              optionsLength,
-              selectedElm = $options.filter(':' + selectStr);
+				function _populate() {
+					var $options = $original.wrap('<div class="' + pluginName + 'HideSelect">').children(),
+							_$li = '<ul>',
+							visibleParent = $items.closest(':visible').children(':hidden'),
+							maxHeight = options.maxHeight,
+							selectedIndex = $options.filter(':' + selectStr).index();
 
-          selected = selectedElm.index();
-          currValue = selected;
+					currValue = (selected = ~selectedIndex ? selectedIndex : 0);
 
-          if ( optionsLength = $options.length ) {
-            // Build options markup
-            $options.each(function(i){
-              var $elm = $(this),
-                  selectText = $elm.text(),
-                  selectDisabled = $elm.prop('disabled');
+					if ( optionsLength = $options.length ) {
+						// Build options markup
+						$options.each(function(i){
+							var $elm = $(this),
+									selectText = $elm.text(),
+									selectDisabled = $elm.prop('disabled');
 
-              selectItems[i] = {
-                value: $elm.val(),
-                text: selectText,
-                slug: _replaceDiacritics(selectText),
-                disabled: selectDisabled
-              };
+							selectItems[i] = {
+								value: $elm.val(),
+								text: selectText,
+								slug: _replaceDiacritics(selectText),
+								disabled: selectDisabled
+							};
 
-              _$li += '<li class="' + (i == selected ? selectStr : '') + (i == optionsLength - 1 ? ' last' : '') + (selectDisabled ? ' disabled' : '') + '">' + selectText + '</li>';
-            });
+							_$li += '<li class="' + (i == currValue ? selectStr : '') + (i == optionsLength - 1 ? ' last' : '') + (selectDisabled ? ' disabled' : '') + '">' + selectText + '</li>';
+						});
 
-            $items.html(_$li + '</ul>');
+						$items.html(_$li + '</ul>');
 
-            $label.text(selectItems[selected].text);
-          }
+						$label.text(selectItems[currValue].text);
+					}
 
-          $wrapper.add($original).off(bindSufix);
-          $outerWrapper.prop('class', pluginName + 'Wrapper ' + $original.prop('class') + ' ' + classDisabled);
+					$wrapper.add($original).off(bindSufix);
+					$outerWrapper.data(pluginName, true).prop('class', pluginName + 'Wrapper ' + $original.prop('class') + ' ' + classDisabled);
 
-          if ( !$original.prop('disabled') ){
-            // Not disabled, so... Removing disabled class and bind hover
-            $outerWrapper.removeClass(classDisabled).hover(function(){
-              $(this).toggleClass(pluginName + 'Hover');
-            });
+					if ( !$original.prop('disabled') ){
+						// Not disabled, so... Removing disabled class and bind hover
+						$outerWrapper.removeClass(classDisabled).hover(function(){
+							$(this).toggleClass(pluginName + 'Hover');
+						});
 
-            // Click on label and :focus on original select will open the options box
-            options.openOnHover && $wrapper.on('mouseenter' + bindSufix, _open);
+						// Click on label and :focus on original select will open the options box
+						options.openOnHover && $wrapper.on('mouseenter' + bindSufix, _open);
 
-            $wrapper.on(clickBind, function(e){
-              isOpen ? _close() : _open(e);
-            });
+						// Toggle open/close
+						$wrapper.on(clickBind, function(e){
+							isOpen ? _close() : _open(e);
+						});
 
-            $original.on(keyBind, function(e){
-              var key = e.which;
+						function _handleSystemKeys(e){
+							// Tab / Enter / ESC
+							if ( /^(9|13|27)$/.test(e.keyCode || e.which) ) {
+								e.stopPropagation();
+								_select(selected, true);
+							}
+						}
 
-              key != 9 && e.preventDefault();
+						_input.on({
+							keypress: _handleSystemKeys,
+							keydown: function(e){
+								_handleSystemKeys(e);
 
-              // Tab / Enter / ESC
-              if (/^(9|13|27)$/.test(key)) {
-                e.stopPropagation();
-                _select(selected, true);
-              }
+								// Clear search
+								clearTimeout(resetStr);
+								resetStr = setTimeout(function(){
+									_input.val('');
+								}, options.keySearchTimeout);
 
-              // Search in select options
-              clearTimeout(resetStr);
+								var key = e.keyCode || e.which;
 
-              // If it's not a directional key
-              if (key < 37 || key > 40) {
-                var rSearch = RegExp('^' + (searchStr += String.fromCharCode(key)), 'i');
+								// If it's a directional key
+								// 37 => Left
+								// 38 => Up
+								// 39 => Right
+								// 40 => Down
+								if ( key > 36 && key < 41 )
+									_select( key < 39 ? previousEnabledItem() : nextEnabledItem() );
+							},
+							focusin: function(e){
+								// Stupid, but necessary... Prevent the flicker when
+								// focusing out and back again in the browser window
+								_input.one('blur', function(){
+									_input.blur();
+								});
 
-                $.each(selectItems, function(i, elm){
-                  if (rSearch.test([elm.slug, elm.text]) && !elm.disabled )
-                    _select(i);
-                });
+								isOpen || _open(e);
+							}
+						}).on(inputEvt, function(){
+							if ( _input.val().length ){
+								// Search in select options
+								$.each(selectItems, function(i, elm){
+									if ( RegExp('^' + _input.val(), 'i').test(elm.slug) && !elm.disabled ){
+										_select(i);
+										return false;
+									}
+								});
+							}
+						});
 
-                resetStr = setTimeout(function(){
-                  searchStr = '';
-                }, options.keySearchTimeout);
-              } else {
-                searchStr = '';
+						// Remove styles from items box
+						// Fix incorrect height when refreshed is triggered with fewer options
+						$li = $('li', $items.removeAttr('style')).click(function(){
+							// The second parameter is to close the box after click
+							_select($(this).index(), true);
 
-                // Left / Up : Right / Down
-                _select(/^3(7|8)$/.test(key) ? previousEnabledItem(selected) : nextEnabledItem(selected) );
-              }
-            }).on('focusin' + bindSufix, function(e){
-              isOpen || _open(e);
-            });
+							// Chrome doesn't close options box if select is wrapped with a label
+							// We need to 'return false' to avoid that
+							return false;
+						});
+					} else
+						_input.prop('disabled', true);
 
-            function nextEnabledItem(idx, next){
-              if ( selectItems[ next = (idx + 1) % optionsLength ].disabled )
-                while ( selectItems[ next = (next + 1) % optionsLength ].disabled ){}
+					// Calculate options box height
+					// Set a temporary class on the hidden parent of the element
+					visibleParent.addClass(tempClass);
 
-              return next;
-            }
+					var itemsWidth = $items.outerWidth(),
+							wrapperWidth = $wrapper.outerWidth() - (itemsWidth - $items.width());
 
-            function previousEnabledItem(idx, previous){
-              if ( selectItems[ previous = (idx > 0 ? idx : optionsLength) - 1 ].disabled )
-                while ( selectItems[ previous = (previous > 0 ? previous : optionsLength) - 1 ].disabled ){}
+					// Set the dimensions, minimum is wrapper width, expand for long items if option is true
+					if ( !options.expandToItemText || wrapperWidth > itemsWidth )
+						finalWidth = wrapperWidth;
+					else {
+						// Make sure the scrollbar width is included
+						$items.css('overflow', 'scroll');
 
-              return previous;
-            }
+						// Set a really long width for $outerWrapper
+						$outerWrapper.width(9e4);
+						finalWidth = itemsWidth;
+						// Set scroll bar to auto
+						$items.css('overflow', '');
+						$outerWrapper.width('');
+					}
 
-            // Remove styles from items box
-            // Fix incorrect height when refreshed is triggered with fewer options
-            $li = $('li', $items.removeAttr('style')).click(function(){
-              // The second parameter is to close the box after click
-              _select($(this).index(), true);
+					$items.width(finalWidth).height() > maxHeight && $items.height(maxHeight);
 
-              // Chrome doesn't close options box if select is wrapped with a label
-              // We need to 'return false' to avoid that
-              return false;
-            });
-          }
+					// Remove the temporary class
+					visibleParent.removeClass(tempClass);
+				}
 
-          // Calculate options box height
-          // Set a temporary class on the hidden parent of the element
-          visibleParent.addClass(tempClass);
+				_populate();
 
-          var wrapperWidth = $wrapper.outerWidth() - (options.border * 2);
+				// Open the select options box
+				function _open(e) {
+					e.preventDefault();
+					e.stopPropagation();
 
-          // Set the dimensions, minimum is wrapper width, expand for long items if option is true
-          if ( !options.expandToItemText || wrapperWidth > $items.outerWidth() )
-            finalWidth = wrapperWidth;
-          else {
-            // Make sure the scrollbar width is included
-            $items.css('overflow', 'scroll');
+					// Find any other opened instances of select and close it
+					$('.' + classOpen).removeClass(classOpen);
 
-            // Set a really long width for $outerWrapper
-            $outerWrapper.width(9e4);
-            finalWidth = $items.outerWidth();
-            // Set scroll bar to auto
-            $items.css('overflow', '');
-            $outerWrapper.width('');
-          }
+					isOpen = true;
+					itemsHeight = $items.outerHeight();
 
-          $items.width(finalWidth).height() > maxHeight && $items.height(maxHeight);
+					_isInViewport();
 
-          // Remove the temporary class
-          visibleParent.removeClass(tempClass);
-        }
+					// Give dummy input focus
+					_input.val('').is(':focus') || _input.focus();
 
-        _populate();
+					$doc.on(clickBind, _close);
 
-        // Open the select options box
-        function _open(e) {
-          e.preventDefault();
-          e.stopPropagation();
+					// Delay close effect when openOnHover is true
+					if (options.openOnHover){
+						clearTimeout(closeTimer);
+						$outerWrapper.one('mouseleave' + bindSufix, function(){
+							closeTimer = setTimeout(_close, 500);
+						});
+					}
 
-          // Find any other opened instances of select and close it
-          $('.' + classOpen + ' select')[pluginName]('close');
+					// Toggle options box visibility
+					$outerWrapper.addClass(classOpen);
+					_detectItemVisibility(selected);
 
-          isOpen = true;
-          itemsHeight = $items.outerHeight();
+					options.onOpen(element);
+				}
 
-          _isInViewport();
+				// Detect is the options box is inside the window
+				function _isInViewport() {
+					if (isOpen){
+						$items.css('top', ($outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + $win.height()) ? -itemsHeight : '');
+						setTimeout(_isInViewport, 100);
+					}
+				}
 
-          // Prevent window jump when focusing original select
-          var scrollTop = $win.scrollTop();
-          e.type == 'click' && $original.focus();
-          $win.scrollTop(scrollTop);
+				// Close the select options box
+				function _close(e) {
+					if ( !e && currValue != selected ){
+						var text = selectItems[selected].text;
 
-          $doc.on(clickBind, _close);
+						// Apply changed value to original select
+						$original
+							.prop('selectedIndex', currValue = selected)
+							.data('value', text)
+							.trigger('change', [text, currValue]);
 
-          // Delay close effect when openOnHover is true
-          if (options.openOnHover){
-            clearTimeout(closeTimer);
-            $outerWrapper.off(bindSufix).on('mouseleave' + bindSufix, function(){
-              closeTimer = setTimeout(_close, 500);
-            });
-          }
+						options.onChange(element);
 
-          // Toggle options box visibility
-          $outerWrapper.addClass(classOpen);
-          _detectItemVisibility(selected);
+						// Change label text
+						$label.text(text);
+					}
 
-          // options.onOpen.call(this, element);
-          options.onOpen(element);
-        }
+					// Remove click on document
+					$doc.off(bindSufix);
 
-        // Detect is the options box is inside the window
-        function _isInViewport() {
-          if (isOpen){
-            $items.css('top', ($outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + $win.height()) ? -itemsHeight : '');
-            setTimeout(_isInViewport, 100);
-          }
-        }
+					// Remove visible class to hide options box
+					$outerWrapper.removeClass(classOpen);
 
-        // Close the select options box
-        function _close(e) {
-          if ( currValue != selected ){
-            // Apply changed value to original select
-            $original.prop('selectedIndex', currValue = selected);
+					isOpen = false;
 
-            // Only trigger change event if function call came from a click
-            if ( !e || e.type != 'click' )
-              $original.change();
-          }
+					options.onClose(element);
+				}
 
-          // Remove click on document
-          $doc.off(bindSufix);
+				// Select option
+				function _select(index, close) {
+					// If element is disabled, can't select it
+					if ( !selectItems[selected = index].disabled ){
+						// If 'close' is false (default), the options box won't close after
+						// each selected item, this is necessary for keyboard navigation
+						$li.removeClass(selectStr).eq(index).addClass(selectStr);
+						_detectItemVisibility(index);
+						close && _close();
+					}
+				}
 
-          // Change label text
-          $label.text(selectItems[selected].text);
+				// Detect if currently selected option is visible and scroll the options box to show it
+				function _detectItemVisibility(index) {
+					var liHeight = $li.eq(index).outerHeight(),
+							liTop = $li[index].offsetTop,
+							itemsScrollTop = $items.scrollTop(),
+							scrollT = liTop + liHeight * 2;
 
-          // Remove visible class to hide options box
-          $outerWrapper.removeClass(classOpen);
+					$items.scrollTop(
+						scrollT > itemsScrollTop + itemsHeight ? scrollT - itemsHeight :
+							liTop - liHeight < itemsScrollTop ? liTop - liHeight :
+								itemsScrollTop
+					);
+				}
 
-          isOpen = false;
+				function nextEnabledItem(next) {
+					if ( selectItems[ next = (selected + 1) % optionsLength ].disabled )
+						while ( selectItems[ next = (next + 1) % optionsLength ].disabled ){}
 
-          // options.onClose.call(this, element);
-          options.onClose(element);
-        }
+					return next;
+				}
 
-        // Select option
-        function _select(index, close) {
-          // If element is disabled, can't select it
-          if ( !selectItems[selected = index].disabled ){
-            // If 'close' is false (default), the options box won't close after
-            // each selected item, this is necessary for keyboard navigation
-            $li.removeClass(selectStr).eq(index).addClass(selectStr);
-            _detectItemVisibility(index);
-            close && _close();
-          }
-        }
+				function previousEnabledItem(previous) {
+					if ( selectItems[ previous = (selected > 0 ? selected : optionsLength) - 1 ].disabled )
+						while ( selectItems[ previous = (previous > 0 ? previous : optionsLength) - 1 ].disabled ){}
 
-        // Detect if currently selected option is visible and scroll the options box to show it
-        function _detectItemVisibility(index) {
-          var liHeight = $li.eq(index).outerHeight(),
-              liTop = $li[index].offsetTop,
-              itemsScrollTop = $items.scrollTop(),
-              scrollT = liTop + liHeight * 2;
+					return previous;
+				}
 
-          $items.scrollTop(
-            scrollT > itemsScrollTop + itemsHeight ? scrollT - itemsHeight :
-              liTop - liHeight < itemsScrollTop ? liTop - liHeight :
-                itemsScrollTop
-          );
-        }
+				$original.on({
+					refresh: _populate,
+					destroy: function() {
+						// Unbind and remove
+						$items.add($wrapper).remove();
+						$original.removeData(pluginName).removeData('value').off(bindSufix + ' refresh destroy open close').unwrap().unwrap();
+					},
+					open: _open,
+					close: _close
+				});
+			};
 
-        $original.on({
-          refresh: _populate,
-          destroy: function() {
-            // Unbind and remove
-            $items.add($wrapper).remove();
-            $original.removeData(pluginName).off(bindSufix + ' refresh destroy open close').unwrap().unwrap();
-          },
-          open: _open,
-          close: _close
-        });
-      };
-
-  // A really lightweight plugin wrapper around the constructor,
-  // preventing against multiple instantiations
-  $.fn[pluginName] = function(args, options) {
-    return this.each(function() {
-      if (!$(this).data(pluginName)) {
-        // new Selectric(this, args || options);
-        init(this, args || options);
-      } else if (''+args === args) {
-        $(this).trigger(args);
-      }
-    });
-  };
+	// A really lightweight plugin wrapper around the constructor,
+	// preventing against multiple instantiations
+	$.fn[pluginName] = function(args, options) {
+		return this.each(function() {
+			if ( !$(this).data(pluginName ))
+				init(this, args || options);
+			else if ( ''+args === args )
+				$(this).trigger(args);
+		});
+	};
 }(jQuery));
