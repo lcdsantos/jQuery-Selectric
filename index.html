@@ -99,7 +99,7 @@
 		<h2>How to use</h2>
 
 		<p>1. Make sure to include jQuery in your page:</p>
-		<pre><code class="language-markup">&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+		<pre><code class="language-markup">&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js&quot;&gt;&lt;/script&gt;</code></pre>
 
 		<p>2. Include <strong>jQuery Selectric:</strong></p>
 		<pre><code class="language-markup">&lt;script src=&quot;js/jquery.selectric.min.js&quot;&gt;&lt;/script&gt;</code></pre>
@@ -134,6 +134,12 @@
 					<td>function() {}</td>
 					<td>Function</td>
 					<td>Function called when select options is opened</td>
+				</tr>
+				<tr>
+					<td>onChange</td>
+					<td>function() {}</td>
+					<td>Function</td>
+					<td>Function called when select options is changed</td>
 				</tr>
 				<tr>
 					<td>onClose</td>
@@ -195,8 +201,8 @@
 		<h2>Public methods</h2>
 		<pre><code class="language-javascript">$('select').selectric('refresh'); // Reconstruct the instance of plugin
 $('select').selectric('destroy'); // Destroy select and go back to normal
-$('select').selectric('open'); // Open options
-$('select').selectric('close'); // Close options</code></pre>
+$('select').selectric('open');    // Open options
+$('select').selectric('close');   // Close options</code></pre>
 
 		<h2>Browser support</h2>
 
@@ -371,8 +377,7 @@ $('select').selectric('close'); // Close options</code></pre>
 
 	</div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/jquery.min.js">\x3C/script>')</script>
+<script src="js/jquery.min.js"></script>
 <script src="js/jquery.selectric.js"></script>
 <script src="prism.js"></script>
 <script>
