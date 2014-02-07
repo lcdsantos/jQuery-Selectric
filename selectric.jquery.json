@@ -1,7 +1,7 @@
 {
     "name": "selectric",
     "title": "jQuery Selectric",
-    "description": "Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects",
+    "description": "Fast, simple and light jQuery plugin to customize HTML selects",
     "keywords": [
         "select",
         "selectbox",
@@ -10,7 +10,7 @@
         "input",
         "ui"
     ],
-    "version": "1.5.9",
+    "version": "1.6.0",
     "author": {
         "name": "Leonardo Santos",
         "email": "leocs.1991@gmail.com"

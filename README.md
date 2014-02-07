@@ -29,30 +29,167 @@ Put styles in your CSS and change it to your taste :D
 
 ```css
 /*======================================================================
-	Selectric
+  Selectric
 ======================================================================*/
-.selectricWrapper { position: relative; margin: 0 0 10px; width: 300px; cursor: pointer; }
-.selectricDisabled { filter: alpha(opacity=50); opacity: 0.5; cursor: default; -webkit-touch-callout: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-.selectricOpen { z-index: 9999; }
-.selectricHideSelect { position: relative; overflow: hidden; }
-.selectricHideSelect select { position: absolute; left: -100%; }
-.selectric { border: 1px solid #DDD; background: #F8F8F8; position: relative; border-radius: 2px; }
-.selectricOpen .selectric { border-color: #CCC; background: #F0F0F0; z-index: 9999; }
-.selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding: 6px; font-size: 12px; color: #444; min-height: 18px; }
-.selectric .button { position: absolute; right: 0; top: 0; height: 30px; width: 30px; color: #BBB; text-align: center; font: normal 18px/30px sans-serif; }
-.selectricHover .selectric { border-color: #CCC; }
-.selectricHover .selectric .button { color: #888; }
-.selectricTempShow { position: absolute !important; visibility: hidden !important; display: block !important; }
+
+.selectricWrapper {
+  position: relative;
+  margin: 0 0 10px;
+  width: 300px;
+  cursor: pointer;
+}
+
+.selectricDisabled {
+  filter: alpha(opacity=50);
+  opacity: 0.5;
+  cursor: default;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.selectricOpen {
+  z-index: 9999;
+}
+
+.selectricOpen .selectric {
+  border-color: #CCC;
+  background: #F0F0F0;
+  z-index: 9999;
+}
+
+.selectricOpen .selectricItems {
+  display: block;
+}
+
+.selectricHideSelect {
+  position: relative;
+  overflow: hidden;
+  width: 0;
+  height: 0;
+}
+
+.selectricHideSelect select {
+  position: absolute;
+  left: -100%;
+  display: none;
+}
+
+.selectricInput {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  outline: none !important;
+  border: none !important;
+  _font: 0/0 a;
+  background: none !important;
+}
+
+.selectric {
+  border: 1px solid #DDD;
+  background: #F8F8F8;
+  position: relative;
+  border-radius: 2px;
+}
+
+.selectric .label {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 0 30px 0 0;
+  padding: 6px;
+  font-size: 12px;
+  color: #444;
+  min-height: 18px;
+}
+
+.selectric .button {
+  zoom: 1;
+  position: absolute;
+  font: 0/0 a;
+  overflow: hidden;
+  top: 13px;
+  right: 12px;
+  width: 0;
+  height: 0;
+  border: 4px solid transparent;
+  border-top-color: #BBB;
+  border-bottom: none;
+}
+
+.selectricHover .selectric {
+  border-color: #CCC;
+}
+
+.selectricHover .selectric .button {
+  color: #888;
+}
+
+.selectricTempShow {
+  position: absolute !important;
+  visibility: hidden !important;
+  display: block !important;
+}
 
 /* Items box */
-.selectricItems { display: none; position: absolute; overflow: auto; top: 100%; left: 0; background: #F9F9F9; border: 1px solid #CCC; z-index: 9998; box-shadow: 0 0 10px -6px; }
+
+.selectricItems {
+  display: none;
+  position: absolute;
+  overflow: auto;
+  top: 100%;
+  left: 0;
+  background: #F9F9F9;
+  border: 1px solid #CCC;
+  z-index: 9998;
+  -webkit-box-shadow: 0 0 10px -6px;
+  box-shadow: 0 0 10px -6px;
+}
+
 .selectricItems ul,
-.selectricItems li { list-style: none; padding: 0; margin: 0; min-height: 20px; line-height: 20px; font-size: 12px; }
-.selectricOpen .selectricItems { display: block; }
-.selectricItems li { padding: 5px; cursor: pointer; display: block; border-bottom: 1px solid #EEE; color: #666; border-top: 1px solid #FFF; }
-.selectricItems li.selected { background: #EFEFEF; color: #444; border-top-color: #E0E0E0; }
-.selectricItems li:hover { background: #F0F0F0; color: #444; }
-.selectricItems li.disabled { background: #F5F5F5; color: #BBB; border-top-color: #FAFAFA; cursor: default; }
+.selectricItems li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+}
+
+.selectricItems li {
+  padding: 5px;
+  cursor: pointer;
+  display: block;
+  border-bottom: 1px solid #EEE;
+  color: #666;
+  border-top: 1px solid #FFF;
+}
+
+.selectricItems li.selected {
+  background: #EFEFEF;
+  color: #444;
+  border-top-color: #E0E0E0;
+}
+
+.selectricItems li:hover {
+  background: #F0F0F0;
+  color: #444;
+}
+
+.selectricItems li.disabled {
+  background: #F5F5F5;
+  color: #BBB;
+  border-top-color: #FAFAFA;
+  cursor: default;
+}
 ```
 
 Initialize **jQuery Selectric:**
@@ -79,6 +216,12 @@ $(function(){
 		<td>function() {}</td>
 		<td>Function</td>
 		<td>Function called when select options is opened</td>
+	</tr>
+	<tr>
+		<td>onChange</td>
+		<td>function() {}</td>
+		<td>Function</td>
+		<td>Function called when select options is changed</td>
 	</tr>
 	<tr>
 		<td>onClose</td>
@@ -135,8 +278,8 @@ $(function(){
 ```js
 $('select').selectric('refresh'); // Reconstruct the instance of plugin
 $('select').selectric('destroy'); // Destroy Selectric and go back to normal
-$('select').selectric('open'); // Open options
-$('select').selectric('close'); // Close options
+$('select').selectric('open');    // Open options
+$('select').selectric('close');   // Close options
 ```
 
 ##Browser support:

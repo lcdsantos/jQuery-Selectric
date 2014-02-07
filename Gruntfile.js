@@ -5,6 +5,7 @@ module.exports = function(grunt) {
 
 		uglify: {
 			options: {
+				report: 'gzip',
 				banner: '/*! Selectric ϟ v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>) - git.io/tjl9sQ - Copyright (c) 2013 Leonardo Santos - Dual licensed: MIT/GPL */\n'
 			},
 			build: {
