@@ -1,6 +1,6 @@
 {
   "name": "jquery-selectric",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-uglify": "~0.3.2"

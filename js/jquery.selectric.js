@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.6.0 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.6.1 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -88,22 +88,22 @@
 						// Build options markup
 						$options.each(function(i){
 							var $elm = $(this),
-									selectText = $elm.text(),
+									optionText = $elm.html(),
 									selectDisabled = $elm.prop('disabled');
 
 							selectItems[i] = {
 								value: $elm.val(),
-								text: selectText,
-								slug: _replaceDiacritics(selectText),
+								text: optionText,
+								slug: _replaceDiacritics(optionText),
 								disabled: selectDisabled
 							};
 
-							_$li += '<li class="' + (i == currValue ? selectStr : '') + (i == optionsLength - 1 ? ' last' : '') + (selectDisabled ? ' disabled' : '') + '">' + selectText + '</li>';
+							_$li += '<li class="' + (i == currValue ? selectStr : '') + (i == optionsLength - 1 ? ' last' : '') + (selectDisabled ? ' disabled' : '') + '">' + optionText + '</li>';
 						});
 
 						$items.html(_$li + '</ul>');
 
-						$label.text(selectItems[currValue].text);
+						$label.html(selectItems[currValue].text);
 					}
 
 					$wrapper.add($original).off(bindSufix);
@@ -271,7 +271,7 @@
 						options.onChange(element);
 
 						// Change label text
-						$label.text(text);
+						$label.html(text);
 					}
 
 					// Remove click on document
