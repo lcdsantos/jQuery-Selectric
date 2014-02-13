@@ -44,66 +44,73 @@ Put styles in your CSS and change it to your taste :D
   background: #F8F8F8;
   position: relative;
   border-radius: 2px;
-  .label {
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    margin: 0 30px 0 0;
-    padding: 6px;
-    font-size: 12px;
-    line-height: 18px;
-    color: #444;
-    min-height: 18px;
-  }
-  .button {
-    display: block;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 30px;
-    height: 30px;
-    color: #BBB;
-    text-align: center;
-    font: 0/0 a;
-    /* IE Fix */
-    *font: 20px/30px Lucida Sans Unicode, Arial Unicode MS, Arial;
-    &:after {
-      content: " ";
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      margin: auto;
-      width: 0;
-      height: 0;
-      border: 4px solid transparent;
-      border-top-color: #BBB;
-      border-bottom: none;
-    }
-  }
+}
+
+.selectric .label {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 0 30px 0 0;
+  padding: 6px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #444;
+  min-height: 18px;
+}
+
+.selectric .button {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  color: #BBB;
+  text-align: center;
+  font: 0/0 a;
+  /* IE Fix */
+  *font: 20px/30px Lucida Sans Unicode, Arial Unicode MS, Arial;
+}
+
+.selectric .button:after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: 0;
+  height: 0;
+  border: 4px solid transparent;
+  border-top-color: #BBB;
+  border-bottom: none;
 }
 
 .selectricHover .selectric {
   border-color: #CCC;
-  .button {
-    color: #888;
-    &:after {
-      border-top-color: #888;
-    }
-  }
+}
+
+.selectricHover .selectric .button {
+  color: #888;
+}
+
+.selectricHover .selectric .button:after {
+  border-top-color: #888;
 }
 
 .selectricOpen {
   z-index: 9999;
-  .selectric {
-    border-color: #CCC;
-    background: #F0F0F0;
-    z-index: 9999;
-  }
-  .selectricItems {
-    display: block;
-  }
+}
+
+.selectricOpen .selectric {
+  border-color: #CCC;
+  background: #F0F0F0;
+  z-index: 9999;
+}
+
+.selectricOpen .selectricItems {
+  display: block;
 }
 
 .selectricDisabled {
@@ -111,6 +118,9 @@ Put styles in your CSS and change it to your taste :D
   opacity: 0.5;
   cursor: default;
   -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 }
 
@@ -119,11 +129,12 @@ Put styles in your CSS and change it to your taste :D
   overflow: hidden;
   width: 0;
   height: 0;
-  select {
-    position: absolute;
-    left: -100%;
-    display: none;
-  }
+}
+
+.selectricHideSelect select {
+  position: absolute;
+  left: -100%;
+  display: none;
 }
 
 .selectricInput {
@@ -149,6 +160,7 @@ Put styles in your CSS and change it to your taste :D
 }
 
 /* Items box */
+
 .selectricItems {
   display: none;
   position: absolute;
@@ -158,38 +170,45 @@ Put styles in your CSS and change it to your taste :D
   background: #F9F9F9;
   border: 1px solid #CCC;
   z-index: 9998;
+  -webkit-box-shadow: 0 0 10px -6px;
   box-shadow: 0 0 10px -6px;
-  ul, li {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 12px;
-    line-height: 20px;
-    min-height: 20px;
-  }
-  li {
-    display: block;
-    padding: 5px;
-    border-top: 1px solid #FFF;
-    border-bottom: 1px solid #EEE;
-    color: #666;
-    cursor: pointer;
-    &.selected {
-      background: #EFEFEF;
-      color: #444;
-      border-top-color: #E0E0E0;
-    }
-    &:hover {
-      background: #F0F0F0;
-      color: #444;
-    }
-    &.disabled {
-      background: #F5F5F5;
-      color: #BBB;
-      border-top-color: #FAFAFA;
-      cursor: default;
-    }
-  }
+}
+
+.selectricItems ul,
+.selectricItems li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+  line-height: 20px;
+  min-height: 20px;
+}
+
+.selectricItems li {
+  display: block;
+  padding: 5px;
+  border-top: 1px solid #FFF;
+  border-bottom: 1px solid #EEE;
+  color: #666;
+  cursor: pointer;
+}
+
+.selectricItems li.selected {
+  background: #EFEFEF;
+  color: #444;
+  border-top-color: #E0E0E0;
+}
+
+.selectricItems li:hover {
+  background: #F0F0F0;
+  color: #444;
+}
+
+.selectricItems li.disabled {
+  background: #F5F5F5;
+  color: #BBB;
+  border-top-color: #FAFAFA;
+  cursor: default;
 }
 ```
 
