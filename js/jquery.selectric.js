@@ -46,15 +46,26 @@
 							arrowButtonMarkup: '<b class="button">&#x25be;</b>',
 							disableOnMobile: true,
 							openOnHover: false,
-							expandToItemText: false
+							expandToItemText: false,
+              customClass: {
+                prefix: pluginName,
+                postfixes: "Input Items Open Disabled TempShow HideSelect Wrapper Hover",
+                camelCase: true
+              }
 						}, options);
 
 				if (options.disableOnMobile && /android|ip(hone|od|ad)/i.test(navigator.userAgent)) return;
 
+				// generate classNames for elements
+				var postfixes = (options.customClass.camelCase
+													? options.customClass.prefix + options.customClass.postfixes
+													: (options.customClass.prefix + options.customClass.postfixes).replace(/(\b[a-z])|[A-Z]{1}/g, "-$&").toLowerCase()
+												).split(' ').join(' '+options.customClass.prefix).split(' ');
+
 				var $original = $(element),
-						_input = $('<input type="text" class="' + pluginName + 'Input"/>'),
-						$wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
-						$items = $('<div class="' + pluginName + 'Items" tabindex="-1"></div>'),
+						_input = $('<input type="text" class="' + postfixes[0] + '"/>'),
+						$wrapper = $('<div class="' + options.customClass.prefix + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
+						$items = $('<div class="' + postfixes[1] + '" tabindex="-1"></div>'),
 						$outerWrapper = $original.data(pluginName, true).wrap('<div>').parent().append($wrapper.add($items).add(_input)),
 						selectItems = [],
 						isOpen,
@@ -65,9 +76,9 @@
 						$win = $(window),
 						clickBind = 'click' + bindSufix,
 						resetStr,
-						classOpen = pluginName + 'Open',
-						classDisabled = pluginName + 'Disabled',
-						tempClass = pluginName + 'TempShow',
+						classOpen = postfixes[2],
+						classDisabled = postfixes[3],
+						tempClass = postfixes[4],
 						selectStr = 'selected',
 						selected,
 						currValue,
@@ -78,7 +89,7 @@
 						inputEvt = 'oninput' in _input[0] ? 'input' : 'keyup';
 
 				function _populate() {
-					var $options = $original.wrap('<div class="' + pluginName + 'HideSelect">').children(),
+					var $options = $original.wrap('<div class="' + postfixes[5] + '">').children(),
 							_$li = '<ul>',
 							visibleParent = $items.closest(':visible').children(':hidden'),
 							maxHeight = options.maxHeight,
@@ -109,12 +120,12 @@
 					}
 
 					$wrapper.add($original).off(bindSufix);
-					$outerWrapper.data(pluginName, true).prop('class', pluginName + 'Wrapper ' + $original.prop('class') + ' ' + classDisabled);
+					$outerWrapper.data(pluginName, true).prop('class', postfixes[6] + ' ' + $original.prop('class') + ' ' + classDisabled);
 
 					if ( !$original.prop('disabled') ){
 						// Not disabled, so... Removing disabled class and bind hover
 						$outerWrapper.removeClass(classDisabled).hover(function(){
-							$(this).toggleClass(pluginName + 'Hover');
+							$(this).toggleClass(postfixes[7]);
 						});
 
 						// Click on label and :focus on original select will open the options box

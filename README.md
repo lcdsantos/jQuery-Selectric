@@ -291,6 +291,18 @@ $(function(){
 		<td>Boolean</td>
 		<td>Expand options box past wrapper</td>
 	</tr>
+	<tr>
+		<td>customClass</td>
+		<td>{
+		prefix: "selectric",<br/>
+		postfixes: "Input Items <br/>Open Disabled <br/>TempShow HideSelect <br/>Wrapper Hover",<br/>
+		camelCase: true }
+		</td>
+		<td>Object</td>
+		<td>Custom classes. Default "selectricInput", "selectricItems", etc.<br/>
+		With camelCase: false -> "selectric-input", "selectric-items", etc.
+		</td>
+	</tr>
 </table>
 
 ##Public methods:
