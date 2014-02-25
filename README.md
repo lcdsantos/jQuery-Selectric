@@ -294,9 +294,9 @@ $(function(){
 	<tr>
 		<td>customClass</td>
 		<td>{<br/>
-		<em>prefix:<em> "selectric",<br/>
-		<em>postfixes:<em> "Input Items <br/>Open Disabled <br/>TempShow HideSelect <br/>Wrapper Hover",<br/>
-		<em>camelCase:<em> true
+		<em>prefix:</em> "selectric",<br/>
+		<em>postfixes:</em> "Input Items <br/>Open Disabled <br/>TempShow HideSelect <br/>Wrapper Hover",<br/>
+		<em>camelCase:</em> true
 		<br/>}</td>
 		<td>Object</td>
 		<td>Custom classes. Default <br/>"selectricInput", "selectricItems", etc.<br/>
