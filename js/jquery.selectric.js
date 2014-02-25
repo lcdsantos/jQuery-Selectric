@@ -44,7 +44,8 @@
 							arrowButtonMarkup: '<b class="button">&#x25be;</b>',
 							disableOnMobile: true,
 							openOnHover: false,
-							expandToItemText: false
+							expandToItemText: false,
+							responsiveSelect: false
 						}, options);
 
 				if (options.disableOnMobile && /android|ip(hone|od|ad)/i.test(navigator.userAgent)) return;
@@ -107,7 +108,11 @@
 					}
 
 					$wrapper.add($original).off(bindSufix);
-					$outerWrapper.data(pluginName, true).prop('class', pluginName + 'Wrapper ' + $original.prop('class') + ' ' + classDisabled);
+
+                    /* add a responsive class if option is activ */
+                    if ( options.responsiveSelect ) var responsiveClass = pluginName + 'Wrapper-responsive ';
+
+					$outerWrapper.data(pluginName, true).prop('class', pluginName + 'Wrapper ' + responsiveClass + $original.prop('class') + ' ' + classDisabled);
 
 					if ( !$original.prop('disabled') ){
 						// Not disabled, so... Removing disabled class and bind hover
