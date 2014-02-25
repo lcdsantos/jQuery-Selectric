@@ -39,6 +39,10 @@ Put styles in your CSS and change it to your taste :D
   cursor: pointer;
 }
 
+.selectricWrapper-responsive {
+  width: 100%;
+}
+
 .selectric {
   border: 1px solid #DDD;
   background: #F8F8F8;
