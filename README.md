@@ -293,14 +293,14 @@ $(function(){
 	</tr>
 	<tr>
 		<td>customClass</td>
-		<td>{
-		prefix: "selectric",<br/>
-		postfixes: "Input Items <br/>Open Disabled <br/>TempShow HideSelect <br/>Wrapper Hover",<br/>
-		camelCase: true }
-		</td>
+		<td>{<br/>
+		<em>prefix:<em> "selectric",<br/>
+		<em>postfixes:<em> "Input Items <br/>Open Disabled <br/>TempShow HideSelect <br/>Wrapper Hover",<br/>
+		<em>camelCase:<em> true
+		<br/>}</td>
 		<td>Object</td>
-		<td>Custom classes. Default "selectricInput", "selectricItems", etc.<br/>
-		With camelCase: false -> "selectric-input", "selectric-items", etc.
+		<td>Custom classes. Default <br/>"selectricInput", "selectricItems", etc.<br/>
+		With camelCase: false <br/>"selectric-input", "selectric-items", etc.
 		</td>
 	</tr>
 </table>
