@@ -29,9 +29,11 @@
 				// /[\377]/g // y
 				var k, d = '40-46 50-53 54-57 62-70 71-74 61 47 77'.replace(/\d+/g, '\\3$&').split(' ');
 
-				for (k in d)
+				for (k in d) {
+					if (!d.hasOwnProperty(k))
+						return;
 					s = s.toLowerCase().replace(RegExp('[' + d[k] + ']', 'g'), 'aeiouncy'.charAt(k));
-
+        }
 				return s;
 			},
 			init = function(element, options) {
