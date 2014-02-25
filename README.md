@@ -291,6 +291,12 @@ $(function(){
 		<td>Boolean</td>
 		<td>Expand options box past wrapper</td>
 	</tr>
+	<tr>
+		<td>responsiveSelect</td>
+		<td>false</td>
+		<td>Boolean</td>
+		<td>The select element become responsive</td>
+	</tr>
 </table>
 
 ##Public methods:
