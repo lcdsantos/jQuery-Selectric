@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.6.2 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.6.3 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -46,15 +46,32 @@
               arrowButtonMarkup: '<b class="button">&#x25be;</b>',
               disableOnMobile: true,
               openOnHover: false,
-              expandToItemText: false
-            }, options);
+              expandToItemText: false,
+              responsive: false,
+              customClass: {
+                prefix: 'selectric',
+                postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive',
+                camelCase: true
+              }
+            }, options),
+            customClass = options.customClass,
+            postfixes = customClass.postfixes.split(' '),
+            arrClasses = [],
+            currPostfix;
 
         if (options.disableOnMobile && /android|ip(hone|od|ad)/i.test(navigator.userAgent)) return;
 
+        // generate classNames for elements
+        while (currPostfix = postfixes.shift())
+          arrClasses.push(customClass.camelCase ?
+            customClass.prefix + currPostfix :
+            (customClass.prefix + currPostfix).replace(/([A-Z])/g, "-$&").toLowerCase()
+          );
+
         var $original = $(element),
-            _input = $('<input type="text" class="' + pluginName + 'Input"/>'),
-            $wrapper = $('<div class="' + pluginName + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
-            $items = $('<div class="' + pluginName + 'Items" tabindex="-1"></div>'),
+            _input = $('<input type="text" class="' + arrClasses[0] + '"/>'),
+            $wrapper = $('<div class="' + customClass.prefix + '"><p class="label"/>' + options.arrowButtonMarkup + '</div>'),
+            $items = $('<div class="' + arrClasses[1] + '" tabindex="-1"></div>'),
             $outerWrapper = $original.data(pluginName, true).wrap('<div>').parent().append($wrapper.add($items).add(_input)),
             selectItems = [],
             isOpen,
@@ -65,9 +82,9 @@
             $win = $(window),
             clickBind = 'click' + bindSufix,
             resetStr,
-            classOpen = pluginName + 'Open',
-            classDisabled = pluginName + 'Disabled',
-            tempClass = pluginName + 'TempShow',
+            classOpen = arrClasses[2],
+            classDisabled = arrClasses[3],
+            tempClass = arrClasses[4],
             selectStr = 'selected',
             selected,
             currValue,
@@ -77,11 +94,11 @@
             optionsLength,
             inputEvt = 'oninput' in _input[0] ? 'input' : 'keyup';
 
+        $original.wrap('<div class="' + arrClasses[5] + '">');
+
         function _populate() {
-          var $options = $original.wrap('<div class="' + pluginName + 'HideSelect">').children(),
+          var $options = $original.children();
               _$li = '<ul>',
-              visibleParent = $items.closest(':visible').children(':hidden'),
-              maxHeight = options.maxHeight,
               selectedIndex = $options.filter(':' + selectStr).index();
 
           currValue = (selected = ~selectedIndex ? selectedIndex : 0);
@@ -109,12 +126,12 @@
           }
 
           $wrapper.add($original).off(bindSufix);
-          $outerWrapper.data(pluginName, true).prop('class', pluginName + 'Wrapper ' + $original.prop('class') + ' ' + classDisabled);
+          $outerWrapper.data(pluginName, true).prop('class', [arrClasses[6], $original.prop('class'), classDisabled, options.responsive ? arrClasses[8] : ''].join(' '));
 
           if ( !$original.prop('disabled') ){
             // Not disabled, so... Removing disabled class and bind hover
             $outerWrapper.removeClass(classDisabled).hover(function(){
-              $(this).toggleClass(pluginName + 'Hover');
+              $(this).toggleClass(arrClasses[7]);
             });
 
             // Click on label and :focus on original select will open the options box
@@ -187,6 +204,13 @@
             });
           } else
             _input.prop('disabled', true);
+        }
+
+        _populate();
+
+        function _calculateOptionsDimensions(){
+          var visibleParent = $items.closest(':visible').children(':hidden'),
+              maxHeight = options.maxHeight;
 
           // Calculate options box height
           // Set a temporary class on the hidden parent of the element
@@ -216,12 +240,12 @@
           visibleParent.removeClass(tempClass);
         }
 
-        _populate();
-
         // Open the select options box
         function _open(e) {
           e.preventDefault();
           e.stopPropagation();
+
+          _calculateOptionsDimensions();
 
           // Find any other opened instances of select and close it
           $('.' + classOpen).removeClass(classOpen);
@@ -254,6 +278,7 @@
         // Detect is the options box is inside the window
         function _isInViewport() {
           if (isOpen){
+            _calculateOptionsDimensions();
             $items.css('top', ($outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + $win.height()) ? -itemsHeight : '');
             setTimeout(_isInViewport, 100);
           }
