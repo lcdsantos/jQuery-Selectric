@@ -63,7 +63,7 @@ h4 a:hover {
   color: #F0F0F0;
   overflow: hidden;
   box-shadow: 0 1px 2px 1px #999;
-  min-width: 900px;
+  /*min-width: 900px;*/
 }
 
 .header h1 {
@@ -80,16 +80,16 @@ h4 a:hover {
 
 .header p {
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-  width: 600px;
+  max-width: 600px;
   margin: auto;
   font-size: 22px;
   font-family: 'Ubuntu', sans-serif;
 }
 
 .center {
-  width: 860px;
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 960px;
+  margin: auto;
+  padding: 20px 10px;
 }
 
 .center p a {
@@ -176,6 +176,7 @@ label p {
 					transition: .1s;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
 	text-decoration: none;
+  margin: 0 0 5px;
 }
 
 .bt:hover {
@@ -198,8 +199,8 @@ label p {
 .features {
   font-size: 0;
   padding: 0 0 30px;
-  margin: 0 -20px;
-  width: 720px;
+  /*width: 720px;*/
+  max-width: 720px;
   margin: auto;
 }
 
@@ -214,8 +215,10 @@ label p {
 }
 
 .features li {
-  width: 340px;
-  padding: 10px;
+  /* width: 340px;
+  padding: 10px; */
+  padding: 10px 0;
+  width: 50%;
 }
 
 .features li p {
@@ -262,7 +265,6 @@ label p {
 .features li .ico-latinchar b {
   background-position: 0 -225px;
 }
-
 
 .go-back h1 {
   border-bottom: 1px solid #F0F0F0;
