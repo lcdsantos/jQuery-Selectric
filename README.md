@@ -297,22 +297,20 @@ $(function(){
 	</tr>
 	<tr>
 	  <td>responsive</td>
-	  <td><pre><code>false</code></pre></td>
+	  <td>false</td>
 	  <td>Boolean</td>
 	  <td>The select element become responsive</td>
 	</tr>
-	<tr>
-		<td>customClass</td>
-		<td>{<br>
-			<em>prefix:</em> "selectric",<br>
-			<em>postfixes:</em> "Input Items <br>Open Disabled <br>TempShow HideSelect <br>Wrapper Hover",<br>
-			<em>camelCase:</em> true
-		<br>}</td>
-		<td>Object</td>
-		<td>Custom classes. Default <br>"selectricInput", "selectricItems", etc.<br>
-		With camelCase: false <br>"selectric-input", "selectric-items", etc.
-		</td>
-	</tr>
+  <tr>
+    <td>customClass</td>
+    <td>{
+    prefix: 'selectric',
+    postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive',
+    camelCase: true
+    }</td>
+    <td>Object</td>
+    <td>Custom classes</td>
+  </tr>
 </table>
 
 ##Public methods:
