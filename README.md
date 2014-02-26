@@ -303,10 +303,10 @@ $(function(){
 	</tr>
   <tr>
     <td>customClass</td>
-    <td>{
-    prefix: 'selectric',
-    postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive',
-    camelCase: true
+    <td>{ <br>
+    prefix: 'selectric', <br>
+    postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive', <br>
+    camelCase: true <br>
     }</td>
     <td>Object</td>
     <td>Custom classes</td>
