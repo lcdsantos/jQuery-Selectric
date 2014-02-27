@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.6.3 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.6.4 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -356,7 +356,7 @@
           refresh: _populate,
           destroy: function() {
             // Unbind and remove
-            $items.add($wrapper).remove();
+            $items.add($wrapper).add(_input).remove();
             $original.removeData(pluginName).removeData('value').off(bindSufix + ' refresh destroy open close').unwrap().unwrap();
           },
           open: _open,
