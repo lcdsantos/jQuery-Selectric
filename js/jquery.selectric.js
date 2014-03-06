@@ -11,7 +11,7 @@
  *
  * Selectric Ϟ v1.6.4 - http://lcdsantos.github.io/jQuery-Selectric/
  *
- * Copyright (c) 2013 Leonardo Santos; Dual licensed: MIT/GPL
+ * Copyright (c) 2014 Leonardo Santos; Dual licensed: MIT/GPL
  *
  */
 
