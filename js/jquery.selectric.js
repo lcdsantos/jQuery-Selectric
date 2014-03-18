@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.6.4 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.6.5 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2014 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -150,7 +150,7 @@
               }
             }
 
-            _input.on({
+            _input.off().on({
               keypress: _handleSystemKeys,
               keydown: function(e){
                 _handleSystemKeys(e);
