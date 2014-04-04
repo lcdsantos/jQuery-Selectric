@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.6.5 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.6.6 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2014 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -34,6 +34,7 @@
             return;
           s = s.toLowerCase().replace(RegExp('[' + d[k] + ']', 'g'), 'aeiouncy'.charAt(k));
         }
+
         return s;
       },
       init = function(element, options) {
@@ -133,6 +134,8 @@
             $outerWrapper.removeClass(classDisabled).hover(function(){
               $(this).toggleClass(arrClasses[7]);
             });
+
+            _input.prop('disabled', false);
 
             // Click on label and :focus on original select will open the options box
             options.openOnHover && $wrapper.on('mouseenter' + bindSufix, _open);

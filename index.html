@@ -403,6 +403,7 @@ $('select').selectric('close');   // Close options</code></pre>
     <h2>Demo</h2>
 
     <select>
+      <option value="">çãáèÈÿüÁÉÉêâ</option>
       <option value="">Select with big option mauris nec orci ut tortor consectetuer dapibus mauris nec orci ut tortor consectetuer dapibus</option>
       <option value="apple">Apple</option>
       <option selected value="apricot">Apricot</option>
@@ -567,13 +568,18 @@ $('select').selectric('close');   // Close options</code></pre>
     </div>
   </div>
 
-  <div id="debug"></div>
-
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.selectric.js"></script>
 <script>
   $(function(){
+
     $('select, .select').selectric();
+
+    $('select').prop('disabled', true);
+    $('select').selectric('refresh');
+    $('select').prop('disabled', false);
+    $('select').selectric('refresh');
+
   });
 </script>
 </body>
