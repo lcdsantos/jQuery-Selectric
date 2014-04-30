@@ -38,7 +38,7 @@
         return s;
       },
       init = function(element, options) {
-        var options = $.extend({
+        var options = $.extend(true, {
               onOpen: $.noop,
               onClose: $.noop,
               onChange: $.noop,
