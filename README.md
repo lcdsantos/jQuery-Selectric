@@ -229,87 +229,98 @@ $(function(){
 ##Options:
 
 <table>
-	<tr>
-		<td><strong>Option</strong></td>
-		<td><strong>Default</strong></td>
-		<td><strong>Type</strong></td>
-		<td><strong>Description</strong></td>
-	</tr>
-	<tr>
-		<td>onOpen</td>
-		<td>function() {}</td>
-		<td>Function</td>
-		<td>Function called when select options is opened</td>
-	</tr>
-	<tr>
-		<td>onChange</td>
-		<td>function() {}</td>
-		<td>Function</td>
-		<td>Function called when select options is changed</td>
-	</tr>
-	<tr>
-		<td>onClose</td>
-		<td>function() {}</td>
-		<td>Function</td>
-		<td>Function called when select options is closed</td>
-	</tr>
-	<tr>
-		<td>maxHeight</td>
-		<td>300</td>
-		<td>Integer</td>
-		<td>Maximum height options box can be</td>
-	</tr>
-	<tr>
-		<td>keySearchTimeout</td>
-		<td>500</td>
-		<td>Integer</td>
-		<td>After this time without pressing any key, the search string is reseted</td>
-	</tr>
-	<tr>
-		<td>arrowButtonMarkup</td>
-		<td>&lt;b class=&quot;button&quot;&gt;&amp;#9662;&lt;/b&gt;</td>
-		<td>String [HTML]</td>
-		<td>Markup for open options button</td>
-	</tr>
-	<tr>
-		<td>disableOnMobile</td>
-		<td>true</td>
-		<td>Boolean</td>
-		<td>Initialize plugin on mobile browsers</td>
-	</tr>
-	<tr>
-		<td>border</td>
-		<td>1</td>
-		<td>Integer</td>
-		<td>Options box border thickness</td>
-	</tr>
-	<tr>
-		<td>openOnHover</td>
-		<td>false</td>
-		<td>Boolean</td>
-		<td>Open select box on hover, instead of click</td>
-	</tr>
-	<tr>
-		<td>expandToItemText</td>
-		<td>false</td>
-		<td>Boolean</td>
-		<td>Expand options box past wrapper</td>
-	</tr>
-	<tr>
-	  <td>responsive</td>
-	  <td>false</td>
-	  <td>Boolean</td>
-	  <td>The select element become responsive</td>
-	</tr>
+  <tr>
+    <td><strong>Option</strong></td>
+    <td><strong>Default</strong></td>
+    <td><strong>Type</strong></td>
+    <td><strong>Description</strong></td>
+  </tr>
+  <tr>
+    <td>onOpen</td>
+    <td>function() {}</td>
+    <td>Function</td>
+    <td>Function called when select options open</td>
+  </tr>
+  <tr>
+    <td>onChange</td>
+    <td>function() {}</td>
+    <td>Function</td>
+    <td>Function called when select options change</td>
+  </tr>
+  <tr>
+    <td>onClose</td>
+    <td>function() {}</td>
+    <td>Function</td>
+    <td>Function called when select options close</td>
+  </tr>
+  <tr>
+    <td>maxHeight</td>
+    <td>300</td>
+    <td>Integer</td>
+    <td>Maximum height options box can be</td>
+  </tr>
+  <tr>
+    <td>keySearchTimeout</td>
+    <td>500</td>
+    <td>Integer</td>
+    <td>After this time without pressing any key, the search string is reset</td>
+  </tr>
+  <tr>
+    <td>arrowButtonMarkup</td>
+    <td>&lt;b class=&quot;button&quot;&gt;&amp;#9662;&lt;/b&gt;</td>
+    <td>String [HTML]</td>
+    <td>Markup for open options button</td>
+  </tr>
+  <tr>
+    <td>disableOnMobile</td>
+    <td>true</td>
+    <td>Boolean</td>
+    <td>Initialize plugin on mobile browsers</td>
+  </tr>
+  <tr>
+    <td>border</td>
+    <td>1</td>
+    <td>Integer</td>
+    <td>Options box border thickness</td>
+  </tr>
+  <tr>
+    <td>openOnHover</td>
+    <td>false</td>
+    <td>Boolean</td>
+    <td>Open select box on hover, instead of click</td>
+  </tr>
+  <tr>
+    <td>expandToItemText</td>
+    <td>false</td>
+    <td>Boolean</td>
+    <td>Expand options box past wrapper</td>
+  </tr>
+  <tr>
+    <td>responsive</td>
+    <td>false</td>
+    <td>Boolean</td>
+    <td>The select element become responsive</td>
+  </tr>
   <tr>
     <td>customClass</td>
-    <td>{ <br>
-    prefix: 'selectric', <br>
-    postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive', <br>
-    camelCase: true <br>
+    <td>{
+      prefix: 'selectric',
+      postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive',
+      camelCase: true
     }</td>
     <td>Object</td>
-    <td>Custom classes</td>
+    <td>Custom classes.
+    Every class in 'postfixes' should be separate with a space and follow this exact order: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive'</td>
+  </tr>
+  <tr>
+    <td>optionsItemBuilder</td>
+    <td>'{text}'</td>
+    <td>String or Function</td>
+    <td>Define how each option should be rendered inside its &lt;li&gt; element.
+
+    If it's a string, all keys wrapped in brackets will be replaced by the respective values in itemData. Available keys are: 'value', 'text', 'slug', 'disabled'.
+
+    If it's a function, it will be called with the following parameters: (itemData, element, index). The function must return a string, no keys will be replaced in this method.</td>
   </tr>
 </table>
 
