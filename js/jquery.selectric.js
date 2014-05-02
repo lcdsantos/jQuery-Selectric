@@ -264,6 +264,7 @@
           _input.val('').is(':focus') || _input.focus();
 
           $doc.on(clickBind, _close).on('scroll' + bindSufix, _isInViewport);
+          _isInViewport();
 
           // Delay close effect when openOnHover is true
           if (options.openOnHover){
