@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.6.6 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.6.7 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2014 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -37,6 +37,8 @@
 
         return s;
       },
+      // https://gist.github.com/atesgoral/984375
+      format = function(f){var a=arguments;return(""+f).replace(/{(\d+|(\w+))}/g,function(s,i,p){return p&&a[1]?a[1][p]:a[i]})},
       init = function(element, options) {
         var options = $.extend(true, {
               onOpen: $.noop,
@@ -53,7 +55,8 @@
                 prefix: 'selectric',
                 postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive',
                 camelCase: true
-              }
+              },
+              optionsItemBuilder: '{text}', // function(itemData, element, index)
             }, options),
             customClass = options.customClass,
             postfixes = customClass.postfixes.split(' '),
@@ -63,11 +66,10 @@
         if (options.disableOnMobile && /android|ip(hone|od|ad)/i.test(navigator.userAgent)) return;
 
         // generate classNames for elements
-        while (currPostfix = postfixes.shift())
-          arrClasses.push(customClass.camelCase ?
-            customClass.prefix + currPostfix :
-            (customClass.prefix + currPostfix).replace(/([A-Z])/g, "-$&").toLowerCase()
-          );
+        while (currPostfix = postfixes.shift()){
+          var c = customClass.prefix + currPostfix;
+          arrClasses.push(customClass.camelCase ? c : c.replace(/([A-Z])/g, "-$&").toLowerCase());
+        }
 
         var $original = $(element),
             _input = $('<input type="text" class="' + arrClasses[0] + '"/>'),
@@ -109,7 +111,8 @@
             $options.each(function(i){
               var $elm = $(this),
                   optionText = $elm.html(),
-                  selectDisabled = $elm.prop('disabled');
+                  selectDisabled = $elm.prop('disabled'),
+                  itemBuilder = options.optionsItemBuilder;
 
               selectItems[i] = {
                 value: $elm.val(),
@@ -118,7 +121,10 @@
                 disabled: selectDisabled
               };
 
-              _$li += '<li class="' + (i == currValue ? selectStr : '') + (i == optionsLength - 1 ? ' last' : '') + (selectDisabled ? ' disabled' : '') + '">' + optionText + '</li>';
+              _$li += format('<li class="{1}">{2}</li>',
+                        $.trim([i == currValue ? selectStr : '', i == optionsLength - 1 ? 'last' : '', selectDisabled ? 'disabled' : ''].join(' ')),
+                        $.isFunction(itemBuilder) ? itemBuilder(selectItems[i], $elm, i) : format(itemBuilder, selectItems[i])
+                      );
             });
 
             $items.html(_$li + '</ul>');
@@ -134,8 +140,6 @@
             $outerWrapper.removeClass(classDisabled).hover(function(){
               $(this).toggleClass(arrClasses[7]);
             });
-
-            _input.prop('disabled', false);
 
             // Click on label and :focus on original select will open the options box
             options.openOnHover && $wrapper.on('mouseenter' + bindSufix, _open);
@@ -153,7 +157,7 @@
               }
             }
 
-            _input.off().on({
+            _input.prop('disabled', false).off().on({
               keypress: _handleSystemKeys,
               keydown: function(e){
                 _handleSystemKeys(e);
@@ -231,7 +235,7 @@
 
             // Set a really long width for $outerWrapper
             $outerWrapper.width(9e4);
-            finalWidth = itemsWidth;
+            finalWidth = $items.width();
             // Set scroll bar to auto
             $items.css('overflow', '');
             $outerWrapper.width('');
@@ -256,12 +260,10 @@
           isOpen = true;
           itemsHeight = $items.outerHeight();
 
-          _isInViewport();
-
           // Give dummy input focus
           _input.val('').is(':focus') || _input.focus();
 
-          $doc.on(clickBind, _close);
+          $doc.on(clickBind, _close).on('scroll' + bindSufix, _isInViewport);
 
           // Delay close effect when openOnHover is true
           if (options.openOnHover){
@@ -280,11 +282,8 @@
 
         // Detect is the options box is inside the window
         function _isInViewport() {
-          if (isOpen){
             _calculateOptionsDimensions();
             $items.css('top', ($outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + $win.height()) ? -itemsHeight : '');
-            setTimeout(_isInViewport, 100);
-          }
         }
 
         // Close the select options box

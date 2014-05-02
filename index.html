@@ -83,6 +83,23 @@ label p {
 .copy a:hover {
   color: #F60;
 }
+
+.customOptions .selectricItems .ico {
+  display: inline-block;
+  vertical-align: middle;
+  zoom: 1;
+  *display: inline;
+  height: 30px;
+  width: 30px;
+  margin: 0 6px 0 0;
+  background: url(img/browser-icons.png) no-repeat;
+}
+
+.customOptions .selectricItems .ico-chrome  { background-position: 0 0; }
+.customOptions .selectricItems .ico-firefox { background-position: -30px 0; }
+.customOptions .selectricItems .ico-ie      { background-position: -60px 0; }
+.customOptions .selectricItems .ico-opera   { background-position: -90px 0; }
+.customOptions .selectricItems .ico-safari  { background-position: -120px 0; }
 </style>
 <link rel="stylesheet" href="selectric.css">
 </head>
@@ -294,7 +311,7 @@ label p {
 });</code></pre>
 
     <h2>Options</h2>
-    <p>You can pass a options object as the first parameters when you call the plugin. For example:</p>
+    <p>You can pass an options object as the first parameter when you call the plugin. For example:</p>
     <pre><code class="language-javascript">$('select').selectric({
   maxHeight: 200
 });</code></pre>
@@ -310,19 +327,19 @@ label p {
         <td>onOpen</td>
         <td><pre><code>function() {}</code></pre></td>
         <td>Function</td>
-        <td>Function called when select options is opened</td>
+        <td>Function called when select options open</td>
       </tr>
       <tr>
         <td>onChange</td>
         <td><pre><code>function() {}</code></pre></td>
         <td>Function</td>
-        <td>Function called when select options is changed</td>
+        <td>Function called when select options change</td>
       </tr>
       <tr>
         <td>onClose</td>
         <td><pre><code>function() {}</code></pre></td>
         <td>Function</td>
-        <td>Function called when select options is closed</td>
+        <td>Function called when select options close</td>
       </tr>
       <tr>
         <td>maxHeight</td>
@@ -334,7 +351,7 @@ label p {
         <td>keySearchTimeout</td>
         <td><pre><code>500</code></pre></td>
         <td>Integer</td>
-        <td>After this time without pressing any key, the search string is reseted</td>
+        <td>After this time without pressing any key, the search string is reset</td>
       </tr>
       <tr>
         <td>arrowButtonMarkup</td>
@@ -380,7 +397,15 @@ label p {
   camelCase: true
 }</code></pre></td>
         <td>Object</td>
-        <td>Custom classes</td>
+        <td>Custom classes. <br> Every class in 'postfixes' should be separate with a space and follow this exact order: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive'</td>
+      </tr>
+      <tr>
+        <td>optionsItemBuilder</td>
+        <td><pre><code>{text}</code></pre></td>
+        <td>String or Function</td>
+        <td>Define how each option should be rendered inside its &lt;li&gt; element. <br><br>
+        If it's a string, all keys wrapped in brackets will be replaced by the respective values in itemData. Available keys are: 'value', 'text', 'slug', 'disabled'. <br><br>
+        If it's a function, it will be called with the following parameters: (itemData, element, index). The function must return a string, no keys will be replaced in this method.</td>
       </tr>
     </table>
 
@@ -467,6 +492,15 @@ $('select').selectric('close');   // Close options</code></pre>
       <option value="apple">Apple</option>
       <option value="banana">Banana</option>
       <option value="orange">Orange</option>
+    </select>
+
+    <select class="customOptions">
+      <option value="">Select with icons</option>
+      <option value="firefox">Firefox</option>
+      <option value="chrome">Chrome</option>
+      <option value="safari">Safari</option>
+      <option value="ie">Internet Explorer</option>
+      <option value="opera">Opera</option>
     </select>
 
     <select disabled>
@@ -571,6 +605,12 @@ $('select').selectric('close');   // Close options</code></pre>
 <script src="js/jquery.selectric.js"></script>
 <script>
   $(function(){
+    $('.customOptions').selectric({
+      optionsItemBuilder: function(itemData, element, index){
+        return element.val().length ? '<span class="ico ico-' + element.val() +  '"></span>' + itemData.text : itemData.text;
+      }
+    });
+
     $('select, .select').selectric();
   });
 </script>
