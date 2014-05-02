@@ -9,6 +9,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="style.css">
 	<link rel="stylesheet" href="selectric.css">
+	<link rel="stylesheet" href="customoptions.css">
 	<link rel="stylesheet" href="prism.css">
 
 	<meta property="og:title" content="jQuery Selectric">
@@ -113,105 +114,98 @@
 });</code></pre>
 
 		<h2>Options</h2>
-		<p>You can pass a options object as the first parameters when you call the plugin. For example:</p>
+		<p>You can pass an options object as the first parameter when you call the plugin. For example:</p>
 		<pre><code class="language-javascript">$('select').selectric({
 	maxHeight: 200
 });</code></pre>
 
 		<table>
-			<thead>
-				<tr>
-					<td><strong>Option</strong></td>
-					<td><strong>Default</strong></td>
-					<td><strong>Type</strong></td>
-					<td><strong>Description</strong></td>
-				</tr>
-			</thead>
-
-			<tbody>
-				<tr>
-					<td>onOpen</td>
-					<td>function() {}</td>
-					<td>Function</td>
-					<td>Function called when select options is opened</td>
-				</tr>
-				<tr>
-					<td>onChange</td>
-					<td>function() {}</td>
-					<td>Function</td>
-					<td>Function called when select options is changed</td>
-				</tr>
-				<tr>
-					<td>onClose</td>
-					<td>function() {}</td>
-					<td>Function</td>
-					<td>Function called when select options is closed</td>
-				</tr>
-				<tr>
-					<td>maxHeight</td>
-					<td>300</td>
-					<td>Integer</td>
-					<td>Maximum height options box can be</td>
-				</tr>
-				<tr>
-					<td>keySearchTimeout</td>
-					<td>500</td>
-					<td>Integer</td>
-					<td>After this time without pressing any key, the search string is reseted</td>
-				</tr>
-				<tr>
-					<td>arrowButtonMarkup</td>
-					<td>&lt;b class=&quot;button&quot;&gt;&amp;#9662;&lt;/b&gt;</td>
-					<td>String [HTML]</td>
-					<td>Markup for open options button</td>
-				</tr>
-				<tr>
-					<td>disableOnMobile</td>
-					<td>true</td>
-					<td>Boolean</td>
-					<td>Initialize plugin on mobile browsers</td>
-				</tr>
-				<tr>
-					<td>margin</td>
-					<td>5</td>
-					<td>Integer</td>
-					<td>Minimum space between opened options and window</td>
-				</tr>
-				<tr>
-					<td>border</td>
-					<td>1</td>
-					<td>Integer</td>
-					<td>Options box border thickness</td>
-				</tr>
-				<tr>
-					<td>openOnHover</td>
-					<td>false</td>
-					<td>Boolean</td>
-					<td>Open select box on hover, instead of click</td>
-				</tr>
-				<tr>
-					<td>expandToItemText</td>
-					<td>false</td>
-					<td>Boolean</td>
-					<td>Expand options box past wrapper</td>
-				</tr>
-				<tr>
-					<td>responsive</td>
-					<td>false</td>
-					<td>Boolean</td>
-					<td>The select element become responsive</td>
-				</tr>
-				<tr>
-					<td>customClass</td>
-					<td>{ <br>
-							prefix: 'selectric', <br>
-							postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive', <br>
-							camelCase: true <br>
-						}</td>
-					<td>Object</td>
-					<td>Custom classes</td>
-				</tr>
-			</tbody>
+			<tr>
+				<td><strong>Option</strong></td>
+				<td><strong>Default</strong></td>
+				<td><strong>Type</strong></td>
+				<td><strong>Description</strong></td>
+			</tr>
+			<tr>
+				<td>onOpen</td>
+				<td><pre><code>function() {}</code></pre></td>
+				<td>Function</td>
+				<td>Function called when select options open</td>
+			</tr>
+			<tr>
+				<td>onChange</td>
+				<td><pre><code>function() {}</code></pre></td>
+				<td>Function</td>
+				<td>Function called when select options change</td>
+			</tr>
+			<tr>
+				<td>onClose</td>
+				<td><pre><code>function() {}</code></pre></td>
+				<td>Function</td>
+				<td>Function called when select options close</td>
+			</tr>
+			<tr>
+				<td>maxHeight</td>
+				<td><pre><code>300</code></pre></td>
+				<td>Integer</td>
+				<td>Maximum height options box can be</td>
+			</tr>
+			<tr>
+				<td>keySearchTimeout</td>
+				<td><pre><code>500</code></pre></td>
+				<td>Integer</td>
+				<td>After this time without pressing any key, the search string is reset</td>
+			</tr>
+			<tr>
+				<td>arrowButtonMarkup</td>
+				<td><pre><code>&lt;b class=&quot;button&quot;&gt;&amp;#9662;&lt;/b&gt;</code></pre></td>
+				<td>String [HTML]</td>
+				<td>Markup for open options button</td>
+			</tr>
+			<tr>
+				<td>disableOnMobile</td>
+				<td><pre><code>true</code></pre></td>
+				<td>Boolean</td>
+				<td>Initialize plugin on mobile browsers</td>
+			</tr>
+			<tr>
+				<td>border</td>
+				<td><pre><code>1</code></pre></td>
+				<td>Integer</td>
+				<td>Options box border thickness</td>
+			</tr>
+			<tr>
+				<td>openOnHover</td>
+				<td><pre><code>false</code></pre></td>
+				<td>Boolean</td>
+				<td>Open select box on hover, instead of click</td>
+			</tr>
+			<tr>
+				<td>expandToItemText</td>
+				<td><pre><code>false</code></pre></td>
+				<td>Boolean</td>
+				<td>Expand options box past wrapper</td>
+			</tr>
+			<tr>
+				<td>responsive</td>
+				<td><pre><code>false</code></pre></td>
+				<td>Boolean</td>
+				<td>The select element become responsive</td>
+			</tr>
+			<tr>
+				<td>customClass</td>
+				<td><pre><code>{ <br>  prefix: 'selectric',<br>  postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive',<br>  camelCase: true <br>}</code></pre></td>
+				<td>Object</td>
+				<td>Custom classes. <br> Every class in 'postfixes' should be separate with a space and follow this exact order: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive'</td>
+			</tr>
+			<tr>
+				<td>optionsItemBuilder</td>
+				<td><pre><code>'{text}'</code></pre></td>
+				<td>String or Function</td>
+				<td>Define how each option should be rendered inside its &lt;li&gt; element. <br><br>
+				If it's a string, all keys wrapped in brackets will be replaced by the respective values in itemData. Available keys are: 'value', 'text', 'slug', 'disabled'. <br><br>
+				If it's a function, it will be called with the following parameters: (itemData, element, index). The function must return a string, no keys will be replaced in this method.</td>
+			</tr>
 		</table>
 
 		<h2>Public methods</h2>
@@ -298,6 +292,15 @@ $('select').selectric('close');   // Close options</code></pre>
 			<option value="apple">Apple</option>
 			<option value="banana">Banana</option>
 			<option value="orange">Orange</option>
+		</select>
+
+		<select class="customOptions">
+			<option value="">Select with icons</option>
+			<option value="firefox">Firefox</option>
+			<option value="chrome">Chrome</option>
+			<option value="safari">Safari</option>
+			<option value="ie">Internet Explorer</option>
+			<option value="opera">Opera</option>
 		</select>
 
 		<select disabled>
@@ -398,6 +401,12 @@ $('select').selectric('close');   // Close options</code></pre>
 <script src="prism.js"></script>
 <script>
 	$(function(){
+		$('.customOptions').selectric({
+			optionsItemBuilder: function(itemData, element, index){
+				return element.val().length ? '<span class="ico ico-' + element.val() +  '"></span>' + itemData.text : itemData.text;
+			}
+		});
+
 		$('select, .select').selectric();
 	});
 

@@ -8,6 +8,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico?v=5">
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Ubuntu">
 	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="customoptions.css">
 	<link rel="stylesheet" href="prism.css">
 	<meta property="og:title" content="jQuery Selectric">
 	<meta property="og:type" content="website">
@@ -194,6 +195,33 @@ $('#callbacks').selectric({
 				<pre><code class="language-javascript">$.get('ajax.html', function(data){
 	$('#ajax').append(data).selectric();
 });</code></pre>
+			</div>
+		</div>
+
+		<div class="demo">
+			<h3>Custom markup for items box</h3>
+
+			<div class="view">
+				<select class="customOptions">
+				  <option value="">Select with icons</option>
+				  <option value="firefox">Firefox</option>
+				  <option value="chrome">Chrome</option>
+				  <option value="safari">Safari</option>
+				  <option value="ie">Internet Explorer</option>
+				  <option value="opera">Opera</option>
+				</select>
+			</div>
+
+			<div class="code">
+				<pre><code class="language-javascript">$(function(){
+	$('.customOptions').selectric({
+		optionsItemBuilder: function(itemData, element, index){
+			return element.val().length ? '<span class="ico ico-' + element.val() +  '"></span>' + itemData.text : itemData.text;
+		}
+	});
+});</code></pre>
+				<br>
+				<pre data-src="customoptions.css"></pre>
 			</div>
 		</div>
 
