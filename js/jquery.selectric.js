@@ -40,7 +40,7 @@
       // https://gist.github.com/atesgoral/984375
       format = function(f){var a=arguments;return(""+f).replace(/{(\d+|(\w+))}/g,function(s,i,p){return p&&a[1]?a[1][p]:a[i]})},
       init = function(element, options) {
-        var options = $.extend(true, {
+        options = $.extend(true, {
               onOpen: $.noop,
               onClose: $.noop,
               onChange: $.noop,
@@ -56,8 +56,9 @@
                 postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive',
                 camelCase: true
               },
-              optionsItemBuilder: '{text}', // function(itemData, element, index)
-            }, options),
+              optionsItemBuilder: '{text}' // function(itemData, element, index)
+            }, options);
+        var
             customClass = options.customClass,
             postfixes = customClass.postfixes.split(' '),
             arrClasses = [],
@@ -66,7 +67,7 @@
         if (options.disableOnMobile && /android|ip(hone|od|ad)/i.test(navigator.userAgent)) return;
 
         // generate classNames for elements
-        while (currPostfix = postfixes.shift()){
+        while ((currPostfix = postfixes.shift())){
           var c = customClass.prefix + currPostfix;
           arrClasses.push(customClass.camelCase ? c : c.replace(/([A-Z])/g, "-$&").toLowerCase());
         }
@@ -100,7 +101,7 @@
         $original.wrap('<div class="' + arrClasses[5] + '">');
 
         function _populate() {
-          var $options = $original.children();
+          var $options = $original.children(),
               _$li = '<ul>',
               selectedIndex = $options.filter(':' + selectStr).index();
 
