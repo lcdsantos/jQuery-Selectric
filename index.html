@@ -101,7 +101,7 @@ label p {
 .customOptions .selectricItems .ico-opera   { background-position: -90px 0; }
 .customOptions .selectricItems .ico-safari  { background-position: -120px 0; }
 </style>
-<link rel="stylesheet" href="selectric.css">
+<link rel="stylesheet" href="dist/selectric.css">
 </head>
 <body>
   <div class="center">
@@ -118,11 +118,7 @@ label p {
     <pre><code>&lt;script src=&quot;js/jquery.selectric.min.js&quot;&gt;&lt;/script&gt;</code></pre>
 
     <p>3. Put styles in your CSS and change it to your taste :D</p>
-    <pre><code>/*======================================================================
-  Selectric
-======================================================================*/
-
-.selectricWrapper {
+    <pre><code>.selectricWrapper {
   position: relative;
   margin: 0 0 10px;
   width: 300px;
@@ -162,8 +158,7 @@ label p {
   color: #BBB;
   text-align: center;
   font: 0/0 a;
-  /* IE Fix */
-  *font: 20px/30px Lucida Sans Unicode, Arial Unicode MS, Arial;
+  *font: 20px/30px Lucida Sans Unicode,Arial Unicode MS,Arial;
 }
 
 .selectric .button:after {
@@ -212,9 +207,6 @@ label p {
   opacity: 0.5;
   cursor: default;
   -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -253,8 +245,6 @@ label p {
   display: block !important;
 }
 
-/* Items box */
-
 .selectricItems {
   display: none;
   position: absolute;
@@ -264,12 +254,10 @@ label p {
   background: #F9F9F9;
   border: 1px solid #CCC;
   z-index: 9998;
-  -webkit-box-shadow: 0 0 10px -6px;
   box-shadow: 0 0 10px -6px;
 }
 
-.selectricItems ul,
-.selectricItems li {
+.selectricItems ul,.selectricItems li {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -602,7 +590,7 @@ $('select').selectric('close');   // Close options</code></pre>
   </div>
 
 <script src="js/jquery.min.js"></script>
-<script src="js/jquery.selectric.js"></script>
+<script src="dist/jquery.selectric.js"></script>
 <script>
   $(function(){
     $('.customOptions').selectric({
