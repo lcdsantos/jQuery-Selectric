@@ -1,7 +1,3 @@
-/*======================================================================
-  Selectric
-======================================================================*/
-
 .selectricWrapper {
   position: relative;
   margin: 0 0 10px;
@@ -42,8 +38,7 @@
   color: #BBB;
   text-align: center;
   font: 0/0 a;
-  /* IE Fix */
-  *font: 20px/30px Lucida Sans Unicode, Arial Unicode MS, Arial;
+  *font: 20px/30px Lucida Sans Unicode,Arial Unicode MS,Arial;
 }
 
 .selectric .button:after {
@@ -92,9 +87,6 @@
   opacity: 0.5;
   cursor: default;
   -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -133,8 +125,6 @@
   display: block !important;
 }
 
-/* Items box */
-
 .selectricItems {
   display: none;
   position: absolute;
@@ -144,12 +134,10 @@
   background: #F9F9F9;
   border: 1px solid #CCC;
   z-index: 9998;
-  -webkit-box-shadow: 0 0 10px -6px;
   box-shadow: 0 0 10px -6px;
 }
 
-.selectricItems ul,
-.selectricItems li {
+.selectricItems ul,.selectricItems li {
   list-style: none;
   padding: 0;
   margin: 0;
