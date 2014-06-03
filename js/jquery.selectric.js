@@ -10,6 +10,7 @@
  *   /'
  *
  * Selectric Ϟ v1.6.7 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Forked by Mardaneus86 - https://github.com/Mardaneus86/jQuery-Selectric/
  *
  * Copyright (c) 2014 Leonardo Santos; Dual licensed: MIT/GPL
  *
