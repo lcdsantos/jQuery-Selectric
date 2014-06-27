@@ -28,10 +28,6 @@ Include **jQuery Selectric:**
 Put styles in your CSS and change it to your taste :D
 
 ```css
-/*======================================================================
-  Selectric
-======================================================================*/
-
 .selectricWrapper {
   position: relative;
   margin: 0 0 10px;
@@ -72,8 +68,7 @@ Put styles in your CSS and change it to your taste :D
   color: #BBB;
   text-align: center;
   font: 0/0 a;
-  /* IE Fix */
-  *font: 20px/30px Lucida Sans Unicode, Arial Unicode MS, Arial;
+  *font: 20px/30px Lucida Sans Unicode,Arial Unicode MS,Arial;
 }
 
 .selectric .button:after {
@@ -122,9 +117,6 @@ Put styles in your CSS and change it to your taste :D
   opacity: 0.5;
   cursor: default;
   -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -163,8 +155,6 @@ Put styles in your CSS and change it to your taste :D
   display: block !important;
 }
 
-/* Items box */
-
 .selectricItems {
   display: none;
   position: absolute;
@@ -174,12 +164,10 @@ Put styles in your CSS and change it to your taste :D
   background: #F9F9F9;
   border: 1px solid #CCC;
   z-index: 9998;
-  -webkit-box-shadow: 0 0 10px -6px;
   box-shadow: 0 0 10px -6px;
 }
 
-.selectricItems ul,
-.selectricItems li {
+.selectricItems ul,.selectricItems li {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -278,12 +266,6 @@ $(function(){
     <td>Initialize plugin on mobile browsers</td>
   </tr>
   <tr>
-    <td>border</td>
-    <td>1</td>
-    <td>Integer</td>
-    <td>Options box border thickness</td>
-  </tr>
-  <tr>
     <td>openOnHover</td>
     <td>false</td>
     <td>Boolean</td>
@@ -322,15 +304,31 @@ $(function(){
 
     If it's a function, it will be called with the following parameters: (itemData, element, index). The function must return a string, no keys will be replaced in this method.</td>
   </tr>
+  <tr>
+    <td>preventWindowScroll</td>
+    <td>true</td>
+    <td>Boolean</td>
+    <td>Prevent scroll on window when using mouse wheel inside options box to match common browsers behavior.</td>
+  </tr>
 </table>
 
 ##Public methods:
 
 ```js
-$('select').selectric('refresh'); // Reconstruct the instance of plugin
-$('select').selectric('destroy'); // Destroy Selectric and go back to normal
+var Selectric = $('select').data('selectric');
+
+Selectric.open();    // Open options
+Selectric.close();   // Close options
+Selectric.destroy(); // Destroy select and go back to normal
+Selectric.refresh(); // Reconstruct the plugin options box
+Selectric.init();    // Reinitialize the plugin
+
+// Or...
 $('select').selectric('open');    // Open options
 $('select').selectric('close');   // Close options
+$('select').selectric('destroy'); // Destroy select and go back to normal
+$('select').selectric('refresh'); // Reconstruct the plugin options box
+$('select').selectric('init');    // Reinitialize the plugin
 ```
 
 ##Browser support:
