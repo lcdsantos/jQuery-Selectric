@@ -100,7 +100,7 @@
 		<h2>How to use</h2>
 
 		<p>1. Make sure to include jQuery in your page:</p>
-		<pre><code class="language-markup">&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+		<pre><code class="language-markup">&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js&quot;&gt;&lt;/script&gt;</code></pre>
 
 		<p>2. Include <strong>jQuery Selectric:</strong></p>
 		<pre><code class="language-markup">&lt;script src=&quot;js/jquery.selectric.min.js&quot;&gt;&lt;/script&gt;</code></pre>
@@ -169,12 +169,6 @@
 				<td>Initialize plugin on mobile browsers</td>
 			</tr>
 			<tr>
-				<td>border</td>
-				<td><pre><code>1</code></pre></td>
-				<td>Integer</td>
-				<td>Options box border thickness</td>
-			</tr>
-			<tr>
 				<td>openOnHover</td>
 				<td><pre><code>false</code></pre></td>
 				<td>Boolean</td>
@@ -206,13 +200,29 @@
 				If it's a string, all keys wrapped in brackets will be replaced by the respective values in itemData. Available keys are: 'value', 'text', 'slug', 'disabled'. <br><br>
 				If it's a function, it will be called with the following parameters: (itemData, element, index). The function must return a string, no keys will be replaced in this method.</td>
 			</tr>
+			<tr>
+			  <td>preventWindowScroll</td>
+			  <td><pre><code>true</code></pre></td>
+			  <td>Boolean</td>
+			  <td>Prevent scroll on window when using mouse wheel inside options box to match common browsers behavior.</td>
+			</tr>
 		</table>
 
 		<h2>Public methods</h2>
-		<pre><code class="language-javascript">$('select').selectric('refresh'); // Reconstruct the instance of plugin
+		<pre><code class="language-javascript">$('select').selectric('open');    // Open options
+$('select').selectric('close');   // Close options
 $('select').selectric('destroy'); // Destroy select and go back to normal
-$('select').selectric('open');    // Open options
-$('select').selectric('close');   // Close options</code></pre>
+$('select').selectric('refresh'); // Reconstruct the plugin options box
+$('select').selectric('init');    // Reinitialize the plugin
+
+// Or...
+var Selectric = $('select').data('selectric');
+
+Selectric.open();    // Open options
+Selectric.close();   // Close options
+Selectric.destroy(); // Destroy select and go back to normal
+Selectric.refresh(); // Reconstruct the plugin options box
+Selectric.init();    // Reinitialize the plugin</code></pre>
 
 		<h2>Browser support</h2>
 
@@ -384,8 +394,7 @@ $('select').selectric('close');   // Close options</code></pre>
 			<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, aliquid alias ipsum facilis dolorum doloremque excepturi consequatur nihil earum corporis. Voluptate molestiae, natus enim soluta sapiente praesentium ex dolorem veniam.</li>
 		</ul>
 
-		<br>
-		<br>
+		<div style="height: 300px;"></div>
 
 		<div class="copy">
 			<p style="float: left;">Project maintained by <b>Leonardo Santos</b> <br>
