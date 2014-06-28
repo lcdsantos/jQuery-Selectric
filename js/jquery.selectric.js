@@ -100,6 +100,15 @@
 
         $original.wrap('<div class="' + arrClasses[5] + '">');
 
+        function _change(){
+          var $wrapContainer = $original.parents("."+arrClasses[6]);
+          $wrapContainer.find("."+ arrClasses[1] +" li."+selectStr).removeClass(selectStr);
+          $wrapContainer.find("."+ arrClasses[1] +" li").eq($original[0].selectedIndex).addClass(selectStr);
+          $wrapContainer.find("."+ customClass.prefix +" .label").text($wrapContainer.find("."+ arrClasses[1] +" li").eq($original[0].selectedIndex).text());
+          selected = $original[0].selectedIndex;
+          currValue = $original.val();
+        }
+
         function _populate() {
           var $options = $original.children(),
               _$li = '<ul>',
@@ -364,7 +373,8 @@
             $original.removeData(pluginName).removeData('value').off(bindSufix + ' refresh destroy open close').unwrap().unwrap();
           },
           open: _open,
-          close: _close
+          close: _close,
+          change: _change
         });
       };
 
