@@ -10,6 +10,7 @@
  *   /'
  *
  * Selectric Ϟ v1.6.7 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Forked by Mardaneus86 - https://github.com/Mardaneus86/jQuery-Selectric/
  *
  * Copyright (c) 2014 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -51,6 +52,7 @@
               openOnHover: false,
               expandToItemText: false,
               responsive: false,
+              viewportHeight: function(element) { return $(window).height(); },
               customClass: {
                 prefix: 'selectric',
                 postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive',
@@ -285,7 +287,7 @@
         // Detect is the options box is inside the window
         function _isInViewport() {
             _calculateOptionsDimensions();
-            $items.css('top', ($outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + $win.height()) ? -itemsHeight : '');
+            $items.css('top', ($outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + options.viewportHeight($items)) ? -itemsHeight : '');
         }
 
         // Close the select options box
