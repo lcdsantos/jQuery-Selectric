@@ -44,6 +44,7 @@
               onOpen: $.noop,
               onClose: $.noop,
               onChange: $.noop,
+              onRefresh: $.noop,
               maxHeight: 300,
               keySearchTimeout: 500,
               arrowButtonMarkup: '<b class="button">&#x25be;</b>',
@@ -212,6 +213,13 @@
             });
           } else
             _input.prop('disabled', true);
+
+          options.onRefresh({
+            'wrapper': $wrapper,
+            'label': $label,
+            'items': $items,
+            'selectItems': selectItems
+          });
         }
 
         _populate();

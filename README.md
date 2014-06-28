@@ -242,6 +242,12 @@ $(function(){
     <td>Function called when select options close</td>
   </tr>
   <tr>
+    <td>onRefresh</td>
+    <td>function() {}</td>
+    <td>Function</td>
+    <td>Function called when the selectric is refreshed (or initialized)</td>
+  </tr>
+  <tr>
     <td>maxHeight</td>
     <td>300</td>
     <td>Integer</td>
