@@ -133,6 +133,10 @@
   border: 1px solid #CCC;
   z-index: 9998;
   box-shadow: 0 0 10px -6px;
+  .selectricAbove & {
+    top: auto;
+    bottom: 100%;
+  }
   ul, li {
     list-style: none;
     padding: 0;

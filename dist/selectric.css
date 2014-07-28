@@ -137,6 +137,11 @@
   box-shadow: 0 0 10px -6px;
 }
 
+.selectricAbove .selectricItems {
+  top: auto;
+  bottom: 100%;
+}
+
 .selectricItems ul,.selectricItems li {
   list-style: none;
   padding: 0;
