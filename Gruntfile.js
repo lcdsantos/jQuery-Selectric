@@ -5,12 +5,8 @@ module.exports = function(grunt) {
 
     copy: {
       main: {
-        files: [{
-          expand: true,
-          src: ['jquery.selectric.js'],
-          dest: 'dist/',
-          filter: 'isFile'
-        }]
+        src: 'src/jquery.selectric.js',
+        dest: 'dist/jquery.selectric.js'
       }
     },
 
@@ -34,7 +30,7 @@ module.exports = function(grunt) {
           banner: '/*! Selectric ϟ v<%= pkg.version %> (<%= grunt.template.today("yyyy-mm-dd") %>) - git.io/tjl9sQ - Copyright (c) <%= grunt.template.today("yyyy") %> Leonardo Santos - Dual licensed: MIT/GPL */\n'
         },
         files: {
-          'dist/jquery.selectric.min.js': ['jquery.selectric.js']
+          'dist/jquery.selectric.min.js': ['src/jquery.selectric.js']
         }
       }
     },
@@ -78,7 +74,7 @@ module.exports = function(grunt) {
           outputStyle: 'compressed'
         },
         files: {
-          'dist/selectric.css': 'selectric.scss'
+          'dist/selectric.css': 'src/selectric.scss'
         }
       }
     },
