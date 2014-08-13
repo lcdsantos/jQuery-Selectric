@@ -1,0 +1,32 @@
+{
+  "name": "jquery-selectric",
+  "description": "Fast, simple and light jQuery plugin to customize HTML selects",
+  "version": "1.7.1",
+  "keywords": [
+    "select",
+    "selectbox",
+    "dropdown",
+    "form",
+    "input",
+    "ui"
+  ],
+  "homepage": "http://lcdsantos.github.io/jQuery-Selectric/",
+  "authors": [
+    {
+      "name": "Leonardo Santos",
+      "email": "leocs.1991@gmail.com"
+    },
+  ],
+  "main": [
+    "dist/jquery.selectric.js",
+    "dist/selectric.css"
+  ],
+  "ignore": [
+    "/.*",
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "jquery": ">= 1.7.0"
+  }
+}
