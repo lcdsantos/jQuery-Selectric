@@ -15,7 +15,7 @@
     {
       "name": "Leonardo Santos",
       "email": "leocs.1991@gmail.com"
-    },
+    }
   ],
   "main": [
     "dist/jquery.selectric.js",
