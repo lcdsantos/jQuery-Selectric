@@ -22,9 +22,13 @@
     "dist/selectric.css"
   ],
   "ignore": [
-    "/.*",
-    ".jshintrc",
-    "**/*.txt"
+    "**/.*",
+    "img",
+    "js",
+    "src",
+    "*.md",
+    "Gruntfile.js",
+    "package.json"
   ],
   "dependencies": {
     "jquery": ">= 1.7.0"
