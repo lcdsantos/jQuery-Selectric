@@ -4,7 +4,7 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 
 * Keyboard navigation (Up/Down/Left/Right/Word search)
 * Easily customizable
-* Pretty lightweight (3,4KB minified and less than 2KB minified/gzip)
+* Pretty lightweight
 * Options box always stay visible
 * Doesn't rely on external libraries (besides jQuery)
 * Word search works with western latin characters set (e.g.: á, ñ, ç...)
@@ -16,7 +16,7 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 Make sure to include jQuery in your page:
 
 ```html
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 ```
 
 Include **jQuery Selectric:**
@@ -165,6 +165,11 @@ Put styles in your CSS and change it to your taste :D
   border: 1px solid #CCC;
   z-index: 9998;
   box-shadow: 0 0 10px -6px;
+}
+
+.selectricAbove .selectricItems {
+  top: auto;
+  bottom: 100%;
 }
 
 .selectricItems ul,.selectricItems li {
