@@ -226,8 +226,13 @@
 
         // Behavior when system keys is pressed
         function _handleSystemKeys(e) {
+          var key = e.keyCode || e.which;
+
+          if ( key == 13 )
+            e.preventDefault();
+
           // Tab / Enter / ESC
-          if ( /^(9|13|27)$/.test(e.keyCode || e.which) ) {
+          if ( /^(9|13|27)$/.test(key) ) {
             e.stopPropagation();
             _select(selected, true);
           }
