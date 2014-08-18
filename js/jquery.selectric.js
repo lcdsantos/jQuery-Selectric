@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.7.1 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.7.2 - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2014 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -243,8 +243,13 @@
 
         // Behavior when system keys is pressed
         function _handleSystemKeys(e) {
+          var key = e.keyCode || e.which;
+
+          if ( key == 13 )
+            e.preventDefault();
+
           // Tab / Enter / ESC
-          if ( /^(9|13|27)$/.test(e.keyCode || e.which) ) {
+          if ( /^(9|13|27)$/.test(key) ) {
             e.stopPropagation();
             _select(selected, true);
           }

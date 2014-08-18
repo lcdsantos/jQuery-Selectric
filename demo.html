@@ -35,6 +35,11 @@
 		box-shadow: 0 0 10px -6px;
 	}
 
+	.selectricAbove .selectricItems {
+		top: auto;
+		bottom: 100%;
+	}
+
 	.selectricItems ul,
 	.selectricItems li {
 		list-style: none;
@@ -175,7 +180,7 @@ $('#callbacks').selectric({
 	},
 	// Or set an onChange function
 	onChange: function(){
-	  alert('Change');
+		alert('Change');
 	},
 	onClose: function(){
 		alert('Close');
@@ -203,12 +208,12 @@ $('#callbacks').selectric({
 
 			<div class="view">
 				<select class="customOptions">
-				  <option value="">Select with icons</option>
-				  <option value="firefox">Firefox</option>
-				  <option value="chrome">Chrome</option>
-				  <option value="safari">Safari</option>
-				  <option value="ie">Internet Explorer</option>
-				  <option value="opera">Opera</option>
+					<option value="">Select with icons</option>
+					<option value="firefox">Firefox</option>
+					<option value="chrome">Chrome</option>
+					<option value="safari">Safari</option>
+					<option value="ie">Internet Explorer</option>
+					<option value="opera">Opera</option>
 				</select>
 			</div>
 
