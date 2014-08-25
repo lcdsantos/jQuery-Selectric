@@ -119,94 +119,110 @@
 	maxHeight: 200
 });</code></pre>
 
-		<table>
-			<tr>
-				<td><strong>Option</strong></td>
-				<td><strong>Default</strong></td>
-				<td><strong>Type</strong></td>
-				<td><strong>Description</strong></td>
-			</tr>
-			<tr>
-				<td>onOpen</td>
-				<td><pre><code>function() {}</code></pre></td>
-				<td>Function</td>
-				<td>Function called when select options open</td>
-			</tr>
-			<tr>
-				<td>onChange</td>
-				<td><pre><code>function() {}</code></pre></td>
-				<td>Function</td>
-				<td>Function called when select options change</td>
-			</tr>
-			<tr>
-				<td>onClose</td>
-				<td><pre><code>function() {}</code></pre></td>
-				<td>Function</td>
-				<td>Function called when select options close</td>
-			</tr>
-			<tr>
-				<td>maxHeight</td>
-				<td><pre><code>300</code></pre></td>
-				<td>Integer</td>
-				<td>Maximum height options box can be</td>
-			</tr>
-			<tr>
-				<td>keySearchTimeout</td>
-				<td><pre><code>500</code></pre></td>
-				<td>Integer</td>
-				<td>After this time without pressing any key, the search string is reset</td>
-			</tr>
-			<tr>
-				<td>arrowButtonMarkup</td>
-				<td><pre><code>&lt;b class=&quot;button&quot;&gt;&amp;#9662;&lt;/b&gt;</code></pre></td>
-				<td>String [HTML]</td>
-				<td>Markup for open options button</td>
-			</tr>
-			<tr>
-				<td>disableOnMobile</td>
-				<td><pre><code>true</code></pre></td>
-				<td>Boolean</td>
-				<td>Initialize plugin on mobile browsers</td>
-			</tr>
-			<tr>
-				<td>openOnHover</td>
-				<td><pre><code>false</code></pre></td>
-				<td>Boolean</td>
-				<td>Open select box on hover, instead of click</td>
-			</tr>
-			<tr>
-				<td>expandToItemText</td>
-				<td><pre><code>false</code></pre></td>
-				<td>Boolean</td>
-				<td>Expand options box past wrapper</td>
-			</tr>
-			<tr>
-				<td>responsive</td>
-				<td><pre><code>false</code></pre></td>
-				<td>Boolean</td>
-				<td>The select element become responsive</td>
-			</tr>
-			<tr>
-				<td>customClass</td>
-				<td><pre><code>{ <br>  prefix: 'selectric',<br>  postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive',<br>  camelCase: true <br>}</code></pre></td>
-				<td>Object</td>
-				<td>Custom classes. <br> Every class in 'postfixes' should be separate with a space and follow this exact order: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive'</td>
-			</tr>
-			<tr>
-				<td>optionsItemBuilder</td>
-				<td><pre><code>'{text}'</code></pre></td>
-				<td>String or Function</td>
-				<td>Define how each option should be rendered inside its &lt;li&gt; element. <br><br>
-				If it's a string, all keys wrapped in brackets will be replaced by the respective values in itemData. Available keys are: 'value', 'text', 'slug', 'disabled'. <br><br>
-				If it's a function, it will be called with the following parameters: (itemData, element, index). The function must return a string, no keys will be replaced in this method.</td>
-			</tr>
-			<tr>
-			  <td>preventWindowScroll</td>
-			  <td><pre><code>true</code></pre></td>
-			  <td>Boolean</td>
-			  <td>Prevent scroll on window when using mouse wheel inside options box to match common browsers behavior.</td>
-			</tr>
-		</table>
+				<table>
+					<tr>
+						<td><strong>Option</strong></td>
+						<td><strong>Default</strong></td>
+						<td><strong>Type</strong></td>
+						<td><strong>Description</strong></td>
+					</tr>
+					<tr>
+						<td>onOpen</td>
+						<td><pre><code>function() {}</code></pre></td>
+						<td>Function</td>
+						<td>Function called when select options open</td>
+					</tr>
+					<tr>
+						<td>onChange</td>
+						<td><pre><code>function() {}</code></pre></td>
+						<td>Function</td>
+						<td>Function called when select options change</td>
+					</tr>
+					<tr>
+						<td>onClose</td>
+						<td><pre><code>function() {}</code></pre></td>
+						<td>Function</td>
+						<td>Function called when select options close</td>
+					</tr>
+					<tr>
+						<td>onRefresh</td>
+						<td><pre><code>function() {}</code></pre></td>
+						<td>Function</td>
+						<td>Function called when the Selectric is refreshed</td>
+					</tr>
+					<tr>
+						<td>maxHeight</td>
+						<td><pre><code>300</code></pre></td>
+						<td>Integer</td>
+						<td>Maximum height options box can be</td>
+					</tr>
+					<tr>
+						<td>keySearchTimeout</td>
+						<td><pre><code>500</code></pre></td>
+						<td>Integer</td>
+						<td>After this time without pressing any key, the search string is reset</td>
+					</tr>
+					<tr>
+						<td>arrowButtonMarkup</td>
+						<td><pre><code>&lt;b class=&quot;button&quot;&gt;&amp;#9662;&lt;/b&gt;</code></pre></td>
+						<td>String [HTML]</td>
+						<td>Markup for open options button</td>
+					</tr>
+					<tr>
+						<td>disableOnMobile</td>
+						<td><pre><code>true</code></pre></td>
+						<td>Boolean</td>
+						<td>Initialize plugin on mobile browsers</td>
+					</tr>
+					<tr>
+						<td>openOnHover</td>
+						<td><pre><code>false</code></pre></td>
+						<td>Boolean</td>
+						<td>Open select box on hover, instead of click</td>
+					</tr>
+					<tr>
+						<td>expandToItemText</td>
+						<td><pre><code>false</code></pre></td>
+						<td>Boolean</td>
+						<td>Expand options box past wrapper</td>
+					</tr>
+					<tr>
+						<td>responsive</td>
+						<td><pre><code>false</code></pre></td>
+						<td>Boolean</td>
+						<td>The select element become responsive</td>
+					</tr>
+					<tr>
+						<td>customClass</td>
+						<td><pre><code>{
+	prefix: 'selectric',
+	postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive',
+	camelCase: true
+}</code></pre></td>
+						<td>Object</td>
+						<td>Custom classes. <br> Every class in 'postfixes' should be separate with a space and follow this exact order: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive'</td>
+					</tr>
+					<tr>
+						<td>optionsItemBuilder</td>
+						<td><pre><code>'{text}'</code></pre></td>
+						<td>String or Function</td>
+						<td>Define how each option should be rendered inside its &lt;li&gt; element. <br><br>
+						If it's a string, all keys wrapped in brackets will be replaced by the respective values in itemData. Available keys are: 'value', 'text', 'slug', 'disabled'. <br><br>
+						If it's a function, it will be called with the following parameters: (itemData, element, index). The function must return a string, no keys will be replaced in this method.</td>
+					</tr>
+					<tr>
+						<td>preventWindowScroll</td>
+						<td><pre><code>true</code></pre></td>
+						<td>Boolean</td>
+						<td>Prevent scroll on window when using mouse wheel inside options box to match common browsers behavior.</td>
+					</tr>
+					<tr>
+						<td>inheritOriginalWidth</td>
+						<td><pre><code>false</code></pre></td>
+						<td>Boolean</td>
+						<td>Inherit width from original element</td>
+					</tr>
+				</table>
 
 		<h2>Public methods</h2>
 		<pre><code class="language-javascript">$('select').selectric('open');    // Open options
