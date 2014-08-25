@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.7.2 - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.7.3 (2014-08-25) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2014 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -24,6 +24,7 @@
       defaults = {
         onOpen: $.noop,
         onClose: $.noop,
+        onRefresh: $.noop,
         onChange: function(elm) { $(elm).change(); },
         maxHeight: 300,
         keySearchTimeout: 500,
@@ -33,6 +34,7 @@
         expandToItemText: false,
         responsive: false,
         preventWindowScroll: true,
+        inheritOriginalWidth: false,
         customClass: {
           prefix: pluginName,
           postfixes: classList,
@@ -102,7 +104,8 @@
 
           // Generate classNames for elements
           var customClass = _this.options.customClass,
-              postfixes = customClass.postfixes.split(' ');
+              postfixes = customClass.postfixes.split(' '),
+              originalWidth = $original.width();
 
           $.each(classList.split(' '), function(i, elm){
             var c = customClass.prefix + postfixes[i];
@@ -119,12 +122,16 @@
             open    : _open,
             close   : _close,
             destroy : _destroy,
-            refresh : _populate,
+            refresh : _refresh,
             init    : _init
           };
 
           $original.on(eventTriggers).wrap('<div class="' + _this.classes.hideselect + '">');
           $.extend(_this, eventTriggers);
+
+          if ( _this.options.inheritOriginalWidth && originalWidth > 0 ) {
+            $outerWrapper.width(originalWidth);
+          }
 
           isEnabled = true;
 
@@ -239,6 +246,11 @@
             });
           } else
             $input.prop('disabled', true);
+        }
+
+        function _refresh() {
+          _this.options.onRefresh(element);
+          _populate();
         }
 
         // Behavior when system keys is pressed

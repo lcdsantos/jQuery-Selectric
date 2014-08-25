@@ -73,7 +73,6 @@
   .selectric {
     border-color: #CCC;
     background: #F0F0F0;
-    z-index: 9999;
   }
   .selectricItems {
     display: block;
@@ -131,7 +130,7 @@
   left: 0;
   background: #F9F9F9;
   border: 1px solid #CCC;
-  z-index: 9998;
+  z-index: -1;
   box-shadow: 0 0 10px -6px;
   .selectricAbove & {
     top: auto;

@@ -214,7 +214,7 @@ Initialize **jQuery Selectric:**
 ```html
 <script>
 $(function(){
-	$('select').selectric();
+  $('select').selectric();
 });
 </script>
 ```
@@ -245,6 +245,12 @@ $(function(){
     <td>function() {}</td>
     <td>Function</td>
     <td>Function called when select options close</td>
+  </tr>
+  <tr>
+    <td>onRefresh</td>
+    <td>function() {}</td>
+    <td>Function</td>
+    <td>Function called when the Selectric is refreshed</td>
   </tr>
   <tr>
     <td>maxHeight</td>
@@ -314,6 +320,12 @@ $(function(){
     <td>true</td>
     <td>Boolean</td>
     <td>Prevent scroll on window when using mouse wheel inside options box to match common browsers behavior.</td>
+  </tr>
+  <tr>
+    <td>inheritOriginalWidth</td>
+    <td>false</td>
+    <td>Boolean</td>
+    <td>Inherit width from original element</td>
   </tr>
 </table>
 

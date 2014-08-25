@@ -1,13 +1,15 @@
 {
   "name": "jquery-selectric",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-contrib-uglify": "~0.5.1",
-    "grunt-banner": "~0.2.2",
-    "grunt-contrib-copy": "~0.5.0",
-    "grunt-sass": "~0.14.0",
-    "grunt-cssbeautifier": "~0.1.1",
-    "grunt-jquerymanifest": "~0.1.4"
+    "gulp": "~3.8.7",
+    "gulp-uglify": "~0.3.1",
+    "gulp-rename": "~1.2.0",
+    "gulp-header": "~1.0.5",
+    "gulp-bump": "~0.1.11",
+    "through2": "~0.6.1",
+    "gulp-util": "~3.0.0",
+    "win-spawn": "~2.0.0",
+    "gulp-autoprefixer": "0.0.8"
   }
 }

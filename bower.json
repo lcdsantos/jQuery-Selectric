@@ -1,7 +1,7 @@
 {
   "name": "jquery-selectric",
   "description": "Fast, simple and light jQuery plugin to customize HTML selects",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "keywords": [
     "select",
     "selectbox",

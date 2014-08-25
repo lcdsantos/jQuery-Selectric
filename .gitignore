@@ -1,5 +1,6 @@
 package.json
-Gruntfile.js
+gulpfile.js
 node_modules
 .npm-debug.log
 tmp
+.sass-cache

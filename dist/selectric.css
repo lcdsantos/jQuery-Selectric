@@ -1,3 +1,6 @@
+/*======================================================================
+  Selectric
+======================================================================*/
 .selectricWrapper {
   position: relative;
   margin: 0 0 10px;
@@ -15,7 +18,6 @@
   position: relative;
   border-radius: 2px;
 }
-
 .selectric .label {
   display: block;
   white-space: nowrap;
@@ -27,7 +29,6 @@
   color: #444;
   min-height: 18px;
 }
-
 .selectric .button {
   display: block;
   position: absolute;
@@ -38,9 +39,9 @@
   color: #BBB;
   text-align: center;
   font: 0/0 a;
-  *font: 20px/30px Lucida Sans Unicode,Arial Unicode MS,Arial;
+  /* IE Fix */
+  *font: 20px/30px Lucida Sans Unicode, Arial Unicode MS, Arial;
 }
-
 .selectric .button:after {
   content: " ";
   position: absolute;
@@ -59,11 +60,9 @@
 .selectricHover .selectric {
   border-color: #CCC;
 }
-
 .selectricHover .selectric .button {
   color: #888;
 }
-
 .selectricHover .selectric .button:after {
   border-top-color: #888;
 }
@@ -71,13 +70,10 @@
 .selectricOpen {
   z-index: 9999;
 }
-
 .selectricOpen .selectric {
   border-color: #CCC;
   background: #F0F0F0;
-  z-index: 9999;
 }
-
 .selectricOpen .selectricItems {
   display: block;
 }
@@ -87,7 +83,10 @@
   opacity: 0.5;
   cursor: default;
   -webkit-touch-callout: none;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .selectricHideSelect {
@@ -96,7 +95,6 @@
   width: 0;
   height: 0;
 }
-
 .selectricHideSelect select {
   position: absolute;
   left: -100%;
@@ -125,6 +123,7 @@
   display: block !important;
 }
 
+/* Items box */
 .selectricItems {
   display: none;
   position: absolute;
@@ -133,16 +132,14 @@
   left: 0;
   background: #F9F9F9;
   border: 1px solid #CCC;
-  z-index: 9998;
+  z-index: -1;
   box-shadow: 0 0 10px -6px;
 }
-
 .selectricAbove .selectricItems {
   top: auto;
   bottom: 100%;
 }
-
-.selectricItems ul,.selectricItems li {
+.selectricItems ul, .selectricItems li {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -150,7 +147,6 @@
   line-height: 20px;
   min-height: 20px;
 }
-
 .selectricItems li {
   display: block;
   padding: 5px;
@@ -159,18 +155,15 @@
   color: #666;
   cursor: pointer;
 }
-
 .selectricItems li.selected {
   background: #EFEFEF;
   color: #444;
   border-top-color: #E0E0E0;
 }
-
 .selectricItems li:hover {
   background: #F0F0F0;
   color: #444;
 }
-
 .selectricItems li.disabled {
   background: #F5F5F5;
   color: #BBB;
