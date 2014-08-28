@@ -125,13 +125,16 @@
 .selectricItems {
   display: none;
   position: absolute;
-  overflow: auto;
   top: 100%;
   left: 0;
   background: #F9F9F9;
   border: 1px solid #CCC;
   z-index: -1;
   box-shadow: 0 0 10px -6px;
+  .selectricScroll {
+    height: 100%;
+    overflow: auto;
+  }
   .selectricAbove & {
     top: auto;
     bottom: 100%;

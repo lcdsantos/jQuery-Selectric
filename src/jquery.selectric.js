@@ -2,12 +2,9 @@
   'use strict';
 
   var pluginName = 'selectric',
-      classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive Above',
+      classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive Above Scroll',
       bindSufix = '.sl',
       defaults = {
-        onOpen: $.noop,
-        onClose: $.noop,
-        onRefresh: $.noop,
         onChange: function(elm) { $(elm).change(); },
         maxHeight: 300,
         keySearchTimeout: 500,
@@ -53,6 +50,18 @@
         previousEnabledItem: function(selectItems, selected) {
           while ( selectItems[ selected = (selected > 0 ? selected : selectItems.length) - 1 ].disabled ){}
           return selected;
+        },
+        toDash: function(str){
+          return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        },
+        triggerCallback: function(fn, scope){
+          var elm = scope.element,
+              func = scope.options['on' + fn];
+
+          if ( $.isFunction(func) )
+            func.call(elm, elm);
+
+          $(elm).trigger(pluginName + '-' + _utils.toDash(fn));
         }
       },
       $doc = $(document),
@@ -60,7 +69,7 @@
       Selectric = function(element, opts) {
         var _this = this,
             $original = $(element),
-            $input, $items, $wrapper, $label, $outerWrapper, $li,
+            $input, $items, $itemsScroll, $wrapper, $label, $outerWrapper, $li,
             isOpen = false,
             isEnabled = false,
             selected,
@@ -75,6 +84,9 @@
         function _init(opts) {
           _this.options = $.extend(true, {}, defaults, _this.options, opts);
           _this.classes = {};
+          _this.element = element,
+
+          _utils.triggerCallback('BeforeInit', _this);
 
           // Disable on mobile browsers
           if ( _this.options.disableOnMobile && isMobile ){
@@ -86,18 +98,19 @@
           _destroy(true);
 
           // Generate classNames for elements
-          var customClass = _this.options.customClass,
-              postfixes = customClass.postfixes.split(' '),
+          var customClass   = _this.options.customClass,
+              postfixes     = customClass.postfixes.split(' '),
               originalWidth = $original.width();
 
           $.each(classList.split(' '), function(i, elm){
             var c = customClass.prefix + postfixes[i];
-            _this.classes[elm.toLowerCase()] = customClass.camelCase ? c : c.replace(/([A-Z])/g, "-$&").toLowerCase();
+            _this.classes[elm.toLowerCase()] = customClass.camelCase ? c : _utils.toDash(c);
           });
 
-          $input        = $('<input class="' + _this.classes.input + '"/>').prop('readonly', isMobile);
-          $items        = $('<div class="' + _this.classes.items + '" tabindex="-1"></div>');
-          $wrapper      = $('<div class="' + customClass.prefix + '">' + _this.options.arrowButtonMarkup + '</div>');
+          $input        = $('<input/>', { 'class': _this.classes.input, 'readonly': isMobile });
+          $items        = $('<div/>',   { 'class': _this.classes.items, 'tabindex': -1 });
+          $itemsScroll  = $('<div/>',   { 'class': _this.classes.scroll });
+          $wrapper      = $('<div/>',   { 'class': customClass.prefix, 'html': _this.options.arrowButtonMarkup });
           $label        = $('<p class="label"/>');
           $outerWrapper = $original.wrap('<div>').parent().append($wrapper.prepend($label), $items, $input);
 
@@ -112,9 +125,8 @@
           $original.on(eventTriggers).wrap('<div class="' + _this.classes.hideselect + '">');
           $.extend(_this, eventTriggers);
 
-          if ( _this.options.inheritOriginalWidth && originalWidth > 0 ) {
+          if ( _this.options.inheritOriginalWidth && originalWidth > 0 )
             $outerWrapper.width(originalWidth);
-          }
 
           isEnabled = true;
 
@@ -134,10 +146,10 @@
           if ( optionsLength = $options.length ) {
             // Build options markup
             $options.each(function(i){
-              var $elm = $(this),
-                  optionText = $elm.html(),
+              var $elm           = $(this),
+                  optionText     = $elm.html(),
                   selectDisabled = $elm.prop('disabled'),
-                  itemBuilder = _this.options.optionsItemBuilder;
+                  itemBuilder    = _this.options.optionsItemBuilder;
 
               _this.items[i] = {
                 value    : $elm.val(),
@@ -152,14 +164,14 @@
               );
             });
 
-            $items.html(_$li + '</ul>');
+            $items.append( $itemsScroll.html(_$li + '</ul>') );
 
             $label.html(_this.items[currValue].text);
           }
 
           $wrapper.add($original).off(bindSufix);
 
-          $outerWrapper.prop('class', [_this.classes.disabled, _this.classes.wrapper, $original.prop('class').replace(/\S+/g, pluginName + '-$&'), _this.options.responsive ? _this.classes.responsive : ''].join(' '));
+          $outerWrapper.prop('class', [_this.classes.wrapper, $original.prop('class').replace(/\S+/g, pluginName + '-$&'), _this.options.responsive ? _this.classes.responsive : ''].join(' '));
 
           if ( !$original.prop('disabled') ){
             // Not disabled, so... Removing disabled class and bind hover
@@ -227,12 +239,16 @@
               // We need to 'return false' to avoid that
               return false;
             });
-          } else
+          } else {
+            $outerWrapper.addClass(_this.classes.disabled);
             $input.prop('disabled', true);
+          }
+
+          _utils.triggerCallback('Init', _this);
         }
 
         function _refresh() {
-          _this.options.onRefresh(element);
+          _utils.triggerCallback('Refresh', _this);
           _populate();
         }
 
@@ -285,6 +301,8 @@
 
         // Open the select options box
         function _open(e) {
+          _utils.triggerCallback('BeforeOpen', _this);
+
           if (e){
             e.preventDefault();
             e.stopPropagation();
@@ -308,9 +326,9 @@
 
             // Prevent window scroll when using mouse wheel inside items box
             if ( _this.options.preventWindowScroll ){
-              $doc.on('mousewheel' + bindSufix + ' DOMMouseScroll' + bindSufix, '.' + _this.classes.items, function(e){
+              $doc.on('mousewheel' + bindSufix + ' DOMMouseScroll' + bindSufix, '.' + _this.classes.scroll, function(e){
                 var orgEvent = e.originalEvent,
-                    scrollTop = $items.scrollTop(),
+                    scrollTop = $(this).scrollTop(),
                     deltaY = 0;
 
                 if ( 'detail' in orgEvent ) { deltaY = orgEvent.detail * -1; }
@@ -335,7 +353,7 @@
             $outerWrapper.addClass(_this.classes.open);
             _detectItemVisibility(selected);
 
-            _this.options.onOpen(element);
+            _utils.triggerCallback('Open', _this);
           }
         }
 
@@ -347,6 +365,8 @@
 
         // Close the select options box
         function _close(e) {
+          _utils.triggerCallback('BeforeClose', _this);
+
           if ( !e && currValue != selected ){
             var text = _this.items[selected].text;
 
@@ -355,13 +375,13 @@
               .prop('selectedIndex', currValue = selected)
               .data('value', text);
 
-            _this.options.onChange(element);
+            _utils.triggerCallback('Change', _this);
 
             // Change label text
             $label.html(text);
           }
 
-          // Remove click on document
+          // Remove custom events on document
           $doc.off(bindSufix);
 
           // Remove visible class to hide options box
@@ -369,7 +389,7 @@
 
           isOpen = false;
 
-          _this.options.onClose(element);
+          _utils.triggerCallback('Close', _this);
         }
 
         // Select option
@@ -388,10 +408,10 @@
         function _detectItemVisibility(index) {
           var liHeight = $li.eq(index).outerHeight(),
               liTop = $li[index].offsetTop,
-              itemsScrollTop = $items.scrollTop(),
+              itemsScrollTop = $itemsScroll.scrollTop(),
               scrollT = liTop + liHeight * 2;
 
-          $items.scrollTop(
+          $itemsScroll.scrollTop(
             scrollT > itemsScrollTop + itemsHeight ? scrollT - itemsHeight :
               liTop - liHeight < itemsScrollTop ? liTop - liHeight :
                 itemsScrollTop

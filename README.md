@@ -28,6 +28,9 @@ Include **jQuery Selectric:**
 Put styles in your CSS and change it to your taste :D
 
 ```css
+/*======================================================================
+  Selectric
+======================================================================*/
 .selectricWrapper {
   position: relative;
   margin: 0 0 10px;
@@ -45,7 +48,6 @@ Put styles in your CSS and change it to your taste :D
   position: relative;
   border-radius: 2px;
 }
-
 .selectric .label {
   display: block;
   white-space: nowrap;
@@ -57,7 +59,6 @@ Put styles in your CSS and change it to your taste :D
   color: #444;
   min-height: 18px;
 }
-
 .selectric .button {
   display: block;
   position: absolute;
@@ -68,9 +69,9 @@ Put styles in your CSS and change it to your taste :D
   color: #BBB;
   text-align: center;
   font: 0/0 a;
-  *font: 20px/30px Lucida Sans Unicode,Arial Unicode MS,Arial;
+  /* IE Fix */
+  *font: 20px/30px Lucida Sans Unicode, Arial Unicode MS, Arial;
 }
-
 .selectric .button:after {
   content: " ";
   position: absolute;
@@ -89,11 +90,9 @@ Put styles in your CSS and change it to your taste :D
 .selectricHover .selectric {
   border-color: #CCC;
 }
-
 .selectricHover .selectric .button {
   color: #888;
 }
-
 .selectricHover .selectric .button:after {
   border-top-color: #888;
 }
@@ -101,13 +100,10 @@ Put styles in your CSS and change it to your taste :D
 .selectricOpen {
   z-index: 9999;
 }
-
 .selectricOpen .selectric {
   border-color: #CCC;
   background: #F0F0F0;
-  z-index: 9999;
 }
-
 .selectricOpen .selectricItems {
   display: block;
 }
@@ -117,7 +113,10 @@ Put styles in your CSS and change it to your taste :D
   opacity: 0.5;
   cursor: default;
   -webkit-touch-callout: none;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .selectricHideSelect {
@@ -126,7 +125,6 @@ Put styles in your CSS and change it to your taste :D
   width: 0;
   height: 0;
 }
-
 .selectricHideSelect select {
   position: absolute;
   left: -100%;
@@ -155,24 +153,26 @@ Put styles in your CSS and change it to your taste :D
   display: block !important;
 }
 
+/* Items box */
 .selectricItems {
   display: none;
   position: absolute;
-  overflow: auto;
   top: 100%;
   left: 0;
   background: #F9F9F9;
   border: 1px solid #CCC;
-  z-index: 9998;
+  z-index: -1;
   box-shadow: 0 0 10px -6px;
 }
-
+.selectricItems .selectricScroll {
+  height: 100%;
+  overflow: auto;
+}
 .selectricAbove .selectricItems {
   top: auto;
   bottom: 100%;
 }
-
-.selectricItems ul,.selectricItems li {
+.selectricItems ul, .selectricItems li {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -180,7 +180,6 @@ Put styles in your CSS and change it to your taste :D
   line-height: 20px;
   min-height: 20px;
 }
-
 .selectricItems li {
   display: block;
   padding: 5px;
@@ -189,18 +188,15 @@ Put styles in your CSS and change it to your taste :D
   color: #666;
   cursor: pointer;
 }
-
 .selectricItems li.selected {
   background: #EFEFEF;
   color: #444;
   border-top-color: #E0E0E0;
 }
-
 .selectricItems li:hover {
   background: #F0F0F0;
   color: #444;
 }
-
 .selectricItems li.disabled {
   background: #F5F5F5;
   color: #BBB;
@@ -229,26 +225,52 @@ $(function(){
     <td><strong>Description</strong></td>
   </tr>
   <tr>
-    <td>onOpen</td>
-    <td>function() {}</td>
+    <td>onBeforeInit</td>
+    <td><pre><code>function(element) {}</code></pre></td>
     <td>Function</td>
-    <td>Function called when select options open</td>
+    <td>Function called before plugin initialize</td>
+  </tr>
+  <tr>
+    <td>onInit</td>
+    <td><pre><code>function(element) {}</code></pre></td>
+    <td>Function</td>
+    <td>Function called plugin has been fully initialized</td>
+  </tr>
+  <tr>
+    <td>onBeforeOpen</td>
+    <td><pre><code>function(element) {}</code></pre></td>
+    <td>Function</td>
+    <td>Function called before select options opens</td>
+  </tr>
+  <tr>
+    <td>onOpen</td>
+    <td><pre><code>function(element) {}</code></pre></td>
+    <td>Function</td>
+    <td>Function called after select options opens</td>
+  </tr>
+  <tr>
+    <td>onBeforeClose</td>
+    <td><pre><code>function(element) {}</code></pre></td>
+    <td>Function</td>
+    <td>Function called before select options closes</td>
+  </tr>
+  <tr>
+    <td>onClose</td>
+    <td><pre><code>function(element) {}</code></pre></td>
+    <td>Function</td>
+    <td>Function called after select options closes</td>
   </tr>
   <tr>
     <td>onChange</td>
-    <td>function() {}</td>
+    <td><pre><code>function(element) {
+&nbsp;&nbsp;$(element).change();
+}</code></pre></td>
     <td>Function</td>
     <td>Function called when select options change</td>
   </tr>
   <tr>
-    <td>onClose</td>
-    <td>function() {}</td>
-    <td>Function</td>
-    <td>Function called when select options close</td>
-  </tr>
-  <tr>
     <td>onRefresh</td>
-    <td>function() {}</td>
+    <td><pre><code>function(element) {}</code></pre></td>
     <td>Function</td>
     <td>Function called when the Selectric is refreshed</td>
   </tr>
@@ -326,6 +348,65 @@ $(function(){
     <td>false</td>
     <td>Boolean</td>
     <td>Inherit width from original element</td>
+  </tr>
+</table>
+
+##Events
+
+All events are called on original element, first argument is the original element too. And can be bound like this:
+
+```js
+$('select').on('selectric-eventname', function(element){
+  // your code
+});
+```
+
+`eventname` can be one of the following:
+
+<table>
+  <tr>
+    <td><strong>Event name</strong></td>
+    <td><strong>Description</strong></td>
+  </tr>
+
+  <tr>
+    <td><code>selectric-before-init</code></td>
+    <td>Fired before plugin initialize</td>
+  </tr>
+
+  <tr>
+    <td><code>selectric-init</code></td>
+    <td>Fired plugin has been fully initialized</td>
+  </tr>
+
+  <tr>
+    <td><code>selectric-before-open</code></td>
+    <td>Fired before select options opens</td>
+  </tr>
+
+  <tr>
+    <td><code>selectric-open</code></td>
+    <td>Fired after select options opens</td>
+  </tr>
+
+  <tr>
+    <td><code>selectric-before-close</code></td>
+    <td>Fired before select options closes</td>
+  </tr>
+
+  <tr>
+    <td><code>selectric-close</code></td>
+    <td>Fired after select options closes</td>
+  </tr>
+
+  <tr>
+    <td><code>selectric-change</code></td>
+    <td>Fired when select options change</td>
+  </tr>
+
+  <tr>
+    <td><code>selectric-refresh</code></td>
+    <td>Fired when the Selectric is refreshed</td>
   </tr>
 </table>
 
