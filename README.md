@@ -226,51 +226,51 @@ $(function(){
   </tr>
   <tr>
     <td>onBeforeInit</td>
-    <td><pre><code>function(element) {}</code></pre></td>
+    <td>function(element) {}</td>
     <td>Function</td>
     <td>Function called before plugin initialize</td>
   </tr>
   <tr>
     <td>onInit</td>
-    <td><pre><code>function(element) {}</code></pre></td>
+    <td>function(element) {}</td>
     <td>Function</td>
     <td>Function called plugin has been fully initialized</td>
   </tr>
   <tr>
     <td>onBeforeOpen</td>
-    <td><pre><code>function(element) {}</code></pre></td>
+    <td>function(element) {}</td>
     <td>Function</td>
     <td>Function called before select options opens</td>
   </tr>
   <tr>
     <td>onOpen</td>
-    <td><pre><code>function(element) {}</code></pre></td>
+    <td>function(element) {}</td>
     <td>Function</td>
     <td>Function called after select options opens</td>
   </tr>
   <tr>
     <td>onBeforeClose</td>
-    <td><pre><code>function(element) {}</code></pre></td>
+    <td>function(element) {}</td>
     <td>Function</td>
     <td>Function called before select options closes</td>
   </tr>
   <tr>
     <td>onClose</td>
-    <td><pre><code>function(element) {}</code></pre></td>
+    <td>function(element) {}</td>
     <td>Function</td>
     <td>Function called after select options closes</td>
   </tr>
   <tr>
     <td>onChange</td>
-    <td><pre><code>function(element) {
+    <td>function(element) {
 &nbsp;&nbsp;$(element).change();
-}</code></pre></td>
+    }</td>
     <td>Function</td>
     <td>Function called when select options change</td>
   </tr>
   <tr>
     <td>onRefresh</td>
-    <td><pre><code>function(element) {}</code></pre></td>
+    <td>function(element) {}</td>
     <td>Function</td>
     <td>Function called when the Selectric is refreshed</td>
   </tr>
@@ -319,9 +319,9 @@ $(function(){
   <tr>
     <td>customClass</td>
     <td>{
-      prefix: 'selectric',
-      postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive',
-      camelCase: true
+&nbsp;&nbsp;prefix: 'selectric',
+&nbsp;&nbsp;postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive',
+&nbsp;&nbsp;camelCase: true
     }</td>
     <td>Object</td>
     <td>Custom classes.
