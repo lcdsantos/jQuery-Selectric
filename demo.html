@@ -16,68 +16,11 @@
 	<meta property="og:url" content="http://lcdsantos.github.io/jQuery-Selectric/demo.html">
 	<meta property="og:site_name" content="jQuery Selectric">
 	<meta property="og:image" content="http://lcdsantos.github.io/jQuery-Selectric/share.jpg">
+
+	<link rel="stylesheet" id="theme" href="themes/default/selectric.css">
+	<style id="template" style="display: none;"></style>
 </head>
 <body>
-	<style id="theme"></style>
-	<style id="items-style">
-	/* Items box */
-
-	.selectricItems {
-		display: none;
-		position: absolute;
-		overflow: auto;
-		top: 100%;
-		left: 0;
-		background: #F9F9F9;
-		border: 1px solid #CCC;
-		z-index: 9998;
-		-webkit-box-shadow: 0 0 10px -6px;
-		box-shadow: 0 0 10px -6px;
-	}
-
-	.selectricAbove .selectricItems {
-		top: auto;
-		bottom: 100%;
-	}
-
-	.selectricItems ul,
-	.selectricItems li {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-		min-height: 20px;
-		line-height: 20px;
-		font-size: 12px;
-	}
-
-	.selectricItems li {
-		padding: 5px;
-		cursor: pointer;
-		display: block;
-		border-bottom: 1px solid #EEE;
-		color: #666;
-		border-top: 1px solid #FFF;
-	}
-
-	.selectricItems li.selected {
-		background: #EFEFEF;
-		color: #444;
-		border-top-color: #E0E0E0;
-	}
-
-	.selectricItems li:hover {
-		background: #F0F0F0;
-		color: #444;
-	}
-
-	.selectricItems li.disabled {
-		background: #F5F5F5;
-		color: #BBB;
-		border-top-color: #FAFAFA;
-		cursor: default;
-	}
-	</style>
-
 	<div class="center">
 		<div class="go-back">
 			<h1><a href="index.html">jQuery Selectric <img src="img/icon.png" alt="Selectric"></a></h1>
@@ -169,22 +112,30 @@
 			</div>
 
 			<div class="code">
-				<pre><code class="language-javascript">// You can bind to change event on original element
-$('#callbacks').change(function(){
-	alert('Change');
-});
+				<pre><code class="language-javascript">// With events
+$('#callbacks')
+  .on('selectric-before-open', function(){
+    alert('Before open');
+  })
+  .on('selectric-before-close', function(){
+    alert('Before close');
+  })
+  // You can bind to change event on original element
+  .on('change', function() {
+    alert('Change');
+  });
 
+// Or, with plugin options
 $('#callbacks').selectric({
-	onOpen: function(){
-		alert('Open');
-	},
-	// Or set an onChange function
-	onChange: function(){
-		alert('Change');
-	},
-	onClose: function(){
-		alert('Close');
-	}
+  onOpen: function() {
+    alert('Open');
+  },
+  onChange: function() {
+    alert('Change');
+  },
+  onClose: function() {
+    alert('Close');
+  }
 });</code></pre>
 			</div>
 		</div>
@@ -200,6 +151,8 @@ $('#callbacks').selectric({
 				<pre><code class="language-javascript">$.get('ajax.html', function(data){
 	$('#ajax').append(data).selectric();
 });</code></pre>
+				<br>
+				<pre data-src="ajax.html"></pre>
 			</div>
 		</div>
 
@@ -238,6 +191,8 @@ $('#callbacks').selectric({
 		<form autocomplete="off">
 			<select name="presets" id="presets">
 				<option value="default">Default</option>
+				<option value="plus">Plus</option>
+				<option value="square">Square</option>
 				<option value="modern">Modern</option>
 				<option value="modern-v2">Modern v2</option>
 				<option value="flat-dark-blue">Flat (dark blue)</option>
@@ -249,54 +204,82 @@ $('#callbacks').selectric({
 		</form>
 
 		<div class="custom">
-			<div id="base-color">
-				<p>Base color</p>
-				<div class="colorpick"><input type="text" value="#F8F8F8" name="base-color"></div>
+			<h3>Colors</h3>
+			<div class="row">
+				<div class="col">
+					<div id="base-color">
+						<p>Primary</p>
+						<div class="colorpick"><input type="text" value="#F8F8F8" name="base-color"></div>
+					</div>
+				</div>
+				<div class="col">
+					<div id="secondary-color">
+						<p>Secondary</p>
+						<div class="colorpick"><input type="text" value="#DDD" name="secondary-color"></div>
+					</div>
+				</div>
 			</div>
 
-			<div id="secondary-color">
-				<p>Secondary color</p>
-				<div class="colorpick"><input type="text" value="#DDD" name="secondary-color"></div>
+			<div class="row">
+				<div class="col">
+					<div id="label-color">
+						<p>Label</p>
+						<div class="colorpick"><input type="text" value="#444" name="label-color"></div>
+					</div>
+				</div>
 			</div>
 
-			<div id="label-color">
-				<p>Label color</p>
-				<div class="colorpick"><input type="text" value="#444" name="label-color"></div>
+			<div class="row">
+				<div class="col">
+					<div id="button-background-color">
+						<p>Button background</p>
+						<div class="colorpick"><input type="text" value="" name="button-background-color"></div>
+					</div>
+				</div>
+
+				<div class="col">
+					<div id="button-color">
+						<p>Button color</p>
+						<div class="colorpick"><input type="text" value="#444" name="button-color-color"></div>
+					</div>
+				</div>
 			</div>
 
-			<div id="button-background-color">
-				<p>Button background</p>
-				<div class="colorpick"><input type="text" value="" name="button-background-color"></div>
-			</div>
+			<h3>Sizes</h3>
 
 			<div id="border-width-slider">
 				<p>Border width <span class="value"></span></p>
-				<div class="slider" data-val="1"></div>
+				<div class="slider" data-val="1" data-min="0" data-max="10"></div>
 			</div>
 
 			<div id="border-round-slider">
 				<p>Roundness <span class="value"></span></p>
-				<div class="slider" data-val="2"></div>
+				<div class="slider" data-val="2" data-min="0" data-max="100"></div>
 			</div>
 
 			<div id="height-slider">
 				<p>Height <span class="value"></span></p>
-				<div class="slider" data-val="30"></div>
+				<div class="slider" data-val="30" data-min="22" data-max="50"></div>
 			</div>
 
 			<div id="indent-slider">
 				<p>Label indent <span class="value"></span></p>
-				<div class="slider" data-val="6"></div>
+				<div class="slider" data-val="6" data-min="6" data-max="30"></div>
 			</div>
 
 			<div id="button-size-slider">
 				<p>Arrow button size <span class="value"></span></p>
-				<div class="slider" data-val="18"></div>
+				<div class="slider" data-val="18" data-min="12" data-max="50"></div>
 			</div>
 
 			<div id="button-round-slider">
 				<p>Arrow button roundness <span class="value"></span></p>
-				<div class="slider" data-val="0"></div>
+				<div class="slider" data-val="0" data-min="0" data-max="100"></div>
+			</div>
+
+			<div id="button-position-slider">
+				<p>Arrow button position <span class="value"></span></p>
+				<div class="slider" data-val="0" data-min="0" data-max="30"></div>
 			</div>
 		</div>
 
@@ -304,499 +287,8 @@ $('#callbacks').selectric({
 		<a href="#" target="_blank" class="bt-view-raw" onclick="window.open(this.href, 'raw-css', 'width=720,height=480,scrollbars=1'); return false;"><span>&#x203a;</span> View RAW CSS</a>
 	</div>
 
-<div style="display: none;">
-<div id="shared-prop">
-	/*=====================================================================
-		Selectric
-	======================================================================*/
-
-	.selectricWrapper {
-		position: relative;
-		margin: 0 0 10px;
-		width: 300px;
-		cursor: pointer;
-	}
-
-	.selectricDisabled {
-		filter: alpha(opacity=50);
-		opacity: 0.5;
-		cursor: default;
-		-webkit-touch-callout: none;
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none;
-	}
-
-	.selectricOpen {
-		z-index: 9999;
-	}
-
-	.selectricOpen .selectricItems {
-		display: block;
-	}
-
-	.selectricHideSelect {
-		position: relative;
-		overflow: hidden;
-		width: 0;
-		height: 0;
-	}
-
-	.selectricHideSelect select {
-		position: absolute;
-		left: -100%;
-		display: none;
-	}
-
-	.selectricInput {
-		position: absolute !important;
-		top: 0 !important;
-		left: 0 !important;
-		overflow: hidden !important;
-		clip: rect(0, 0, 0, 0) !important;
-		margin: 0 !important;
-		padding: 0 !important;
-		width: 1px !important;
-		height: 1px !important;
-		outline: none !important;
-		border: none !important;
-		_font: 0/0 a;
-		background: none !important;
-	}
-
-	.selectricTempShow {
-		position: absolute !important;
-		visibility: hidden !important;
-		display: block !important;
-	}
-</div>
-
-<div id="default">
-	.selectricOpen .selectric {
-		border-color: #CCC;
-		background: #F0F0F0;
-		z-index: 9999;
-	}
-
-	.selectric {
-		border: 1px solid #DDD;
-		background: #F8F8F8;
-		position: relative;
-		border-radius: 2px;
-	}
-
-	.selectric .label {
-		display: block;
-		white-space: nowrap;
-		overflow: hidden;
-		margin: 0 30px 0 0;
-		padding: 6px;
-		font-size: 12px;
-		line-height: 18px;
-		color: #444;
-		min-height: 18px;
-	}
-
-	.selectric .button {
-		display: block;
-		position: absolute;
-		right: 0;
-		top: 0;
-		width: 30px;
-		height: 30px;
-		color: #BBB;
-		text-align: center;
-		font: 0/0 a;
-		/* IE Fix */
-		*font: 20px/30px Lucida Sans Unicode, Arial Unicode MS, Arial;
-	}
-
-	.selectric .button:after {
-		content: " ";
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		margin: auto;
-		width: 0;
-		height: 0;
-		border: 4px solid transparent;
-		border-top-color: #BBB;
-		border-bottom: none;
-	}
-
-	.selectricHover .selectric {
-		border-color: #CCC;
-	}
-
-	.selectricHover .selectric .button {
-		color: #888;
-	}
-
-	.selectricHover .selectric .button:after {
-		border-top-color: #888;
-	}
-</div>
-
-<div id="modern">
-	.selectricOpen .selectric {
-		border-color: #CCC;
-		background: #F0F0F0;
-		z-index: 9999;
-	}
-
-	.selectric {
-		background-color: #f5f5f5;
-		background-image: -webkit-linear-gradient(#fff, #e6e6e6);
-		background-image: -o-linear-gradient(#fff, #e6e6e6);
-		background-image: linear-gradient(#fff, #e6e6e6);
-		background-repeat: repeat-x;
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
-		border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-		border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-		*background-color: #e6e6e6;
-		filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-		border: 1px solid #cccccc;
-		*border: 0;
-		border-bottom-color: #b3b3b3;
-		border-radius: 3px;
-		position: relative;
-	}
-
-	.selectric .label {
-		display: block;
-		white-space: nowrap;
-		overflow: hidden;
-		margin: 0 30px 0 0;
-		padding: 6px;
-		font-size: 12px;
-		line-height: 18px;
-		color: #444;
-		min-height: 18px;
-	}
-
-	.selectric .button {
-		display: block;
-		position: absolute;
-		right: 0;
-		top: 0;
-		width: 30px;
-		height: 30px;
-		color: #BBB;
-		text-align: center;
-		font: 0/0 a;
-		/* IE Fix */
-		*font: 20px/30px Lucida Sans Unicode, Arial Unicode MS, Arial;
-	}
-
-	.selectric .button:after {
-		content: " ";
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		margin: auto;
-		width: 0;
-		height: 0;
-		border: 4px solid transparent;
-		border-top-color: #BBB;
-		border-bottom: none;
-	}
-
-	.selectricHover .selectric {
-		border-color: #CCC;
-	}
-
-	.selectricHover .selectric .button {
-		color: #888;
-	}
-
-	.selectricHover .selectric .button:after {
-		border-top-color: #888;
-	}
-</div>
-
-<div id="modern-v2">
-	.selectricOpen .selectric {
-		border-color: #CCC;
-		background: #F0F0F0;
-		z-index: 9999;
-	}
-
-	.selectricOpen .selectricItems {
-		display: block;
-	}
-
-	.selectric {
-		box-shadow: 0 1px 2px 0 #DDD, 0 1px 0 0 #FFF inset;
-		background: #E9E9E9;
-		background: -webkit-linear-gradient(#F9F9F9, #EEE);
-		background: -o-linear-gradient(#F9F9F9, #EEE);
-		background: linear-gradient(#F9F9F9, #EEE);
-		border: 1px solid #CCC;
-		border-radius: 4px;
-		position: relative;
-	}
-
-	.selectric .label {
-		display: block;
-		white-space: nowrap;
-		overflow: hidden;
-		margin: 0 30px 0 0;
-		padding: 6px;
-		font-size: 12px;
-		line-height: 18px;
-		color: #444;
-		min-height: 18px;
-		text-shadow: 0 1px #FFF;
-	}
-
-	.selectric .button {
-		position: absolute;
-		right: 0;
-		top: 0;
-		height: 30px;
-		width: 30px;
-		font: 0/0 a;
-		border-left: 1px solid #D2D2D2;
-	}
-
-	.selectric .button:after {
-		content: " ";
-		zoom: 1;
-		position: absolute;
-		overflow: hidden;
-		top: 13px;
-		right: 12px;
-		width: 0;
-		height: 0;
-		border: 4px solid transparent;
-		border-top-color: #BBB;
-		border-bottom: none;
-	}
-
-	.selectric .button:before {
-		content: " ";
-		float: left;
-		height: 100%;
-		border-right: 1px solid #FFF;
-	}
-
-	.selectricHover .selectric {
-		border-color: #CCC;
-	}
-
-	.selectricHover .selectric .button {
-		color: #888;
-	}
-
-	.selectricHover .selectric .button:after {
-		border-top-color: #888;
-	}
-</div>
-
-<div id="flat-dark-blue">
-	.selectricOpen .selectric {
-		background: #242836;
-		z-index: 9999;
-	}
-
-	.selectricOpen .selectricItems {
-		display: block;
-	}
-
-	.selectric {
-		background: #333745;
-		position: relative;
-		border-radius: 6px;
-	}
-
-	.selectric .label {
-		display: block;
-		white-space: nowrap;
-		overflow: hidden;
-		margin: 0 40px 0 0;
-		padding: 6px 10px;
-		font-size: 12px;
-		line-height: 26px;
-		color: #FFF;
-		min-height: 26px;
-	}
-
-	.selectric .button {
-		zoom: 1;
-		position: absolute;
-		font: 0/0 a;
-		overflow: hidden;
-		margin: auto;
-		top: 0;
-		right: 16px;
-		bottom: 0;
-		width: 0;
-		height: 0;
-		border: 4px solid transparent;
-		border-top-color: #FFF;
-		border-bottom: none;
-	}
-
-	.selectricHover .selectric .button {
-		border-top-color: #DDD;
-	}
-</div>
-
-<div id="flat-red">
-	.selectricOpen .selectric {
-		background: #D11530;
-		z-index: 9999;
-	}
-
-	.selectricOpen .selectricItems {
-		display: block;
-	}
-
-	.selectric {
-		background: #EA2E49;
-		position: relative;
-		border-radius: 6px;
-	}
-
-	.selectric .label {
-		display: block;
-		white-space: nowrap;
-		overflow: hidden;
-		margin: 0 40px 0 0;
-		padding: 6px 10px;
-		font-size: 12px;
-		line-height: 26px;
-		color: #FFF;
-		min-height: 26px;
-	}
-
-	.selectric .button {
-		zoom: 1;
-		position: absolute;
-		font: 0/0 a;
-		overflow: hidden;
-		margin: auto;
-		top: 0;
-		right: 16px;
-		bottom: 0;
-		width: 0;
-		height: 0;
-		border: 4px solid transparent;
-		border-top-color: #FFF;
-		border-bottom: none;
-	}
-
-	.selectricHover .selectric .button {
-		border-top-color: #DDD;
-	}
-</div>
-
-<div id="flat-light-blue">
-	.selectricOpen .selectric {
-		background: #0088C0;
-		z-index: 9999;
-	}
-
-	.selectricOpen .selectricItems {
-		display: block;
-	}
-
-	.selectric {
-		background: #00A1D9;
-		position: relative;
-		border-radius: 6px;
-	}
-
-	.selectric .label {
-		display: block;
-		white-space: nowrap;
-		overflow: hidden;
-		margin: 0 40px 0 0;
-		padding: 6px 10px;
-		font-size: 12px;
-		line-height: 26px;
-		color: #FFF;
-		min-height: 26px;
-	}
-
-	.selectric .button {
-		zoom: 1;
-		position: absolute;
-		font: 0/0 a;
-		overflow: hidden;
-		margin: auto;
-		top: 0;
-		right: 16px;
-		bottom: 0;
-		width: 0;
-		height: 0;
-		border: 4px solid transparent;
-		border-top-color: #FFF;
-		border-bottom: none;
-	}
-
-	.selectricHover .selectric .button {
-		border-top-color: #DDD;
-	}
-</div>
-
-<div id="flat-radiant-orchid">
-	.selectricOpen .selectric {
-		background: #934585;
-		z-index: 9999;
-	}
-
-	.selectricOpen .selectricItems {
-		display: block;
-	}
-
-	.selectric {
-		background: #B163A3;
-		position: relative;
-		border-radius: 6px;
-	}
-
-	.selectric .label {
-		display: block;
-		white-space: nowrap;
-		overflow: hidden;
-		margin: 0 40px 0 0;
-		padding: 6px 10px;
-		font-size: 12px;
-		line-height: 26px;
-		color: #FFF;
-		min-height: 26px;
-	}
-
-	.selectric .button {
-		zoom: 1;
-		position: absolute;
-		font: 0/0 a;
-		overflow: hidden;
-		margin: auto;
-		top: 0;
-		right: 16px;
-		bottom: 0;
-		width: 0;
-		height: 0;
-		border: 4px solid transparent;
-		border-top-color: #FFF;
-		border-bottom: none;
-	}
-
-	.selectricHover .selectric .button {
-		border-top-color: #DDD;
-	}
-</div>
-</div>
-
 <script src="js/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
 <script src="js/jquery.selectric.js"></script>
 <script src="prism.js"></script>
 <script src="js/jquery.minicolors.min.js"></script>
@@ -808,6 +300,7 @@ $('#callbacks').selectric({
 	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
 	ga('create', 'UA-42240250-1', 'lcdsantos.github.io');
+	ga('require', 'displayfeatures');
 	ga('send', 'pageview');
 </script>
 </body>

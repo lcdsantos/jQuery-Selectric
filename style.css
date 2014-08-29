@@ -116,6 +116,12 @@ pre {
   overflow: auto;
 }
 
+code, pre {
+  -moz-tab-size: 2;
+    -o-tab-size: 2;
+       tab-size: 2;
+}
+
 table {
   width: 100%;
   background: #F5F2F0;
@@ -365,6 +371,12 @@ label p {
   font-size: 22px;
 }
 
+.theme-roller h3 {
+  margin: 20px 0 5px;
+  font-size: 20px;
+}
+
+
 .theme-roller .colorpick {
   position: relative;
 }
@@ -375,7 +387,7 @@ label p {
   border: 1px solid #CCC;
   border-radius: 4px;
   font-size: 12px;
-  padding-right: 5px;
+  text-indent: 5px;
 }
 
 .theme-roller .colorpick .minicolors-theme-default .minicolors-swatch,
@@ -393,7 +405,7 @@ label p {
 
 .theme-roller p {
   font-size: 12px;
-  margin: 10px 0 0;
+  margin: 10px 0 2px;
 }
 
 .theme-roller p .value {
@@ -762,3 +774,9 @@ label p {
   border: 0;
   overflow: hidden;
 }
+
+.fl { float: left; }
+.fr { float: right; }
+
+.row { width: 100%; display: table; table-layout: fixed; }
+.col { display: table-cell; vertical-align: bottom; }
