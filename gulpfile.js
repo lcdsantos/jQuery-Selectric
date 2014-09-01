@@ -94,7 +94,7 @@ var sass = function(options){
       });
     }
   });
-}
+};
 
 module.exports = sass;
 
@@ -116,4 +116,4 @@ gulp.task('bump', function(){
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('default', ['js', 'js-min', 'css', 'bump']);
+gulp.task('default', ['bump', 'js', 'js-min', 'css']);
