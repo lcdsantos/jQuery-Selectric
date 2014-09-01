@@ -79,7 +79,8 @@
             finalWidth,
             optionsLength,
             eventTriggers,
-            isMobile = /android|ip(hone|od|ad)/i.test(navigator.userAgent);
+            isMobile = /android|ip(hone|od|ad)/i.test(navigator.userAgent),
+            tabindex = $original.prop('tabindex');
 
         function _init(opts) {
           _this.options = $.extend(true, {}, defaults, _this.options, opts);
@@ -187,7 +188,10 @@
               isOpen ? _close() : _open(e);
             });
 
-            $input.prop('disabled', false).off().on({
+            $input.prop({
+              tabindex: tabindex,
+              disabled: false
+            }).off().on({
               keypress: _handleSystemKeys,
               keydown: function(e){
                 _handleSystemKeys(e);
@@ -228,6 +232,8 @@
                 });
               }
             });
+
+            $original.prop('tabindex', false);
 
             // Remove styles from items box
             // Fix incorrect height when refreshed is triggered with fewer options
@@ -315,7 +321,7 @@
             $('.' + _this.classes.open).removeClass(_this.classes.open);
 
             isOpen = true;
-            itemsHeight = $items.outerHeight(),
+            itemsHeight = $items.outerHeight();
             itemsInnerHeight = $items.height();
 
             // Give dummy input focus
@@ -423,7 +429,7 @@
           if ( isEnabled ){
             $items.add($wrapper).add($input).remove();
             !preserveData && $original.removeData(pluginName).removeData('value');
-            $original.off(bindSufix).off(eventTriggers).unwrap().unwrap();
+            $original.prop('tabindex', tabindex).off(bindSufix).off(eventTriggers).unwrap().unwrap();
             isEnabled = false;
           }
         }
