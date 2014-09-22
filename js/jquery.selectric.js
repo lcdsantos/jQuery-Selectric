@@ -9,13 +9,13 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.8.0 (2014-08-28) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.8.2 (2014-09-22) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2014 Leonardo Santos; Dual licensed: MIT/GPL
  *
  */
 
-;(function ($) {
+;(function($) {
   'use strict';
 
   var pluginName = 'selectric',
@@ -38,6 +38,17 @@
           camelCase: true
         },
         optionsItemBuilder: '{text}' // function(itemData, element, index)
+      },
+      hooks = {
+        add: function(callbackName, hookName, fn) {
+          if ( !this[callbackName] )
+            this[callbackName] = {};
+
+          this[callbackName][hookName] = fn;
+        },
+        remove: function(callbackName, hookName) {
+          delete this[callbackName][hookName];
+        }
       },
       _utils = {
         // Replace diacritics
@@ -68,17 +79,23 @@
           while ( selectItems[ selected = (selected > 0 ? selected : selectItems.length) - 1 ].disabled ){}
           return selected;
         },
-        toDash: function(str){
+        toDash: function(str) {
           return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
         },
-        triggerCallback: function(fn, scope){
+        triggerCallback: function(fn, scope) {
           var elm = scope.element,
               func = scope.options['on' + fn];
 
           if ( $.isFunction(func) )
-            func.call(elm, elm);
+            func.call(elm, elm, scope);
 
-          $(elm).trigger(pluginName + '-' + _utils.toDash(fn));
+          if ( hooks[fn] ){
+            $.each(hooks[fn], function(){
+              this.call(elm, elm, scope);
+            });
+          }
+
+          $(elm).trigger(pluginName + '-' + _utils.toDash(fn), scope);
         }
       },
       $doc = $(document),
@@ -96,12 +113,13 @@
             finalWidth,
             optionsLength,
             eventTriggers,
-            isMobile = /android|ip(hone|od|ad)/i.test(navigator.userAgent);
+            isMobile = /android|ip(hone|od|ad)/i.test(navigator.userAgent),
+            tabindex = $original.prop('tabindex');
 
         function _init(opts) {
           _this.options = $.extend(true, {}, defaults, _this.options, opts);
           _this.classes = {};
-          _this.element = element,
+          _this.element = element;
 
           _utils.triggerCallback('BeforeInit', _this);
 
@@ -186,13 +204,13 @@
             $label.html(_this.items[currValue].text);
           }
 
-          $wrapper.add($original).off(bindSufix);
+          $wrapper.add($original, $outerWrapper, $input).off(bindSufix);
 
           $outerWrapper.prop('class', [_this.classes.wrapper, $original.prop('class').replace(/\S+/g, pluginName + '-$&'), _this.options.responsive ? _this.classes.responsive : ''].join(' '));
 
           if ( !$original.prop('disabled') ){
             // Not disabled, so... Removing disabled class and bind hover
-            $outerWrapper.removeClass(_this.classes.disabled).hover(function(){
+            $outerWrapper.removeClass(_this.classes.disabled).on('mouseenter' + bindSufix + ' mouseleave' + bindSufix, function(){
               $(this).toggleClass(_this.classes.hover);
             });
 
@@ -204,9 +222,13 @@
               isOpen ? _close() : _open(e);
             });
 
-            $input.prop('disabled', false).off().on({
-              keypress: _handleSystemKeys,
-              keydown: function(e){
+            $input
+              .prop({
+                tabindex: tabindex,
+                disabled: false
+              })
+              .on('keypress' + bindSufix, _handleSystemKeys)
+              .on('keydown' + bindSufix, function(e){
                 _handleSystemKeys(e);
 
                 // Clear search
@@ -224,8 +246,8 @@
                 // 40 => Down
                 if ( key > 36 && key < 41 )
                   _select(_utils[(key < 39 ? 'previous' : 'next') + 'EnabledItem'](_this.items, selected));
-              },
-              focusin: function(e){
+              })
+              .on('focusin' + bindSufix, function(e){
                 // Stupid, but necessary... Prevent the flicker when
                 // focusing out and back again in the browser window
                 $input.one('blur', function(){
@@ -233,18 +255,20 @@
                 });
 
                 isOpen || _open(e);
-              }
-            }).on('oninput' in $input[0] ? 'input' : 'keyup', function(){
-              if ( $input.val().length ){
-                // Search in select options
-                $.each(_this.items, function(i, elm){
-                  if ( RegExp('^' + $input.val(), 'i').test(elm.slug) && !elm.disabled ){
-                    _select(i);
-                    return false;
-                  }
-                });
-              }
-            });
+              })
+              .on('oninput' in $input[0] ? 'input' : 'keyup', function(){
+                if ( $input.val().length ){
+                  // Search in select options
+                  $.each(_this.items, function(i, elm){
+                    if ( RegExp('^' + $input.val(), 'i').test(elm.slug) && !elm.disabled ){
+                      _select(i);
+                      return false;
+                    }
+                  });
+                }
+              });
+
+            $original.prop('tabindex', false);
 
             // Remove styles from items box
             // Fix incorrect height when refreshed is triggered with fewer options
@@ -332,7 +356,7 @@
             $('.' + _this.classes.open).removeClass(_this.classes.open);
 
             isOpen = true;
-            itemsHeight = $items.outerHeight(),
+            itemsHeight = $items.outerHeight();
             itemsInnerHeight = $items.height();
 
             // Give dummy input focus
@@ -381,10 +405,12 @@
         }
 
         // Close the select options box
-        function _close(e) {
+        function _close() {
           _utils.triggerCallback('BeforeClose', _this);
 
-          if ( !e && currValue != selected ){
+          if ( currValue != selected ){
+            _utils.triggerCallback('BeforeChange', _this);
+
             var text = _this.items[selected].text;
 
             // Apply changed value to original select
@@ -392,10 +418,10 @@
               .prop('selectedIndex', currValue = selected)
               .data('value', text);
 
-            _utils.triggerCallback('Change', _this);
-
             // Change label text
             $label.html(text);
+
+            _utils.triggerCallback('Change', _this);
           }
 
           // Remove custom events on document
@@ -440,7 +466,7 @@
           if ( isEnabled ){
             $items.add($wrapper).add($input).remove();
             !preserveData && $original.removeData(pluginName).removeData('value');
-            $original.off(bindSufix).off(eventTriggers).unwrap().unwrap();
+            $original.prop('tabindex', tabindex).off(bindSufix).off(eventTriggers).unwrap().unwrap();
             isEnabled = false;
           }
         }
@@ -460,4 +486,6 @@
         $.data(this, pluginName, new Selectric(this, args));
     });
   };
+
+  $.fn[pluginName].hooks = hooks;
 }(jQuery));

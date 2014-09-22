@@ -163,6 +163,12 @@
 				<td>Function called after select options closes</td>
 			</tr>
 			<tr>
+				<td>onBeforeChange</td>
+				<td><pre><code>function(element) {}</code></pre></td>
+				<td>Function</td>
+				<td>Function called before select options change</td>
+			</tr>
+			<tr>
 				<td>onChange</td>
 				<td><pre><code>function(element) {<br>&nbsp;&nbsp;$(element).change();<br>}</code></pre></td>
 				<td>Function</td>
@@ -252,7 +258,7 @@ camelCase: true
 
 		<p>All events are called on original element, first argument is the original element too. And can be bound like this:</p>
 
-		<pre><code class="language-javascript">$('select').on('selectric-eventname', function(element){
+		<pre><code class="language-javascript">$('select').on('eventname', function(element){
 &nbsp;&nbsp;// your code
 });</code></pre>
 
@@ -263,42 +269,38 @@ camelCase: true
 				<td><strong>Event name</strong></td>
 				<td><strong>Description</strong></td>
 			</tr>
-
 			<tr>
 				<td><code>selectric-before-init</code></td>
 				<td>Fired before plugin initialize</td>
 			</tr>
-
 			<tr>
 				<td><code>selectric-init</code></td>
 				<td>Fired plugin has been fully initialized</td>
 			</tr>
-
 			<tr>
 				<td><code>selectric-before-open</code></td>
 				<td>Fired before select options opens</td>
 			</tr>
-
 			<tr>
 				<td><code>selectric-open</code></td>
 				<td>Fired after select options opens</td>
 			</tr>
-
 			<tr>
 				<td><code>selectric-before-close</code></td>
 				<td>Fired before select options closes</td>
 			</tr>
-
 			<tr>
 				<td><code>selectric-close</code></td>
 				<td>Fired after select options closes</td>
 			</tr>
-
+			<tr>
+				<td><code>selectric-before-change</code></td>
+				<td>Fired before select options change</td>
+			</tr>
 			<tr>
 				<td><code>selectric-change</code></td>
 				<td>Fired when select options change</td>
 			</tr>
-
 			<tr>
 				<td><code>selectric-refresh</code></td>
 				<td>Fired when the Selectric is refreshed</td>
@@ -320,6 +322,14 @@ Selectric.close();   // Close options
 Selectric.destroy(); // Destroy select and go back to normal
 Selectric.refresh(); // Reconstruct the plugin options box
 Selectric.init();    // Reinitialize the plugin</code></pre>
+
+		<h2>Hooks</h2>
+		<p>Check <a href="js/jquery.selectric.placeholder.js">jquery.selectric.placeholder.js</a> source for a usage example</p>
+		<pre><code class="language-javascript">// Add a callback everytime '<i>callbackName</i>' is called
+$.fn.selectric.hooks.add('<i>callbackName</i>', '<i>hookName</i>', function(element, data) {});
+
+// Remove a callback
+$.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></pre>
 
 		<h2>Browser support</h2>
 
