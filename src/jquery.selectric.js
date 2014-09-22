@@ -336,7 +336,7 @@
             _calculateOptionsDimensions();
 
             // Find any other opened instances of select and close it
-            $('.' + _this.classes.open).removeClass(_this.classes.open);
+            $('.' + _this.classes.hideselect, '.' + _this.classes.open).children()[pluginName]('close');
 
             isOpen = true;
             itemsHeight = $items.outerHeight();
