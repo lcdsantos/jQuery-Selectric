@@ -417,11 +417,11 @@ $('select').on('eventname', function(element){
 Check [jquery.selectric.placeholder.js](plugins/jquery.selectric.placeholder.js) source for a usage example
 
 ```js
-// Add a callback everytime '<i>callbackName</i>' is called
-$.fn.selectric.hooks.add('<i>callbackName</i>', '<i>hookName</i>', function(element, data) {});
+// Add a callback everytime 'callbackName' is called
+$.fn.selectric.hooks.add('callbackName', 'hookName', function(element, data) {});
 
 // Remove a callback
-$.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');
+$.fn.selectric.hooks.remove('callbackName', 'hookName');
 ```
 
 
