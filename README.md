@@ -261,6 +261,12 @@ $(function(){
     <td>Function called after select options closes</td>
   </tr>
   <tr>
+    <td>onBeforeChange</td>
+    <td>function(element) {}</td>
+    <td>Function</td>
+    <td>Function called before select options change</td>
+  </tr>
+  <tr>
     <td>onChange</td>
     <td>function(element) {
 &nbsp;&nbsp;$(element).change();
@@ -351,12 +357,12 @@ $(function(){
   </tr>
 </table>
 
-##Events
+##Events:
 
 All events are called on original element, first argument is the original element too. And can be bound like this:
 
 ```js
-$('select').on('selectric-eventname', function(element){
+$('select').on('eventname', function(element){
   // your code
 });
 ```
@@ -368,47 +374,56 @@ $('select').on('selectric-eventname', function(element){
     <td><strong>Event name</strong></td>
     <td><strong>Description</strong></td>
   </tr>
-
   <tr>
     <td><code>selectric-before-init</code></td>
     <td>Fired before plugin initialize</td>
   </tr>
-
   <tr>
     <td><code>selectric-init</code></td>
     <td>Fired plugin has been fully initialized</td>
   </tr>
-
   <tr>
     <td><code>selectric-before-open</code></td>
     <td>Fired before select options opens</td>
   </tr>
-
   <tr>
     <td><code>selectric-open</code></td>
     <td>Fired after select options opens</td>
   </tr>
-
   <tr>
     <td><code>selectric-before-close</code></td>
     <td>Fired before select options closes</td>
   </tr>
-
   <tr>
     <td><code>selectric-close</code></td>
     <td>Fired after select options closes</td>
   </tr>
-
+  <tr>
+    <td><code>selectric-before-change</code></td>
+    <td>Fired before select options change</td>
+  </tr>
   <tr>
     <td><code>selectric-change</code></td>
     <td>Fired when select options change</td>
   </tr>
-
   <tr>
     <td><code>selectric-refresh</code></td>
     <td>Fired when the Selectric is refreshed</td>
   </tr>
 </table>
+
+##Hooks:
+
+Check [jquery.selectric.placeholder.js](plugins/jquery.selectric.placeholder.js) source for a usage example
+
+```js
+// Add a callback everytime '<i>callbackName</i>' is called
+$.fn.selectric.hooks.add('<i>callbackName</i>', '<i>hookName</i>', function(element, data) {});
+
+// Remove a callback
+$.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');
+```
+
 
 ##Public methods:
 
