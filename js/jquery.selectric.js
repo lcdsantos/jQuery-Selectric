@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.8.2 (2014-09-22) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.8.4 (2014-09-23) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2014 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -163,8 +163,6 @@
           if ( _this.options.inheritOriginalWidth && originalWidth > 0 )
             $outerWrapper.width(originalWidth);
 
-          isEnabled = true;
-
           _populate();
         }
 
@@ -204,18 +202,23 @@
             $label.html(_this.items[currValue].text);
           }
 
-          $wrapper.add($original, $outerWrapper, $input).off(bindSufix);
+          $wrapper.add($original).add($outerWrapper).add($input).off(bindSufix);
 
           $outerWrapper.prop('class', [_this.classes.wrapper, $original.prop('class').replace(/\S+/g, pluginName + '-$&'), _this.options.responsive ? _this.classes.responsive : ''].join(' '));
 
           if ( !$original.prop('disabled') ){
-            // Not disabled, so... Removing disabled class and bind hover
-            $outerWrapper.removeClass(_this.classes.disabled).on('mouseenter' + bindSufix + ' mouseleave' + bindSufix, function(){
-              $(this).toggleClass(_this.classes.hover);
-            });
+            isEnabled = true;
 
-            // Click on label and :focus on original select will open the options box
-            _this.options.openOnHover && $wrapper.on('mouseenter' + bindSufix, _open);
+            // Not disabled, so... Removing disabled class and bind hover
+            $outerWrapper.removeClass(_this.classes.disabled).on('mouseenter' + bindSufix + ' mouseleave' + bindSufix, function(e){
+              $(this).toggleClass(_this.classes.hover);
+
+              // Delay close effect when openOnHover is true
+              if ( _this.options.openOnHover ){
+                clearTimeout(_this.closeTimer);
+                e.type == 'mouseleave' ? _this.closeTimer = setTimeout(_close, 500) : _open();
+              }
+            });
 
             // Toggle open/close
             $wrapper.on('click' + bindSufix, function(e){
@@ -379,14 +382,6 @@
 
                 if ( scrollTop == (this.scrollHeight - itemsInnerHeight) && deltaY < 0 || scrollTop == 0 && deltaY > 0 )
                   e.preventDefault();
-              });
-            }
-
-            // Delay close effect when openOnHover is true
-            if ( _this.options.openOnHover ){
-              clearTimeout(_this.closeTimer);
-              $outerWrapper.one('mouseleave' + bindSufix, function(){
-                _this.closeTimer = setTimeout(_close, 500);
               });
             }
 
