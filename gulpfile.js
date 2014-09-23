@@ -5,9 +5,8 @@ var gulp   = require('gulp'),
     bump   = require('gulp-bump'),
     prefix = require('gulp-autoprefixer');
 
-var pkg = require('./package.json');
-
-gulp.task('js', function(){
+gulp.task('js', ['bump'], function(){
+  var pkg = require('./package.json');
   var banner = [
     '/*!',
     ' *         ,/',
@@ -32,7 +31,8 @@ gulp.task('js', function(){
     .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('js-min', function(){
+gulp.task('js-min', ['bump'], function(){
+  var pkg = require('./package.json');
   gulp.src('src/jquery.selectric.js')
     .pipe(uglify())
     .pipe(header('/*! Selectric ϟ v<%= pkg.version %> (<%= new Date().toJSON().slice(0,10) %>) - git.io/tjl9sQ - Copyright (c) <%= new Date().getFullYear() %> Leonardo Santos - Dual licensed: MIT/GPL */\n', { pkg: pkg }))
@@ -109,11 +109,13 @@ gulp.task('bump', function(){
   var gutil = require('gulp-util'),
       newVersion = gutil.env.bump || pkg.version;
 
-  gulp.src(['./package.json', './bower.json', './selectric.jquery.json'])
+  var stream = gulp.src(['./package.json', './bower.json', './selectric.jquery.json'])
     .pipe(bump({
       version: newVersion
     }))
     .pipe(gulp.dest('./'));
+
+  return stream;
 });
 
 gulp.task('default', ['bump', 'js', 'js-min', 'css']);
