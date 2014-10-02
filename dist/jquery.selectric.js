@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.8.4 (2014-09-23) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.8.5 (2014-10-02) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2014 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -433,10 +433,10 @@
         // Select option
         function _select(index, close) {
           // If element is disabled, can't select it
-          if ( !_this.items[selected = index].disabled ){
+          if ( !_this.items[index].disabled ){
             // If 'close' is false (default), the options box won't close after
             // each selected item, this is necessary for keyboard navigation
-            $li.removeClass('selected').eq(index).addClass('selected');
+            $li.removeClass('selected').eq(selected = index).addClass('selected');
             _detectItemVisibility(index);
             close && _close();
           }
