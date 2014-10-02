@@ -107,6 +107,7 @@ gulp.task('css', function(){
 
 gulp.task('bump', function(){
   var gutil = require('gulp-util'),
+      pkg = require('./package.json'),
       newVersion = gutil.env.bump || pkg.version;
 
   var stream = gulp.src(['./package.json', './bower.json', './selectric.jquery.json'])
