@@ -35,7 +35,8 @@
         customClass: {
           prefix: pluginName,
           postfixes: classList,
-          camelCase: true
+          camelCase: true,
+          overwrite: true
         },
         optionsItemBuilder: '{text}' // function(itemData, element, index)
       },
@@ -204,7 +205,14 @@
 
           $wrapper.add($original).add($outerWrapper).add($input).off(bindSufix);
 
-          $outerWrapper.prop('class', [_this.classes.wrapper, $original.prop('class').replace(/\S+/g, pluginName + '-$&'), _this.options.responsive ? _this.classes.responsive : ''].join(' '));
+
+        $outerWrapper.prop('class', [
+          _this.classes.wrapper,
+          _this.options.customClass.overwrite ?
+            $original.prop('class').replace(/\S+/g, _this.options.customClass.prefix + '-$&') :
+            $original.prop('class'),
+          _this.options.responsive ? _this.classes.responsive : ''
+        ].join(' '));
 
           if ( !$original.prop('disabled') ){
             isEnabled = true;
