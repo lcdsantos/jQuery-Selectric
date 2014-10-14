@@ -326,12 +326,13 @@ $(function(){
     <td>customClass</td>
     <td>{
 &nbsp;&nbsp;prefix: 'selectric',
-&nbsp;&nbsp;postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive',
-&nbsp;&nbsp;camelCase: true
+&nbsp;&nbsp;postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive Above Scroll',
+&nbsp;&nbsp;camelCase: true,
+&nbsp;&nbsp;overwrite: true
     }</td>
     <td>Object</td>
     <td>Custom classes.
-    Every class in 'postfixes' should be separate with a space and follow this exact order: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive'</td>
+    Every class in 'postfixes' should be separate with a space and follow this exact order: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive Above Scroll'</td>
   </tr>
   <tr>
     <td>optionsItemBuilder</td>

@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.8.5 (2014-10-02) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.8.6 (2014-10-14) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2014 Leonardo Santos; Dual licensed: MIT/GPL
  *
