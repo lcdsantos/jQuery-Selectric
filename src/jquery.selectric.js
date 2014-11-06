@@ -7,6 +7,7 @@
       defaults = {
         onChange: function(elm) { $(elm).change(); },
         maxHeight: 300,
+        dropDirection: 'both',
         keySearchTimeout: 500,
         arrowButtonMarkup: '<b class="button">&#x25be;</b>',
         disableOnMobile: true,
@@ -379,7 +380,8 @@
         // Detect is the options box is inside the window
         function _isInViewport() {
           _calculateOptionsDimensions();
-          $outerWrapper.toggleClass(_this.classes.above, $outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + $win.height());
+          $outerWrapper.toggleClass(_this.classes.above, _this.options.dropDirection == 'top' 
+            || (_this.options.dropDirection == 'both' && $outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + $win.height()));
         }
 
         // Close the select options box

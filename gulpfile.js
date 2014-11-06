@@ -5,6 +5,7 @@ var gulp   = require('gulp'),
     bump   = require('gulp-bump'),
     prefix = require('gulp-autoprefixer'),
     gutil  = require('gulp-util');
+    sourcemaps = require('gulp-sourcemaps');
 
 var fs = require('fs'),
     getPackageJson = function () {
@@ -69,8 +70,7 @@ var sass = function(options){
       path    = require('path');
 
   var options   = options || {},
-      style     = options.style || 'expanded',
-      sourcemap = options.sourcemap || 'none';
+      style     = options.style || 'expanded';
 
   function changeFile(file, newExt, newContent, context, callback){
     file.path = gutil.replaceExtension( file.path, newExt );
@@ -83,7 +83,7 @@ var sass = function(options){
 
   return through.obj(function(file, enc, cb) {
     var _this = this,
-        args = ['--style', style, '--sourcemap=' + sourcemap, file.path];
+        args = ['--style', style, file.path];
 
     if (file.isBuffer()) {
       exec(['sass'].concat(args).join(' '), function(error, stdout, stderr){
@@ -119,8 +119,10 @@ module.exports = sass;
 
 gulp.task('css', function(){
   gulp.src('./src/*.scss')
+    .pipe(sourcemaps.init())
     .pipe(sass())
     .pipe(prefix('last 2 versions', '> 1%', 'ie 8', 'ie 7'))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./dist'));
 });
 

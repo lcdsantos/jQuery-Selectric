@@ -597,11 +597,64 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
 			<option value="watermelon">Watermelon</option>
 		</select>
 
-		<select>
-			<option value="">Select with few options</option>
+		<select class="heightAuto">
+			<option value="">Select with lot of options and height auto</option>
 			<option value="apple">Apple</option>
+			<option value="apricot">Apricot</option>
 			<option value="banana">Banana</option>
+			<option value="bilberry">Bilberry</option>
+			<option value="blackberry">Blackberry</option>
+			<option value="blackcurrant">Blackcurrant</option>
+			<option value="blueberry">Blueberry</option>
+			<option value="cantaloupe">Cantaloupe</option>
+			<option value="cherimoya">Cherimoya</option>
+			<option value="cherry">Cherry</option>
+			<option value="clementine">Clementine</option>
+			<option value="coconut">Coconut</option>
+			<option value="currant">Currant</option>
+			<option value="damson">Damson</option>
+			<option value="date">Date</option>
+			<option value="durian">Durian</option>
+			<option value="elderberry">Elderberry</option>
+			<option value="feijoa">Feijoa</option>
+			<option value="fig">Fig</option>
+			<option value="gooseberry">Gooseberry</option>
+			<option value="grape">Grape</option>
+			<option value="grapefruit">Grapefruit</option>
+			<option value="honeydew">Honeydew</option>
+			<option value="huckleberry">Huckleberry</option>
+			<option value="jackfruit">Jackfruit</option>
+			<option value="jambul">Jambul</option>
+			<option value="jujube">Jujube</option>
+			<option value="kiwifruit">Kiwifruit</option>
+			<option value="kumquat">Kumquat</option>
+			<option value="lemon">Lemon</option>
+			<option value="lime">Lime</option>
+			<option value="loquat">Loquat</option>
+			<option value="lychee">Lychee</option>
+			<option value="mango">Mango</option>
+			<option value="mangostine">Mangostine</option>
+			<option value="melon">Melon</option>
+			<option value="nectarine">Nectarine</option>
 			<option value="orange">Orange</option>
+			<option value="passionfruit">Passionfruit</option>
+			<option value="peach">Peach</option>
+			<option value="pear">Pear</option>
+			<option value="pineapple">Pineapple</option>
+			<option value="plum">Plum</option>
+			<option value="pomegranate">Pomegranate</option>
+			<option value="pomelo">Pomelo</option>
+			<option value="prune">Prune</option>
+			<option value="raisin">Raisin</option>
+			<option value="rambutan">Rambutan</option>
+			<option value="raspberry">Raspberry</option>
+			<option value="redcurrant">Redcurrant</option>
+			<option value="rock melon">Rock melon</option>
+			<option value="satsuma">Satsuma</option>
+			<option value="strawberry">Strawberry</option>
+			<option value="tangerine">Tangerine</option>
+			<option value="ugli fruit">Ugli Fruit</option>
+			<option value="watermelon">Watermelon</option>
 		</select>
 
 		<select class="customOptions">
@@ -713,6 +766,11 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
 				return element.val().length ? '<span class="ico ico-' + element.val() +  '"></span>' + itemData.text : itemData.text;
 			}
 		});
+		$('.heightAuto').selectric({
+			dropDirection: 'bottom',
+			maxHeight: 'auto'
+		});
+
 	});
 </script>
 </body>
