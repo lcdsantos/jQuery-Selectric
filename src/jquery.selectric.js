@@ -321,7 +321,17 @@
             $outerWrapper.width('');
           }
 
-          $items.width(finalWidth).height() > maxHeight && $items.height(maxHeight);
+          $items.width(finalWidth);
+
+          //Fix height at 10 bottom of page if 'auto' defined
+          if (maxHeight == 'auto') {
+            var top_position = $items.offset().top-$(document).scrollTop();
+            $items.height(window.innerHeight - top_position - 10);
+          }
+          //Fix height at maxHeight if height grather than maxHeight
+          else if ($items.height() > maxHeight) {
+            $items.height(maxHeight);
+          }
 
           // Remove the temporary class
           visibleParent.removeClass(_this.classes.tempshow);
