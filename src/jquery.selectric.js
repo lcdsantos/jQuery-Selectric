@@ -7,6 +7,7 @@
       defaults = {
         onChange: function(elm) { $(elm).change(); },
         maxHeight: 300,
+        dropDirection: 'both',
         keySearchTimeout: 500,
         arrowButtonMarkup: '<b class="button">&#x25be;</b>',
         disableOnMobile: true,
@@ -320,7 +321,17 @@
             $outerWrapper.width('');
           }
 
-          $items.width(finalWidth).height() > maxHeight && $items.height(maxHeight);
+          $items.width(finalWidth);
+
+          //Fix height at 10 bottom of page if 'auto' defined
+          if (maxHeight == 'auto') {
+            var top_position = $items.offset().top-$(document).scrollTop();
+            $items.height(window.innerHeight - top_position - 10);
+          }
+          //Fix height at maxHeight if height grather than maxHeight
+          else if ($items.height() > maxHeight) {
+            $items.height(maxHeight);
+          }
 
           // Remove the temporary class
           visibleParent.removeClass(_this.classes.tempshow);
@@ -379,7 +390,8 @@
         // Detect is the options box is inside the window
         function _isInViewport() {
           _calculateOptionsDimensions();
-          $outerWrapper.toggleClass(_this.classes.above, $outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + $win.height());
+          $outerWrapper.toggleClass(_this.classes.above, _this.options.dropDirection == 'top' 
+            || (_this.options.dropDirection == 'both' && $outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + $win.height()));
         }
 
         // Close the select options box

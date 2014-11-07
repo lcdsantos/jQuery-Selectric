@@ -15,5 +15,8 @@
     "gulp-util": "~3.0.0",
     "win-spawn": "~2.0.0",
     "gulp-autoprefixer": "0.0.8"
+  },
+  "dependencies": {
+    "gulp-sourcemaps": "^1.2.7"
   }
 }
