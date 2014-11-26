@@ -604,6 +604,13 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
 			<option value="orange">Orange</option>
 		</select>
 
+		<select class="allowCreateNew">
+			<option value="">Allow dynamic creating new options</option>
+			<option value="apple">Apple</option>
+			<option value="banana">Banana</option>
+			<option value="orange">Orange</option>
+		</select>
+
 		<select class="customOptions">
 			<option value="">Select with icons</option>
 			<option value="firefox">Firefox</option>
@@ -713,6 +720,12 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
 				return element.val().length ? '<span class="ico ico-' + element.val() +  '"></span>' + itemData.text : itemData.text;
 			}
 		});
+		$('.allowCreateNew').selectric({
+            allowCreateNew: true,
+            createNewCallback : function(text){
+            	alert(text);
+            }
+        });
 	});
 </script>
 </body>
