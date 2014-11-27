@@ -231,7 +231,7 @@
 
             // add more options
             if (_this.options.allowCreateNew ){
-              $items.append($createNew);
+              $itemsScroll.prepend($createNew);
               var createNewInput = $createNew.find('input[type=text]');
               var createNewButton = $createNew.find('button');
               createNewInput.on('click',function(e){
@@ -241,15 +241,19 @@
               createNewButton.on('click',function(e){
                   e.preventDefault();
                   e.stopPropagation();
-                  $original.append($('<option>', { 
-                      value: createNewInput.val(),
-                      text : createNewInput.val() 
-                  }));
-                  _this.options.createNewCallback(createNewInput.val());
-                  createNewInput.unbind('click');
-                  createNewButton.unbind('click');
-                  _populate();
-                  _select($original.children().length-1,true);
+                  if(createNewInput.val()) {
+                      $original.append($('<option>', { 
+                          value: createNewInput.val(),
+                          text : createNewInput.val() 
+                      }));
+                      _this.options.createNewCallback(createNewInput.val());
+                      createNewInput.unbind('click');
+                      createNewButton.unbind('click');
+                      _populate();
+                      _select($original.children().length-1,true);
+                  } else {
+                      alert('Title required.');
+                  }
               })
             }
             
