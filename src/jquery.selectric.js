@@ -13,6 +13,7 @@
         openOnHover: false,
         expandToItemText: false,
         responsive: false,
+        animate: false,
         preventWindowScroll: true,
         inheritOriginalWidth: false,
         customClass: {
@@ -370,6 +371,11 @@
 
             // Toggle options box visibility
             $outerWrapper.addClass(_this.classes.open);
+
+            if (_this.options.animate) {
+              $items.hide().slideDown(_this.options.animate);
+            }
+
             _detectItemVisibility(selected);
 
             _utils.triggerCallback('Open', _this);
@@ -407,6 +413,10 @@
 
           // Remove visible class to hide options box
           $outerWrapper.removeClass(_this.classes.open);
+
+          if (_this.options.animate) {
+            $items.show().slideUp(_this.options.animate);
+          }
 
           isOpen = false;
 
