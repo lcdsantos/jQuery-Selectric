@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.8.5 (2014-10-02) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.8.6 (2014-12-09) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2014 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -30,6 +30,7 @@
         openOnHover: false,
         expandToItemText: false,
         responsive: false,
+        animate: false,
         preventWindowScroll: true,
         inheritOriginalWidth: false,
         customClass: {
@@ -387,6 +388,11 @@
 
             // Toggle options box visibility
             $outerWrapper.addClass(_this.classes.open);
+
+            if (_this.options.animate) {
+              $items.hide().slideDown(_this.options.animate);
+            }
+
             _detectItemVisibility(selected);
 
             _utils.triggerCallback('Open', _this);
@@ -424,6 +430,10 @@
 
           // Remove visible class to hide options box
           $outerWrapper.removeClass(_this.classes.open);
+
+          if (_this.options.animate) {
+            $items.show().slideUp(_this.options.animate);
+          }
 
           isOpen = false;
 

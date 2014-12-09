@@ -410,6 +410,12 @@ label p {
 				<td>The select element become responsive</td>
 			</tr>
 			<tr>
+			  <td>animate</td>
+			  <td>false</td>
+			  <td>Object or Boolean</td>
+			  <td>The select items will be shown using the jquery slideUp/slideDown animation, this property could cointain also the jQuery animation options.</td>
+			</tr>
+			<tr>
 				<td>customClass</td>
 				<td><pre><code>{
 &nbsp;&nbsp;prefix: 'selectric',
@@ -613,6 +619,66 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
 			<option value="opera">Opera</option>
 		</select>
 
+		<select class="animated-select">
+			<option value="">Animated select</option>
+			<option value="apple">Apple</option>
+			<option selected value="apricot">Apricot</option>
+			<option value="banana">Banana</option>
+			<option value="bilberry">Bilberry</option>
+			<option value="blackberry">Blackberry</option>
+			<option value="blackcurrant">Blackcurrant</option>
+			<option value="blueberry">Blueberry</option>
+			<option value="cantaloupe">Cantaloupe</option>
+			<option value="cherimoya">Cherimoya</option>
+			<option value="cherry">Cherry</option>
+			<option value="clementine">Clementine</option>
+			<option value="coconut">Coconut</option>
+			<option value="currant">Currant</option>
+			<option value="damson">Damson</option>
+			<option value="date">Date</option>
+			<option value="durian">Durian</option>
+			<option value="elderberry">Elderberry</option>
+			<option value="feijoa">Feijoa</option>
+			<option value="fig">Fig</option>
+			<option value="gooseberry">Gooseberry</option>
+			<option value="grape">Grape</option>
+			<option value="grapefruit">Grapefruit</option>
+			<option value="honeydew">Honeydew</option>
+			<option value="huckleberry">Huckleberry</option>
+			<option value="jackfruit">Jackfruit</option>
+			<option value="jambul">Jambul</option>
+			<option value="jujube">Jujube</option>
+			<option value="kiwifruit">Kiwifruit</option>
+			<option value="kumquat">Kumquat</option>
+			<option value="lemon">Lemon</option>
+			<option value="lime">Lime</option>
+			<option value="loquat">Loquat</option>
+			<option value="lychee">Lychee</option>
+			<option value="mango">Mango</option>
+			<option value="mangostine">Mangostine</option>
+			<option value="melon">Melon</option>
+			<option value="nectarine">Nectarine</option>
+			<option value="orange">Orange</option>
+			<option value="passionfruit">Passionfruit</option>
+			<option value="peach">Peach</option>
+			<option value="pear">Pear</option>
+			<option value="pineapple">Pineapple</option>
+			<option value="plum">Plum</option>
+			<option value="pomegranate">Pomegranate</option>
+			<option value="pomelo">Pomelo</option>
+			<option value="prune">Prune</option>
+			<option value="raisin">Raisin</option>
+			<option value="rambutan">Rambutan</option>
+			<option value="raspberry">Raspberry</option>
+			<option value="redcurrant">Redcurrant</option>
+			<option value="rock melon">Rock melon</option>
+			<option value="satsuma">Satsuma</option>
+			<option value="strawberry">Strawberry</option>
+			<option value="tangerine">Tangerine</option>
+			<option value="ugli fruit">Ugli Fruit</option>
+			<option value="watermelon">Watermelon</option>
+		</select>
+
 		<select disabled>
 			<option value="">Select disabled</option>
 			<option value="apple">Apple</option>
@@ -694,6 +760,7 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
 			<li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, aliquid alias ipsum facilis dolorum doloremque excepturi consequatur nihil earum corporis. Voluptate molestiae, natus enim soluta sapiente praesentium ex dolorem veniam.</li>
 		</ul>
 
+
 		<div style="height: 300px;"></div>
 
 		<div class="copy">
@@ -707,6 +774,11 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
 <script>
 	$(function(){
 		$('select, .select').selectric();
+		$('.animated-select').selectric({
+			animate:{
+				duration:100
+			}
+		});
 
 		$('.customOptions').selectric({
 			optionsItemBuilder: function(itemData, element, index){

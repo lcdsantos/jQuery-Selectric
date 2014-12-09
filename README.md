@@ -323,6 +323,12 @@ $(function(){
     <td>The select element become responsive</td>
   </tr>
   <tr>
+    <td>animate</td>
+    <td>false</td>
+    <td>Object or Boolean</td>
+    <td>The select items will be shown using the jquery slideUp/slideDown animation, this property could cointain also the jQuery animation options.</td>
+  </tr>
+  <tr>
     <td>customClass</td>
     <td>{
 &nbsp;&nbsp;prefix: 'selectric',
