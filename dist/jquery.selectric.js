@@ -19,13 +19,14 @@
   'use strict';
 
   var pluginName = 'selectric',
-      classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive Above Scroll',
+      classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive Above Scroll CreateNew',
       bindSufix = '.sl',
       defaults = {
         onChange: function(elm) { $(elm).change(); },
         maxHeight: 300,
         keySearchTimeout: 500,
         arrowButtonMarkup: '<b class="button">&#x25be;</b>',
+        createNewMarkup: '<input type="text" /><button>Create</button>',
         disableOnMobile: true,
         openOnHover: false,
         expandToItemText: false,
@@ -38,6 +39,8 @@
           camelCase: true,
           overwrite: true
         },
+        allowCreateNew: false,
+        createNewCallback: function(text){},
         optionsItemBuilder: '{text}' // function(itemData, element, index)
       },
       hooks = {
@@ -104,7 +107,7 @@
       Selectric = function(element, opts) {
         var _this = this,
             $original = $(element),
-            $input, $items, $itemsScroll, $wrapper, $label, $outerWrapper, $li,
+            $input, $items, $itemsScroll, $wrapper, $label, $createNew, $outerWrapper, $li,
             isOpen = false,
             isEnabled = false,
             selected,
@@ -148,6 +151,7 @@
           $itemsScroll  = $('<div/>',   { 'class': _this.classes.scroll });
           $wrapper      = $('<div/>',   { 'class': customClass.prefix, 'html': _this.options.arrowButtonMarkup });
           $label        = $('<p class="label"/>');
+          $createNew    = $('<div/>',   { 'class': _this.classes.createnew, 'html': _this.options.createNewMarkup });
           $outerWrapper = $original.wrap('<div>').parent().append($wrapper.prepend($label), $items, $input);
 
           eventTriggers = {
@@ -233,6 +237,34 @@
               isOpen ? _close() : _open(e);
             });
 
+            // add more options
+            if (_this.options.allowCreateNew ){
+              $itemsScroll.prepend($createNew);
+              var createNewInput = $createNew.find('input[type=text]');
+              var createNewButton = $createNew.find('button');
+              createNewInput.on('click',function(e){
+                  e.preventDefault();
+                  e.stopPropagation();
+              })
+              createNewButton.on('click',function(e){
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if(createNewInput.val()) {
+                      $original.append($('<option>', { 
+                          value: createNewInput.val(),
+                          text : createNewInput.val() 
+                      }));
+                      _this.options.createNewCallback(createNewInput.val());
+                      createNewInput.unbind('click');
+                      createNewButton.unbind('click');
+                      _populate();
+                      _select($original.children().length-1,true);
+                  } else {
+                      alert('Title required.');
+                  }
+              })
+            }
+            
             $input
               .prop({
                 tabindex: tabindex,
