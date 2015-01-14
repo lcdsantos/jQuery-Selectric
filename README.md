@@ -311,6 +311,12 @@ $(function(){
     <td>Open select box on hover, instead of click</td>
   </tr>
   <tr>
+    <td>hoverIntentTimeout</td>
+    <td>500</td>
+    <td>Integer</td>
+    <td>Timeout to close options box after mouse leave plugin area</td>
+  </tr>
+  <tr>
     <td>expandToItemText</td>
     <td>false</td>
     <td>Boolean</td>
@@ -355,6 +361,12 @@ $(function(){
     <td>false</td>
     <td>Boolean</td>
     <td>Inherit width from original element</td>
+  </tr>
+  <tr>
+    <td>allowWrap</td>
+    <td>true</td>
+    <td>Boolean</td>
+    <td>Determine if current selected option should jump to first (or last) once reach the end (of start) item of list upon keyboard arrow navigation.</td>
   </tr>
 </table>
 

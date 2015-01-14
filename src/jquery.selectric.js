@@ -11,14 +11,17 @@
         arrowButtonMarkup: '<b class="button">&#x25be;</b>',
         disableOnMobile: true,
         openOnHover: false,
+        hoverIntentTimeout: 500,
         expandToItemText: false,
         responsive: false,
         preventWindowScroll: true,
         inheritOriginalWidth: false,
+        allowWrap: true,
         customClass: {
           prefix: pluginName,
           postfixes: classList,
-          camelCase: true
+          camelCase: true,
+          overwrite: true
         },
         optionsItemBuilder: '{text}' // function(itemData, element, index)
       },
@@ -187,7 +190,13 @@
 
           $wrapper.add($original).add($outerWrapper).add($input).off(bindSufix);
 
-          $outerWrapper.prop('class', [_this.classes.wrapper, $original.prop('class').replace(/\S+/g, pluginName + '-$&'), _this.options.responsive ? _this.classes.responsive : ''].join(' '));
+          $outerWrapper.prop('class', [
+            _this.classes.wrapper,
+            _this.options.customClass.overwrite ?
+              $original.prop('class').replace(/\S+/g, _this.options.customClass.prefix + '-$&') :
+              $original.prop('class'),
+            _this.options.responsive ? _this.classes.responsive : ''
+          ].join(' '));
 
           if ( !$original.prop('disabled') ){
             isEnabled = true;
@@ -199,7 +208,7 @@
               // Delay close effect when openOnHover is true
               if ( _this.options.openOnHover ){
                 clearTimeout(_this.closeTimer);
-                e.type == 'mouseleave' ? _this.closeTimer = setTimeout(_close, 500) : _open();
+                e.type == 'mouseleave' ? _this.closeTimer = setTimeout(_close, _this.options.hoverIntentTimeout) : _open();
               }
             });
 
@@ -230,8 +239,15 @@
                 // 38 => Up
                 // 39 => Right
                 // 40 => Down
-                if ( key > 36 && key < 41 )
+                if ( key > 36 && key < 41 ){
+                  if ( !_this.options.allowWrap ){
+                    if ( (key < 39 && selected == 0) || (key > 38 && (selected + 1) == _this.items.length) ){
+                      return;
+                    }
+                  }
+
                   _select(_utils[(key < 39 ? 'previous' : 'next') + 'EnabledItem'](_this.items, selected));
+                }
               })
               .on('focusin' + bindSufix, function(e){
                 // Stupid, but necessary... Prevent the flicker when
