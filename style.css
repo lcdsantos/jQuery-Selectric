@@ -166,6 +166,7 @@ label p {
   color: #999;
   border-top: 1px solid #E5E5E5;
   box-shadow: 0 1px 0 0 #FFF;
+  position: relative;
 }
 
 .copy p a {
