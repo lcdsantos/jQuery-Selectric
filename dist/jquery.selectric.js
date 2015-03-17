@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.8.7 (2015-01-14) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.9.0 (Mar 17 2015) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2015 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -19,7 +19,7 @@
   'use strict';
 
   var pluginName = 'selectric',
-      classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive Above Scroll',
+      classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive Above Scroll Group GroupLabel',
       bindSufix = '.sl',
       defaults = {
         onChange: function(elm) { $(elm).change(); },
@@ -73,13 +73,13 @@
           return s;
         },
         // https://gist.github.com/atesgoral/984375
-        format: function(f) {var a=arguments;return(""+f).replace(/{(\d+|(\w+))}/g,function(s,i,p){return p&&a[1]?a[1][p]:a[i]})},
+        format: function(f) {var a=arguments;return(""+f).replace(/{(\d+|(\w+))}/g,function(s,i,p) {return p&&a[1]?a[1][p]:a[i]})},
         nextEnabledItem: function(selectItems, selected) {
-          while ( selectItems[ selected = (selected + 1) % selectItems.length ].disabled ){}
+          while ( selectItems[ selected = (selected + 1) % selectItems.length ].disabled ) {}
           return selected;
         },
         previousEnabledItem: function(selectItems, selected) {
-          while ( selectItems[ selected = (selected > 0 ? selected : selectItems.length) - 1 ].disabled ){}
+          while ( selectItems[ selected = (selected > 0 ? selected : selectItems.length) - 1 ].disabled ) {}
           return selected;
         },
         toDash: function(str) {
@@ -92,8 +92,8 @@
           if ( $.isFunction(func) )
             func.call(elm, elm, scope);
 
-          if ( hooks[fn] ){
-            $.each(hooks[fn], function(){
+          if ( hooks[fn] ) {
+            $.each(hooks[fn], function() {
               this.call(elm, elm, scope);
             });
           }
@@ -127,7 +127,7 @@
           _utils.triggerCallback('BeforeInit', _this);
 
           // Disable on mobile browsers
-          if ( _this.options.disableOnMobile && isMobile ){
+          if ( _this.options.disableOnMobile && isMobile ) {
             _this.disableOnMobile = true;
             return;
           }
@@ -140,7 +140,7 @@
               postfixes     = customClass.postfixes.split(' '),
               originalWidth = $original.width();
 
-          $.each(classList.split(' '), function(i, elm){
+          $.each(classList.split(' '), function(i, elm) {
             var c = customClass.prefix + postfixes[i];
             _this.classes[elm.toLowerCase()] = customClass.camelCase ? c : _utils.toDash(c);
           });
@@ -175,29 +175,59 @@
 
           var $options = $original.children(),
               _$li = '<ul>',
-              selectedIndex = $options.filter(':selected').index();
+              selectedIndex = $options.filter(':selected').index(),
+              currIndex = 0;
 
           currValue = (selected = ~selectedIndex ? selectedIndex : 0);
 
           if ( optionsLength = $options.length ) {
             // Build options markup
-            $options.each(function(i){
-              var $elm           = $(this),
-                  optionText     = $elm.html(),
-                  selectDisabled = $elm.prop('disabled'),
-                  itemBuilder    = _this.options.optionsItemBuilder;
+            $options.each(function() {
+              var $elm = $(this);
 
-              _this.items[i] = {
-                value    : $elm.val(),
-                text     : optionText,
-                slug     : _utils.replaceDiacritics(optionText),
-                disabled : selectDisabled
-              };
+              if ( $elm.is('optgroup') ) {
+                var groupDisabled = $elm.prop('disabled'),
+                    $children = $elm.children();
 
-              _$li += _utils.format('<li class="{1}">{2}</li>',
-                $.trim([i == currValue ? 'selected' : '', i == optionsLength - 1 ? 'last' : '', selectDisabled ? 'disabled' : ''].join(' ')),
-                $.isFunction(itemBuilder) ? itemBuilder(_this.items[i], $elm, i) : _utils.format(itemBuilder, _this.items[i])
-              );
+                _$li += _utils.format('<ul class="{1}"><li class="{2}">{3}</li>',
+                  $.trim([_this.classes.group, groupDisabled ? 'disabled' : '', $elm.prop('class')].join(' ')),
+                  _this.classes.grouplabel,
+                  $elm.prop('label')
+                );
+
+                if ( groupDisabled ) {
+                  $children.prop('disabled', true);
+                }
+
+                $children.each(buildOption);
+
+                _$li += '</ul>';
+              } else {
+                buildOption.call($elm);
+              }
+
+              function buildOption() {
+                var $elm = $(this),
+                    optionText = $elm.html(),
+                    selectDisabled = $elm.prop('disabled'),
+                    itemBuilder = _this.options.optionsItemBuilder;
+
+                _this.items[currIndex] = {
+                  element  : $elm,
+                  value    : $elm.val(),
+                  text     : optionText,
+                  slug     : _utils.replaceDiacritics(optionText),
+                  disabled : selectDisabled
+                };
+
+                _$li += _utils.format('<li data-index="{1}" class="{2}">{3}</li>',
+                  currIndex,
+                  $.trim([currIndex == currValue ? 'selected' : '', currIndex == optionsLength - 1 ? 'last' : '', selectDisabled ? 'disabled' : ''].join(' ')),
+                  $.isFunction(itemBuilder) ? itemBuilder(_this.items[currIndex], $elm, currIndex) : _utils.format(itemBuilder, _this.items[currIndex])
+                );
+
+                currIndex++;
+              }
             });
 
             $items.append( $itemsScroll.html(_$li + '</ul>') );
@@ -215,22 +245,22 @@
             _this.options.responsive ? _this.classes.responsive : ''
           ].join(' '));
 
-          if ( !$original.prop('disabled') ){
+          if ( !$original.prop('disabled') ) {
             isEnabled = true;
 
             // Not disabled, so... Removing disabled class and bind hover
-            $outerWrapper.removeClass(_this.classes.disabled).on('mouseenter' + bindSufix + ' mouseleave' + bindSufix, function(e){
+            $outerWrapper.removeClass(_this.classes.disabled).on('mouseenter' + bindSufix + ' mouseleave' + bindSufix, function(e) {
               $(this).toggleClass(_this.classes.hover);
 
               // Delay close effect when openOnHover is true
-              if ( _this.options.openOnHover ){
+              if ( _this.options.openOnHover ) {
                 clearTimeout(_this.closeTimer);
                 e.type == 'mouseleave' ? _this.closeTimer = setTimeout(_close, _this.options.hoverIntentTimeout) : _open();
               }
             });
 
             // Toggle open/close
-            $wrapper.on('click' + bindSufix, function(e){
+            $wrapper.on('click' + bindSufix, function(e) {
               isOpen ? _close() : _open(e);
             });
 
@@ -240,12 +270,12 @@
                 disabled: false
               })
               .on('keypress' + bindSufix, _handleSystemKeys)
-              .on('keydown' + bindSufix, function(e){
+              .on('keydown' + bindSufix, function(e) {
                 _handleSystemKeys(e);
 
                 // Clear search
                 clearTimeout(_this.resetStr);
-                _this.resetStr = setTimeout(function(){
+                _this.resetStr = setTimeout(function() {
                   $input.val('');
                 }, _this.options.keySearchTimeout);
 
@@ -256,9 +286,9 @@
                 // 38 => Up
                 // 39 => Right
                 // 40 => Down
-                if ( key > 36 && key < 41 ){
-                  if ( !_this.options.allowWrap ){
-                    if ( (key < 39 && selected == 0) || (key > 38 && (selected + 1) == _this.items.length) ){
+                if ( key > 36 && key < 41 ) {
+                  if ( !_this.options.allowWrap ) {
+                    if ( (key < 39 && selected == 0) || (key > 38 && (selected + 1) == _this.items.length) ) {
                       return;
                     }
                   }
@@ -266,20 +296,20 @@
                   _select(_utils[(key < 39 ? 'previous' : 'next') + 'EnabledItem'](_this.items, selected));
                 }
               })
-              .on('focusin' + bindSufix, function(e){
+              .on('focusin' + bindSufix, function(e) {
                 // Stupid, but necessary... Prevent the flicker when
                 // focusing out and back again in the browser window
-                $input.one('blur', function(){
+                $input.one('blur', function() {
                   $input.blur();
                 });
 
                 isOpen || _open(e);
               })
-              .on('oninput' in $input[0] ? 'input' : 'keyup', function(){
-                if ( $input.val().length ){
+              .on('oninput' in $input[0] ? 'input' : 'keyup', function() {
+                if ( $input.val().length ) {
                   // Search in select options
-                  $.each(_this.items, function(i, elm){
-                    if ( RegExp('^' + $input.val(), 'i').test(elm.slug) && !elm.disabled ){
+                  $.each(_this.items, function(i, elm) {
+                    if ( RegExp('^' + $input.val(), 'i').test(elm.slug) && !elm.disabled ) {
                       _select(i);
                       return false;
                     }
@@ -291,14 +321,21 @@
 
             // Remove styles from items box
             // Fix incorrect height when refreshed is triggered with fewer options
-            $li = $('li', $items.removeAttr('style')).click(function(){
-              // The second parameter is to close the box after click
-              _select($(this).index(), true);
+            $li = $('li', $items.removeAttr('style')).on({
+              // Prevent <input> blur on Chrome
+              mousedown: function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+              },
+              click: function() {
+                // The second parameter is to close the box after click
+                _select($(this).data('index'), true);
 
-              // Chrome doesn't close options box if select is wrapped with a label
-              // We need to 'return false' to avoid that
-              return false;
-            });
+                // Chrome doesn't close options box if select is wrapped with a label
+                // We need to 'return false' to avoid that
+                return false;
+              }
+            }).filter('[data-index]');
           } else {
             $outerWrapper.addClass(_this.classes.disabled);
             $input.prop('disabled', true);
@@ -316,8 +353,9 @@
         function _handleSystemKeys(e) {
           var key = e.keyCode || e.which;
 
-          if ( key == 13 )
+          if ( key == 13 ) {
             e.preventDefault();
+          }
 
           // Tab / Enter / ESC
           if ( /^(9|13|27)$/.test(key) ) {
@@ -363,12 +401,12 @@
         function _open(e) {
           _utils.triggerCallback('BeforeOpen', _this);
 
-          if (e){
+          if ( e ) {
             e.preventDefault();
             e.stopPropagation();
           }
 
-          if (isEnabled){
+          if ( isEnabled ) {
             _calculateOptionsDimensions();
 
             // Find any other opened instances of select and close it
@@ -385,19 +423,20 @@
             _isInViewport();
 
             // Prevent window scroll when using mouse wheel inside items box
-            if ( _this.options.preventWindowScroll ){
-              $doc.on('mousewheel' + bindSufix + ' DOMMouseScroll' + bindSufix, '.' + _this.classes.scroll, function(e){
+            if ( _this.options.preventWindowScroll ) {
+              $doc.on('mousewheel' + bindSufix + ' DOMMouseScroll' + bindSufix, '.' + _this.classes.scroll, function(e) {
                 var orgEvent = e.originalEvent,
                     scrollTop = $(this).scrollTop(),
                     deltaY = 0;
 
-                if ( 'detail' in orgEvent ) { deltaY = orgEvent.detail * -1; }
-                if ( 'wheelDelta' in orgEvent ) { deltaY = orgEvent.wheelDelta; }
+                if ( 'detail'      in orgEvent ) { deltaY = orgEvent.detail * -1; }
+                if ( 'wheelDelta'  in orgEvent ) { deltaY = orgEvent.wheelDelta;  }
                 if ( 'wheelDeltaY' in orgEvent ) { deltaY = orgEvent.wheelDeltaY; }
-                if ( 'deltaY' in orgEvent ) { deltaY = orgEvent.deltaY * -1; }
+                if ( 'deltaY'      in orgEvent ) { deltaY = orgEvent.deltaY * -1; }
 
-                if ( scrollTop == (this.scrollHeight - itemsInnerHeight) && deltaY < 0 || scrollTop == 0 && deltaY > 0 )
+                if ( scrollTop == (this.scrollHeight - itemsInnerHeight) && deltaY < 0 || scrollTop == 0 && deltaY > 0 ) {
                   e.preventDefault();
+                }
               });
             }
 
@@ -419,7 +458,7 @@
         function _close() {
           _utils.triggerCallback('BeforeClose', _this);
 
-          if ( currValue != selected ){
+          if ( currValue != selected ) {
             _utils.triggerCallback('BeforeChange', _this);
 
             var text = _this.items[selected].text;
@@ -448,11 +487,20 @@
 
         // Select option
         function _select(index, close) {
+          // Parameter index is required
+          if ( index == undefined ) {
+            return;
+          }
+
           // If element is disabled, can't select it
-          if ( !_this.items[index].disabled ){
+          if ( !_this.items[index].disabled ) {
             // If 'close' is false (default), the options box won't close after
             // each selected item, this is necessary for keyboard navigation
-            $li.removeClass('selected').eq(selected = index).addClass('selected');
+            $li
+              .removeClass('selected')
+              .eq(selected = index)
+              .addClass('selected');
+
             _detectItemVisibility(index);
             close && _close();
           }
@@ -474,7 +522,7 @@
 
         // Unbind and remove
         function _destroy(preserveData) {
-          if ( isEnabled ){
+          if ( isEnabled ) {
             $items.add($wrapper).add($input).remove();
             !preserveData && $original.removeData(pluginName).removeData('value');
             $original.prop('tabindex', tabindex).off(bindSufix).off(eventTriggers).unwrap().unwrap();
