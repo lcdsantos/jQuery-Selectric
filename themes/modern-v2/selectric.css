@@ -1,11 +1,8 @@
-/*=====================================================================
+/*======================================
   Selectric
-======================================================================*/
-
+======================================*/
 .selectricWrapper {
   position: relative;
-  margin: 0 0 10px;
-  width: 300px;
   cursor: pointer;
 }
 
@@ -13,11 +10,10 @@
   filter: alpha(opacity=50);
   opacity: 0.5;
   cursor: default;
-  -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .selectricOpen {
@@ -89,6 +85,7 @@
   display: block;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   margin: 0 30px 0 0;
   padding: 6px;
   font-size: 12px;
@@ -147,8 +144,8 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background: #F9F9F9;
-  border: 1px solid #CCC;
+  background: #F8F8F8;
+  border: 1px solid #C4C4C4;
   z-index: -1;
   box-shadow: 0 0 10px -6px;
 }
@@ -170,7 +167,7 @@
 }
 .selectricItems li {
   display: block;
-  padding: 5px;
+  padding: 8px;
   border-top: 1px solid #FFF;
   border-bottom: 1px solid #EEE;
   color: #666;
@@ -179,15 +176,37 @@
 .selectricItems li.selected {
   background: #EFEFEF;
   color: #444;
-  border-top-color: #E0E0E0;
 }
 .selectricItems li:hover {
   background: #F0F0F0;
   color: #444;
 }
-.selectricItems li.disabled {
-  background: #F5F5F5;
-  color: #BBB;
-  border-top-color: #FAFAFA;
+.selectricItems .disabled {
+  filter: alpha(opacity=50);
+  opacity: 0.5;
+  cursor: default !important;
+  background: none !important;
+  color: #666 !important;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.selectricItems .selectricGroup .selectricGroupLabel {
+  font-weight: bold;
+  padding-left: 10px;
   cursor: default;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background: none;
+  color: #444;
+}
+.selectricItems .selectricGroup.disabled li {
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+.selectricItems .selectricGroup li {
+  padding-left: 25px;
 }

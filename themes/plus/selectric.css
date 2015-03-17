@@ -1,10 +1,8 @@
-/*======================================================================
+/*======================================
   Selectric
-======================================================================*/
+======================================*/
 .selectricWrapper {
   position: relative;
-  margin: 0 0 10px;
-  width: 300px;
   cursor: pointer;
 }
 
@@ -23,6 +21,7 @@
   display: block;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   margin: 0 30px 0 0;
   padding: 6px;
   font-size: 12px;
@@ -83,7 +82,6 @@
   filter: alpha(opacity=50);
   opacity: 0.5;
   cursor: default;
-  -webkit-touch-callout: none;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -230,9 +228,33 @@
   background: #F0F0F0;
   color: #444;
 }
-.selectricItems li.disabled {
-  background: #F5F5F5;
-  color: #BBB;
-  border-top-color: #FAFAFA;
+
+.selectricItems .disabled {
+  filter: alpha(opacity=50);
+  opacity: 0.5;
+  cursor: default !important;
+  background: none !important;
+  color: #666 !important;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.selectricItems .selectricGroup .selectricGroupLabel {
+  font-weight: bold;
+  padding-left: 10px;
   cursor: default;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background: none;
+  color: #444;
+}
+.selectricItems .selectricGroup.disabled li {
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+.selectricItems .selectricGroup li {
+  padding-left: 25px;
 }
