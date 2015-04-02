@@ -1,0 +1,16 @@
+.selectric-customOptions .selectricItems .ico {
+  display: inline-block;
+  vertical-align: middle;
+  zoom: 1;
+  *display: inline;
+  height: 30px;
+  width: 30px;
+  margin: 0 6px 0 0;
+  background: url(img/browser-icons.png) no-repeat;
+}
+
+.selectric-customOptions .selectricItems .ico-chrome  { background-position: 0 0; }
+.selectric-customOptions .selectricItems .ico-firefox { background-position: -30px 0; }
+.selectric-customOptions .selectricItems .ico-ie      { background-position: -60px 0; }
+.selectric-customOptions .selectricItems .ico-opera   { background-position: -90px 0; }
+.selectric-customOptions .selectricItems .ico-safari  { background-position: -120px 0; }

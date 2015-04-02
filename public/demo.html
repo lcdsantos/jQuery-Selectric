@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Fast, simple and light jQuery plugin to customize HTML selects">
+  <meta name="robots" content="all">
+  <title>jQuery Selectric</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?v=5">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Ubuntu">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="customoptions.css">
+  <link rel="stylesheet" href="lib/prism.css">
+  <meta property="og:title" content="jQuery Selectric">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="Fast, simple and light jQuery plugin to customize HTML selects">
+  <meta property="og:url" content="http://lcdsantos.github.io/jQuery-Selectric/demo.html">
+  <meta property="og:site_name" content="jQuery Selectric">
+  <meta property="og:image" content="http://lcdsantos.github.io/jQuery-Selectric/share.jpg">
+
+  <link rel="stylesheet" id="theme" href="themes/default/selectric.css">
+  <style id="template" style="display: none;"></style>
+</head>
+<body>
+  <div class="center">
+    <div class="go-back">
+      <h1><a href="index.html">jQuery Selectric <img src="img/icon.png" alt="Selectric"></a></h1>
+    </div>
+
+    <div class="demo">
+      <h3>Basic usage</h3>
+
+      <div class="view">
+        <select id="basic">
+          <option value="">Long item, lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit, consectetur, repellat animi nam veniam tempora hic</option>
+          <option value="strawberries">Strawberries</option>
+          <option value="mango">Mango</option>
+          <option value="bananas">Bananas</option>
+          <option value="watermelon">Watermelon</option>
+          <option value="apples">Apples</option>
+          <option value="grapes">Grapes</option>
+          <option value="oranges">Oranges</option>
+          <option value="pineapple">Pineapple</option>
+          <option value="peaches">Peaches</option>
+          <option value="cherries">Cherries</option>
+          <optgroup label="Group 1">
+            <option>Option 1.1</option>
+          </optgroup>
+          <optgroup label="Group 2">
+            <option>Option 2.1</option>
+            <option>Option 2.2</option>
+          </optgroup>
+          <optgroup label="Group 3" disabled>
+            <option>Option 3.1</option>
+            <option>Option 3.2</option>
+            <option>Option 3.3</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="code">
+        <pre><code class="language-javascript">$(function(){
+  $('select').selectric();
+});</code></pre>
+      </div>
+    </div>
+
+    <div class="demo">
+      <h3>Change options on the fly</h3>
+
+      <div class="view">
+        <select id="dynamic">
+          <option value="strawberries">Strawberries</option>
+          <option value="mango">Mango</option>
+          <option value="bananas">Bananas</option>
+          <option value="watermelon">Watermelon</option>
+          <option value="apples">Apples</option>
+          <option value="grapes">Grapes</option>
+          <option value="oranges">Oranges</option>
+          <option value="pineapple">Pineapple</option>
+          <option value="peaches">Peaches</option>
+          <option value="cherries">Cherries</option>
+        </select>
+
+        <input type="text" id="add_val" name="add_val">
+        <button id="bt_add_val">Add value</button>
+      </div>
+
+      <div class="code">
+        <pre><code class="language-javascript">$(function(){
+  $('#dynamic').selectric();
+
+  $('#bt_add_val').click(function(e){
+    e.preventDefault();
+
+    // Store the value in a variable
+    var value = $('#add_val').val();
+
+    // Append to original select
+    $('#dynamic').append('&lt;option&gt;' + (value ? value : 'Empty') + '&lt;/option&gt;');
+
+    // Refresh Selectric
+    $('#dynamic').selectric('refresh');
+  });
+});</code></pre>
+      </div>
+    </div>
+
+    <div class="demo">
+      <h3>Callbacks</h3>
+
+      <div class="view">
+        <select id="callbacks">
+          <option value="strawberries">Strawberries</option>
+          <option value="mango">Mango</option>
+          <option value="bananas">Bananas</option>
+          <option value="watermelon">Watermelon</option>
+          <option value="apples">Apples</option>
+          <option value="grapes">Grapes</option>
+          <option value="oranges">Oranges</option>
+          <option value="pineapple">Pineapple</option>
+          <option value="peaches">Peaches</option>
+          <option value="cherries">Cherries</option>
+        </select>
+      </div>
+
+      <div class="code">
+        <pre><code class="language-javascript">// With events
+$('#callbacks')
+  .on('selectric-before-open', function(){
+    alert('Before open');
+  })
+  .on('selectric-before-close', function(){
+    alert('Before close');
+  })
+  // You can bind to change event on original element
+  .on('change', function() {
+    alert('Change');
+  });
+
+// Or, with plugin options
+$('#callbacks').selectric({
+  onOpen: function() {
+    alert('Open');
+  },
+  onChange: function() {
+    alert('Change');
+  },
+  onClose: function() {
+    alert('Close');
+  }
+});</code></pre>
+      </div>
+    </div>
+
+    <div class="demo">
+      <h3>Populate via ajax request</h3>
+
+      <div class="view">
+        <select id="ajax"></select>
+      </div>
+
+      <div class="code">
+        <pre><code class="language-javascript">$.get('ajax.html', function(data){
+  $('#ajax').append(data).selectric();
+});</code></pre>
+        <br>
+        <pre data-src="ajax.html"></pre>
+      </div>
+    </div>
+
+    <div class="demo">
+      <h3>Custom markup for items box</h3>
+
+      <div class="view">
+        <select class="customOptions">
+          <option value="">Select with icons</option>
+          <option value="firefox">Firefox</option>
+          <option value="chrome">Chrome</option>
+          <option value="safari">Safari</option>
+          <option value="ie">Internet Explorer</option>
+          <option value="opera">Opera</option>
+        </select>
+      </div>
+
+      <div class="code">
+        <pre><code class="language-javascript">$(function(){
+  $('.customOptions').selectric({
+    optionsItemBuilder: function(itemData, element, index){
+      return element.val().length ? '&lt;span class=&quot;ico ico-' + element.val() +  '&quot;&gt;&lt;/span&gt;' + itemData.text : itemData.text;
+    }
+  });
+});</code></pre>
+        <br>
+        <pre data-src="customoptions.css"></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="theme-roller">
+    <h2>Theme</h2>
+
+    <form autocomplete="off">
+      <select name="presets" id="presets">
+        <option value="default">Default</option>
+        <option value="plus">Plus</option>
+        <option value="square">Square</option>
+        <option value="modern">Modern</option>
+        <option value="modern-v2">Modern v2</option>
+        <option value="flat-dark-blue">Flat (dark blue)</option>
+        <option value="flat-red">Flat (red)</option>
+        <option value="flat-light-blue">Flat (light blue)</option>
+        <option value="flat-radiant-orchid">Flat (radiant orchid)</option>
+        <option value="flat-marsala">Flat (marsala)</option>
+        <option value="custom">Custom</option>
+      </select>
+    </form>
+
+    <div class="custom" hidden>
+      <h3>Colors</h3>
+      <div class="row">
+        <div class="col">
+          <div id="base-color">
+            <p>Primary</p>
+            <div class="colorpick"><input type="text" value="#F8F8F8" name="base-color"></div>
+          </div>
+        </div>
+        <div class="col">
+          <div id="secondary-color">
+            <p>Secondary</p>
+            <div class="colorpick"><input type="text" value="#DDD" name="secondary-color"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div id="label-color">
+            <p>Label</p>
+            <div class="colorpick"><input type="text" value="#444" name="label-color"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div id="button-background-color">
+            <p>Button background</p>
+            <div class="colorpick"><input type="text" value="" name="button-background-color"></div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div id="button-color">
+            <p>Button color</p>
+            <div class="colorpick"><input type="text" value="#444" name="button-color-color"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Sizes</h3>
+
+      <div id="border-width-slider">
+        <p>Border width <span class="value"></span></p>
+        <div class="slider" data-val="1" data-min="0" data-max="10"></div>
+      </div>
+
+      <div id="border-round-slider">
+        <p>Roundness <span class="value"></span></p>
+        <div class="slider" data-val="0" data-min="0" data-max="100"></div>
+      </div>
+
+      <div id="height-slider">
+        <p>Height <span class="value"></span></p>
+        <div class="slider" data-val="40" data-min="22" data-max="50"></div>
+      </div>
+
+      <div id="indent-slider">
+        <p>Label indent <span class="value"></span></p>
+        <div class="slider" data-val="10" data-min="6" data-max="30"></div>
+      </div>
+
+      <div id="button-size-slider">
+        <p>Arrow button size <span class="value"></span></p>
+        <div class="slider" data-val="18" data-min="12" data-max="50"></div>
+      </div>
+
+      <div id="button-round-slider">
+        <p>Arrow button roundness <span class="value"></span></p>
+        <div class="slider" data-val="0" data-min="0" data-max="100"></div>
+      </div>
+
+      <div id="button-position-slider">
+        <p>Arrow button position <span class="value"></span></p>
+        <div class="slider" data-val="0" data-min="0" data-max="30"></div>
+      </div>
+    </div>
+
+    <a href="#" target="_blank" class="bt bt-download" download="selectric.css"><span class="ico-download"></span> Download CSS</a>
+    <a href="#" target="_blank" class="bt-view-raw" onclick="window.open(this.href, 'raw-css', 'width=720,height=480,scrollbars=1'); return false;"><span>&#x203a;</span> View RAW CSS</a>
+  </div>
+
+  <script src="lib/jquery.min.js"></script>
+  <script src="lib/jquery-ui.min.js"></script>
+  <script src="lib/prism.js"></script>
+  <script src="lib/jquery.minicolors.min.js"></script>
+  <script src="jquery.selectric.js"></script>
+  <script src="lib/demo.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42240250-1', 'lcdsantos.github.io');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

@@ -349,14 +349,11 @@
 
         // Set options box width/height
         function _calculateOptionsDimensions() {
-          var visibleParent = $items.closest(':visible').children(':hidden'),
-              maxHeight = _this.options.maxHeight;
-
           // Calculate options box height
           // Set a temporary class on the hidden parent of the element
-          visibleParent.addClass(_this.classes.tempshow);
-
-          var itemsWidth = $items.outerWidth(),
+          var hiddenChildren = $items.closest(':visible').children(':hidden').addClass(_this.classes.tempshow),
+              maxHeight = _this.options.maxHeight,
+              itemsWidth = $items.outerWidth(),
               wrapperWidth = $wrapper.outerWidth() - (itemsWidth - $items.width());
 
           // Set the dimensions, minimum is wrapper width, expand for long items if option is true
@@ -377,7 +374,7 @@
           $items.width(finalWidth).height() > maxHeight && $items.height(maxHeight);
 
           // Remove the temporary class
-          visibleParent.removeClass(_this.classes.tempshow);
+          hiddenChildren.removeClass(_this.classes.tempshow);
         }
 
         // Open the select options box
@@ -398,6 +395,9 @@
             isOpen = true;
             itemsHeight = $items.outerHeight();
             itemsInnerHeight = $items.height();
+
+            // Toggle options box visibility
+            $outerWrapper.addClass(_this.classes.open);
 
             // Give dummy input focus
             $input.val('').is(':focus') || $input.focus();
@@ -423,8 +423,6 @@
               });
             }
 
-            // Toggle options box visibility
-            $outerWrapper.addClass(_this.classes.open);
             _detectItemVisibility(selected);
 
             _utils.triggerCallback('Open', _this);
@@ -433,7 +431,6 @@
 
         // Detect is the options box is inside the window
         function _isInViewport() {
-          _calculateOptionsDimensions();
           $outerWrapper.toggleClass(_this.classes.above, $outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + $win.height());
         }
 

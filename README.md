@@ -216,7 +216,6 @@ Put styles in your CSS and change it to your taste :D
 .selectricItems .selectricGroup li {
   padding-left: 25px;
 }
-
 ```
 
 Initialize **jQuery Selectric:**

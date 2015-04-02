@@ -1,0 +1,260 @@
+/*======================================
+  Selectric
+======================================*/
+.selectricWrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.selectricResponsive {
+  width: 100%;
+}
+
+.selectric {
+  border: 1px solid #E0E0E0;
+  border-bottom-width: 2px;
+  background: #F8F8F8;
+  position: relative;
+  border-radius: 4px;
+}
+.selectric .label {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 30px 0 0;
+  padding: 6px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #444;
+  min-height: 18px;
+}
+.selectric .button {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  background: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgOCA1IiBzdHlsZT0iYmFja2dyb3VuZC1jb2xvcjojZmZmZmZmMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjgiIGhlaWdodD0iNSI+PHBhdGggZD0iTTcuNzgxIDEuNDQ0Yy0uMjgxLjMwNy0zLjIzOCAzLjMxMS0zLjIzOCAzLjMxMS0uMTUxLjE2NC0uMzQ3LjI0NS0uNTQ0LjI0NS0uMTk3IDAtLjM5NC0uMDgyLS41NDMtLjI0NSAwIDAtMi45NTctMy4wMDMtMy4yMzktMy4zMTEtLjI4MS0uMzA3LS4zLS44NTkgMC0xLjE4OC4zMDEtLjMyOC43MTktLjM1NCAxLjA4NyAwbDIuNjk1IDIuNzU1IDIuNjk0LTIuNzU1Yy4zNjgtLjM1NC43ODctLjMyOCAxLjA4NyAwIC4zMDEuMzI4LjI4Mi44ODEgMCAxLjE4N3oiIGZpbGw9IiNiYmIiLz48L3N2Zz4K) no-repeat 50%;
+  font: 0/0 a;
+}
+
+@media \0screen\,screen\9 {
+  .selectric .button {
+    color: #DDD;
+    text-align: center;
+    font: 20px/30px Lucida Sans Unicode, Arial Unicode MS, Arial;
+  }
+}
+
+.selectricHover .selectric {
+  border-color: #CCC;
+}
+.selectricHover .selectric .button {
+  color: #888;
+}
+.selectricHover .selectric .button:after {
+  border-top-color: #888;
+}
+
+.selectricOpen {
+  z-index: 9999;
+}
+.selectricOpen .selectric {
+  border-color: #CCC;
+  background: #F0F0F0;
+  margin-top: 1px;
+  border-bottom-width: 1px;
+}
+.selectricOpen .selectricItems {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+       -o-transform: translateY(0);
+          transform: translateY(0);
+  -webkit-transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.selectricDisabled {
+  filter: alpha(opacity=50);
+  opacity: 0.5;
+  cursor: default;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.selectricHideSelect {
+  position: relative;
+  overflow: hidden;
+  width: 0;
+  height: 0;
+}
+.selectricHideSelect select {
+  position: absolute;
+  left: -100%;
+  display: none;
+}
+
+.selectricInput {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  outline: none !important;
+  border: none !important;
+  *font: 0/0 a !important;
+  background: none !important;
+}
+
+.selectricTempShow {
+  position: absolute !important;
+  visibility: hidden !important;
+  display: block !important;
+}
+
+/* Items box */
+.selectricItems {
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transform: translateY(-20px);
+      -ms-transform: translateY(-20px);
+       -o-transform: translateY(-20px);
+          transform: translateY(-20px);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fefefe;
+  border: 1px solid #CCC;
+  z-index: -1;
+  box-shadow: 0 0 10px -6px, inset 0 0 0px 1px #fff;
+  margin: 8px 0;
+  padding: 10px 0;
+  border-radius: 4px;
+}
+
+.selectricItems .selectricScroll {
+  height: 100%;
+  overflow: auto;
+}
+
+.selectricItems:before,
+.selectricItems:after {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 12px;
+  width: 0;
+  height: 0;
+  border-bottom: 6px solid #BBB;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  margin-top: 3px;
+}
+
+.selectricItems:after {
+  margin-top: 4px;
+  border-bottom-color: #FFF;
+}
+
+.selectricAbove .selectricItems:before,
+.selectricAbove .selectricItems:after {
+  top: 100%;
+  border-bottom-width: 0;
+  border-top: 6px solid #BBB;
+  margin-top: 0;
+}
+
+.selectricAbove .selectricItems:after {
+  border-top-color: #FFF;
+  margin-top: -1px;
+}
+
+.selectricAbove .selectricItems {
+  top: auto;
+  bottom: 100%;
+}
+
+.selectricItems ul, .selectricItems li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+  line-height: 20px;
+  min-height: 20px;
+}
+
+.selectricItems li {
+  display: block;
+  padding: 6px 30px 6px 10px;
+  color: #666;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.selectricItems li.selected {
+  background: #E0E0E0;
+  color: #444;
+}
+.selectricItems li:after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  right: -10px;
+  width: 30px;
+  height: 100%;
+  background: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTIgMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEyIiBoZWlnaHQ9IjEwIj48cGF0aCBkPSJNMCA1YzAtLjIyNC4wNzItLjQxNS4yMTctLjU3MmwxLjA1My0xLjE0NWMuMTQ0LS4xNTcuMzItLjIzNi41MjYtLjIzNi4yMDYgMCAuMzgyLjA3OS41MjYuMjM2bDIuMjc2IDIuNDgzIDUuMDc5LTUuNTNjLjE0NS0uMTU3LjMyLS4yMzYuNTI2LS4yMzYuMjA2IDAgLjM4Mi4wNzkuNTI2LjIzNmwxLjA1MyAxLjE0NWMuMTQ0LjE1Ny4yMTcuMzQ4LjIxNy41NzIgMCAuMjI0LS4wNzIuNDE1LS4yMTcuNTcybC02LjY1OCA3LjIzOWMtLjE0NC4xNTctLjMyLjIzNi0uNTI2LjIzNi0uMjA2IDAtLjM4Mi0uMDc5LS41MjYtLjIzNmwtMy44NTYtNC4xOTJjLS4xNDUtLjE1Ny0uMjE3LS4zNDgtLjIxNy0uNTcyeiIgZmlsbD0iI2JiYiIvPjwvc3ZnPgo=) no-repeat 50% 50%;
+  opacity: 0;
+  -webkit-transition: .2s;
+          transition: .2s;
+}
+
+.selectricItems li.selected:after {
+  opacity: 1;
+  right: 0;
+}
+.selectricItems li:hover {
+  background: #F0F0F0;
+  color: #444;
+}
+
+.selectricItems .disabled {
+  filter: alpha(opacity=50);
+  opacity: 0.5;
+  cursor: default !important;
+  background: none !important;
+  color: #666 !important;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.selectricItems .selectricGroup .selectricGroupLabel {
+  font-weight: bold;
+  padding-left: 10px;
+  cursor: default;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background: none;
+  color: #444;
+}
+.selectricItems .selectricGroup.disabled li {
+  filter: alpha(opacity=100);
+  opacity: 1;
+}
+.selectricItems .selectricGroup li {
+  padding-left: 25px;
+}
