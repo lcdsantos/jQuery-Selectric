@@ -71,7 +71,7 @@
       buildDownloadLink();
     });
 
-    function initCustomTheme(){
+    function initCustomTheme() {
       $custom.slideDown();
 
       $.extend($.ui.slider.prototype.options, {
@@ -84,7 +84,7 @@
         }
       });
 
-      $('.slider').each(function(){
+      $('.slider').each(function() {
         var $this = $(this);
 
         $this.slider({
@@ -132,14 +132,14 @@
     }
 
     function buildDownloadLink() {
-      if ( $('#presets').val() == 'custom' ){
+      if ( $('#presets').val() == 'custom' ) {
         setDownloadData($template.html());
       } else {
         $.get($theme.prop('href'), setDownloadData);
       }
     }
 
-    function setDownloadData(themeCss){
+    function setDownloadData(themeCss) {
       var generatedCss = escape((themeCss.replace(/\n\t/g, '\n')));
 
       $('.bt-download').prop('href', 'data:application/octet-stream;charset=utf-8,' + generatedCss);
@@ -148,14 +148,45 @@
 
     buildDownloadLink();
 
-    // Demos
+    /*======================================
+      Demos
+    ======================================*/
     $('#basic').selectric();
+
+    /*------------------------------------*/
+
+    // Cache the target element
+    var $selectValue = $('#select_value').find('strong');
+
+    // Get initial value
+    $selectValue.text($('#get_value').val());
+
+    // Initialize Selectric and bind to 'change' event
+    $('#get_value').selectric().on('change', function() {
+      $selectValue.text($(this).val());
+    });
+
+    /*------------------------------------*/
+
+    $('#set_value').selectric();
+
+    $('#set_first_option').on('click', function() {
+      $('#set_value').prop('selectedIndex', 0).selectric('refresh');
+    });
+
+    $('#set_second_option').on('click', function() {
+      $('#set_value').prop('selectedIndex', 1).selectric('refresh');
+    });
+
+    $('#set_third_option').on('click', function() {
+      $('#set_value').prop('selectedIndex', 2).selectric('refresh');
+    });
+
+    /*------------------------------------*/
 
     $('#dynamic').selectric();
 
-    $('#bt_add_val').click(function(e) {
-      e.preventDefault();
-
+    $('#bt_add_val').click(function() {
       // Store the value in a variable
       var value = $('#add_val').val();
 
@@ -166,12 +197,14 @@
       $('#dynamic').selectric('refresh');
     });
 
+    /*------------------------------------*/
+
     // With events
     $('#callbacks')
-      .on('selectric-before-open', function(){
+      .on('selectric-before-open', function() {
         alert('Before open');
       })
-      .on('selectric-before-close', function(){
+      .on('selectric-before-close', function() {
         alert('Before close');
       })
       // You can bind to change event on original element
@@ -192,11 +225,15 @@
       }
     });
 
+    /*------------------------------------*/
+
     $.get('ajax.html', function(data) {
       $('#ajax').append(data).selectric();
     });
 
-    $('.customOptions').selectric({
+    /*------------------------------------*/
+
+    $('.custom-options').selectric({
       optionsItemBuilder: function(itemData, element, index) {
         return element.val().length ?
           '<span class="ico ico-' + element.val() +  '"></span>' + itemData.text :

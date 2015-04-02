@@ -73,7 +73,7 @@ gulp.task('css', function() {
       browsers: ['last 2 versions', '> 1%', 'ie 8', 'ie 7']
     }))
     .pipe($.csscomb())
-    .pipe($.header('/*======================================\n  Selectric v<%= pkg.version %>\n======================================*/\n\n', { pkg: pkg }))
+    .pipe($.header('/*======================================\n  Selectric v<%= pkg.version %>\n======================================*/\n', { pkg: pkg }))
     .pipe(gulp.dest('./public'))
     .pipe($.connect.reload());
 });

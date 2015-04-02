@@ -7,12 +7,12 @@ $spacing: 10px;
 $border-width: 1px;
 $inner-height: $height - ($border-width * 2);
 
-.selectricWrapper {
+.selectric-wrapper {
   position: relative;
   cursor: pointer;
 }
 
-.selectricResponsive {
+.selectric-responsive {
   width: 100%;
 }
 
@@ -62,7 +62,7 @@ $inner-height: $height - ($border-width * 2);
   }
 }
 
-.selectricHover .selectric {
+.selectric-hover .selectric {
   border-color: darken($main-color, 10%);
 
   .button {
@@ -74,26 +74,26 @@ $inner-height: $height - ($border-width * 2);
   }
 }
 
-.selectricOpen {
+.selectric-open {
   z-index: 9999;
 
   .selectric {
     border-color: darken($main-color, 10%);
   }
 
-  .selectricItems {
+  .selectric-items {
     display: block;
   }
 }
 
-.selectricDisabled {
+.selectric-disabled {
   filter: alpha(opacity=50);
   opacity: 0.5;
   cursor: default;
   user-select: none;
 }
 
-.selectricHideSelect {
+.selectric-hide-select {
   position: relative;
   overflow: hidden;
   width: 0;
@@ -106,7 +106,7 @@ $inner-height: $height - ($border-width * 2);
   }
 }
 
-.selectricInput {
+.selectric-input {
   position: absolute !important;
   top: 0 !important;
   left: 0 !important;
@@ -122,14 +122,14 @@ $inner-height: $height - ($border-width * 2);
   background: none !important;
 }
 
-.selectricTempShow {
+.selectric-temp-show {
   position: absolute !important;
   visibility: hidden !important;
   display: block !important;
 }
 
 /* Items box */
-.selectricItems {
+.selectric-items {
   display: none;
   position: absolute;
   top: 100%;
@@ -139,12 +139,12 @@ $inner-height: $height - ($border-width * 2);
   z-index: -1;
   box-shadow: 0 0 10px -6px;
 
-  .selectricScroll {
+  .selectric-scroll {
     height: 100%;
     overflow: auto;
   }
 
-  .selectricAbove & {
+  .selectric-above & {
     top: auto;
     bottom: 100%;
   }
@@ -186,8 +186,8 @@ $inner-height: $height - ($border-width * 2);
     user-select: none;
   }
 
-  .selectricGroup {
-    .selectricGroupLabel {
+  .selectric-group {
+    .selectric-group-label {
       font-weight: bold;
       padding-left: 10px;
       cursor: default;

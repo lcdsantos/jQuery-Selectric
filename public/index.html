@@ -6,7 +6,7 @@
   <meta name="robots" content="all">
   <title>jQuery Selectric</title>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?v=5">
-  <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="selectric.css">
   <link rel="stylesheet" href="customoptions.css">
@@ -538,37 +538,36 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
 
       <p style="float: right;">Hosted on GitHub Pages</p>
     </div>
-
   </div>
 
-<script src="lib/jquery.min.js"></script>
-<script src="lib/prism.js"></script>
-<script src="jquery.selectric.js"></script>
-<script>
-  $(function() {
-    $('select, .select').selectric();
+  <script src="lib/jquery.min.js"></script>
+  <script src="lib/prism.js"></script>
+  <script src="jquery.selectric.js"></script>
+  <script>
+    $(function() {
+      $('select, .select').selectric();
 
-    $('.customOptions').selectric({
-      optionsItemBuilder: function(itemData, element, index) {
-        return element.val().length ? '<span class="ico ico-' + element.val() +  '"></span>' + itemData.text : itemData.text;
-      }
+      $('.customOptions').selectric({
+        optionsItemBuilder: function(itemData, element, index) {
+          return element.val().length ? '<span class="ico ico-' + element.val() +  '"></span>' + itemData.text : itemData.text;
+        }
+      });
     });
-  });
 
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-42240250-1', 'lcdsantos.github.io');
-  ga('require', 'displayfeatures');
-  ga('send', 'pageview');
+    ga('create', 'UA-42240250-1', 'lcdsantos.github.io');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
 
-  function getScript(a,b,c,e){var d=a.getElementsByTagName(b)[0];a.getElementById(c)||(a=a.createElement(b),a.id=c,a.src=e,d.parentNode.insertBefore(a,d))};
+    function getScript(a,b,c,e){var d=a.getElementsByTagName(b)[0];a.getElementById(c)||(a=a.createElement(b),a.id=c,a.src=e,d.parentNode.insertBefore(a,d))};
 
-  getScript(document, 'script', 'facebook-jssdk', '//connect.facebook.net/en_US/all.js#xfbml=1&appId=146929405493694');
-  getScript(document, 'script', 'twitter-wjs', '//platform.twitter.com/widgets.js');
-  getScript(document, 'script', 'googleplus-wjs', '//apis.google.com/js/plusone.js');
-</script>
+    getScript(document, 'script', 'facebook-jssdk', '//connect.facebook.net/en_US/all.js#xfbml=1&appId=146929405493694');
+    getScript(document, 'script', 'twitter-wjs', '//platform.twitter.com/widgets.js');
+    getScript(document, 'script', 'googleplus-wjs', '//apis.google.com/js/plusone.js');
+  </script>
 </body>
 </html>
