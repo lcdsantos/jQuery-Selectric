@@ -36,7 +36,7 @@
           indent              : 10,
           hoverBaseColor      : shadeColor('#F8F8F8', -10),
           hoverSecondaryColor : shadeColor('#DDD', -10),
-          buttonSize          : 40,
+          buttonSize          : 38,
           buttonRadius        : 0,
           buttonBgColor       : 'none',
           buttonColor         : '#444'
@@ -56,12 +56,13 @@
       var value = $(this).val();
 
       if (value == 'custom') {
-        $theme.prop('href', 'themes/default/selectric.css');
-
+        $theme.prop('href', 'selectric.css');
         $.get('themes/template/selectric.css', function(css) {
           _template = css;
           initCustomTheme();
         });
+      } else if (value == 'default') {
+        $theme.prop('href', 'selectric.css');
       } else {
         $custom.slideUp();
         $theme.attr('href', 'themes/' + value + '/selectric.css');
@@ -240,7 +241,5 @@
           itemData.text;
       }
     });
-
-    // $('select').selectric();
   });
 }());
