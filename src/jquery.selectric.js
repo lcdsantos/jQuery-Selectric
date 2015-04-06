@@ -22,7 +22,8 @@
           camelCase: false,
           overwrite: true
         },
-        optionsItemBuilder: '{text}' // function(itemData, element, index)
+        optionsItemBuilder: '{text}', // function(itemData, element, index)
+        labelBuilder: '{text}' // function(currItem)
       },
       hooks = {
         add: function(callbackName, hookName, fn) {
@@ -99,7 +100,8 @@
             optionsLength,
             eventTriggers,
             isMobile = /android|ip(hone|od|ad)/i.test(navigator.userAgent),
-            tabindex = $original.prop('tabindex');
+            tabindex = $original.prop('tabindex'),
+            labelBuilder;
 
         function _init(opts) {
           _this.options = $.extend(true, {}, defaults, _this.options, opts);
@@ -144,6 +146,8 @@
 
           $original.on(eventTriggers).wrap('<div class="' + _this.classes.hideselect + '">');
           $.extend(_this, eventTriggers);
+
+          labelBuilder = _this.options.labelBuilder;
 
           if ( _this.options.inheritOriginalWidth && originalWidth > 0 )
             $outerWrapper.width(originalWidth);
@@ -214,7 +218,9 @@
 
             $items.append( $itemsScroll.html(_$li + '</ul>') );
 
-            $label.html(_this.items[currValue].text);
+            $label.html(
+              $.isFunction(labelBuilder) ? labelBuilder(_this.items[currValue]) : _utils.format(labelBuilder, _this.items[currValue])
+            )
           }
 
           $wrapper.add($original).add($outerWrapper).add($input).off(bindSufix);
@@ -448,7 +454,9 @@
               .data('value', text);
 
             // Change label text
-            $label.html(text);
+            $label.html(
+              $.isFunction(labelBuilder) ? labelBuilder(_this.items[selected]) : _utils.format(labelBuilder, _this.items[selected])
+            )
 
             _utils.triggerCallback('Change', _this);
           }

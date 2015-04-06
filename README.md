@@ -25,7 +25,7 @@ Include **jQuery Selectric:**
 <script src="js/jquery.selectric.min.js"></script>
 ```
 
-Include **jQuery Selectric:** styles, and change it to your taste :D
+Include **jQuery Selectric** styles, and change it to your taste :D _(please refer to our [demo page](http://lcdsantos.github.io/jQuery-Selectric/demo.html) for more themes and other customizations)_
 
 ```html
 <link rel="stylesheet" href="selectric.css">
@@ -184,6 +184,20 @@ $('select').selectric({
    *              no keys will be replaced in this method.
    */
   optionsItemBuilder: '{text}',
+
+  /*
+   * Type: String or Function
+   * Description: Define how each select label should be rendered. Allows HTML.
+   *
+   *              If it's a string, all keys wrapped in brackets will be replaced by
+   *              the respective values in currItem. Available keys are:
+   *              'value', 'text', 'slug', 'disabled'.
+   *
+   *              If it's a function, it will be called with the following parameters:
+   *              (currItem). The function must return a string, no keys will be
+   *              replaced in this method.
+   */
+  labelBuilder: '{text}',
 
   /*
    * Type: Boolean

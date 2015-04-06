@@ -105,8 +105,8 @@
     <p>2. Include <strong>jQuery Selectric:</strong></p>
     <pre><code class="language-markup">&lt;script src=&quot;jquery.selectric.min.js&quot;&gt;&lt;/script&gt;</code></pre>
 
-    <p>3. Put styles in your CSS and change it to your taste :D <span class="note">(please refer to our <a href="./demo.html">demo page</a> for more themes and other customizations)</span></p>
-    <pre data-src="selectric.css"></pre>
+    <p>3. Include <strong>jQuery Selectric</strong> styles, and change it to your taste :D <span class="note">(please refer to our <a href="./demo.html">demo page</a> for more themes and other customizations)</span></p>
+    <pre><code class="language-markup">&lt;link rel=&quot;stylesheet&quot; href=&quot;selectric.css&quot;&gt;</code></pre>
 
     <p>4. Initialize <strong>jQuery Selectric:</strong></p>
     <pre><code class="language-javascript">$(function(){
@@ -252,6 +252,20 @@
    *              no keys will be replaced in this method.
    */
   optionsItemBuilder: '{text}',
+
+  /*
+   * Type: String or Function
+   * Description: Define how each select label should be rendered. Allows HTML.
+   *
+   *              If it's a string, all keys wrapped in brackets will be replaced by
+   *              the respective values in currItem. Available keys are:
+   *              'value', 'text', 'slug', 'disabled'.
+   *
+   *              If it's a function, it will be called with the following parameters:
+   *              (currItem). The function must return a string, no keys will be
+   *              replaced in this method.
+   */
+  labelBuilder: '{text}',
 
   /*
    * Type: Boolean
@@ -457,6 +471,30 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
       <option value="opera">Opera</option>
     </select>
 
+    <select class="customLabel">
+      <option value="">Select with custom label builder</option>
+      <option value="ant">Ant</option>
+      <option value="bird">Bird</option>
+      <option value="cat">Cat</option>
+      <option value="chicken">Chicken</option>
+      <option value="cow">Cow</option>
+      <option value="dog">Dog</option>
+      <option value="elephant">Elephant</option>
+      <option value="fish">Fish</option>
+      <option value="fox">Fox</option>
+      <option value="horse">Horse</option>
+      <option value="kangaroo">Kangaroo</option>
+      <option value="lion">Lion</option>
+      <option value="monkey">Monkey</option>
+      <option value="penguin">Penguin</option>
+      <option value="pig">Pig</option>
+      <option value="rabbit">Rabbit</option>
+      <option value="sheep">Sheep</option>
+      <option value="tiger">Tiger</option>
+      <option value="whale">Whale</option>
+      <option value="wolf">Wolf</option>
+    </select>
+
     <select disabled>
       <option value="">Select disabled</option>
       <option value="apple">Apple</option>
@@ -558,6 +596,12 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
       $('.customOptions').selectric({
         optionsItemBuilder: function(itemData, element, index) {
           return element.val().length ? '<span class="ico ico-' + element.val() +  '"></span>' + itemData.text : itemData.text;
+        }
+      });
+
+      $('.customLabel').selectric({
+        labelBuilder: function(currItem) {
+          return '<strong><em>' + currItem.text + '</em></strong>';
         }
       });
     });
