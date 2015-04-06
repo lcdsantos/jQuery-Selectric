@@ -119,12 +119,12 @@
 
           // Generate classNames for elements
           var customClass   = _this.options.customClass,
-              postfixes     = customClass.postfixes.split(' '),
+              postfixes     = classList.split(' '),
               originalWidth = $original.width();
 
-          $.each(classList, function(i, elm) {
-            var c = customClass.prefix + postfixes[i];
-            _this.classes[elm.toLowerCase()] = customClass.camelCase ? c : _utils.toDash(c);
+          $.each(postfixes, function(i, currClass) {
+            var c = customClass.prefix + currClass;
+            _this.classes[currClass.toLowerCase()] = customClass.camelCase ? c : _utils.toDash(c);
           });
 
           $input        = $('<input/>', { 'class': _this.classes.input, 'readonly': isMobile });
