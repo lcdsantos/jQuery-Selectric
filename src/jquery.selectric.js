@@ -19,7 +19,6 @@
         allowWrap: true,
         customClass: {
           prefix: pluginName,
-          postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive Above Scroll Group GroupLabel',
           camelCase: false,
           overwrite: true
         },
@@ -123,7 +122,7 @@
               postfixes     = customClass.postfixes.split(' '),
               originalWidth = $original.width();
 
-          $.each(postfixes, function(i, elm) {
+          $.each(classList, function(i, elm) {
             var c = customClass.prefix + postfixes[i];
             _this.classes[elm.toLowerCase()] = customClass.camelCase ? c : _utils.toDash(c);
           });
