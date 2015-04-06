@@ -1,4 +1,4 @@
-.selectric-custom-options .selectric-items .ico {
+.selectric-customOptions .ico {
   display: inline-block;
   vertical-align: middle;
   zoom: 1;
@@ -9,8 +9,8 @@
   background: url(img/browser-icons.png) no-repeat;
 }
 
-.selectric-custom-options .selectric-items .ico-chrome  { background-position: 0 0; }
-.selectric-custom-options .selectric-items .ico-firefox { background-position: -30px 0; }
-.selectric-custom-options .selectric-items .ico-ie      { background-position: -60px 0; }
-.selectric-custom-options .selectric-items .ico-opera   { background-position: -90px 0; }
-.selectric-custom-options .selectric-items .ico-safari  { background-position: -120px 0; }
+.selectric-customOptions .ico-chrome  { background-position: 0 0; }
+.selectric-customOptions .ico-firefox { background-position: -30px 0; }
+.selectric-customOptions .ico-ie      { background-position: -60px 0; }
+.selectric-customOptions .ico-opera   { background-position: -90px 0; }
+.selectric-customOptions .ico-safari  { background-position: -120px 0; }

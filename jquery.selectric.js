@@ -36,11 +36,11 @@
         allowWrap: true,
         customClass: {
           prefix: pluginName,
-          postfixes: 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive Above Scroll Group GroupLabel',
           camelCase: false,
           overwrite: true
         },
-        optionsItemBuilder: '{text}' // function(itemData, element, index)
+        optionsItemBuilder: '{text}', // function(itemData, element, index)
+        labelBuilder: '{text}' // function(currItem)
       },
       hooks = {
         add: function(callbackName, hookName, fn) {
@@ -117,7 +117,8 @@
             optionsLength,
             eventTriggers,
             isMobile = /android|ip(hone|od|ad)/i.test(navigator.userAgent),
-            tabindex = $original.prop('tabindex');
+            tabindex = $original.prop('tabindex'),
+            labelBuilder;
 
         function _init(opts) {
           _this.options = $.extend(true, {}, defaults, _this.options, opts);
@@ -137,12 +138,12 @@
 
           // Generate classNames for elements
           var customClass   = _this.options.customClass,
-              postfixes     = customClass.postfixes.split(' '),
+              postfixes     = classList.split(' '),
               originalWidth = $original.width();
 
-          $.each(postfixes, function(i, elm) {
-            var c = customClass.prefix + postfixes[i];
-            _this.classes[elm.toLowerCase()] = customClass.camelCase ? c : _utils.toDash(c);
+          $.each(postfixes, function(i, currClass) {
+            var c = customClass.prefix + currClass;
+            _this.classes[currClass.toLowerCase()] = customClass.camelCase ? c : _utils.toDash(c);
           });
 
           $input        = $('<input/>', { 'class': _this.classes.input, 'readonly': isMobile });
@@ -162,6 +163,8 @@
 
           $original.on(eventTriggers).wrap('<div class="' + _this.classes.hideselect + '">');
           $.extend(_this, eventTriggers);
+
+          labelBuilder = _this.options.labelBuilder;
 
           if ( _this.options.inheritOriginalWidth && originalWidth > 0 )
             $outerWrapper.width(originalWidth);
@@ -232,7 +235,9 @@
 
             $items.append( $itemsScroll.html(_$li + '</ul>') );
 
-            $label.html(_this.items[currValue].text);
+            $label.html(
+              $.isFunction(labelBuilder) ? labelBuilder(_this.items[currValue]) : _utils.format(labelBuilder, _this.items[currValue])
+            )
           }
 
           $wrapper.add($original).add($outerWrapper).add($input).off(bindSufix);
@@ -466,7 +471,9 @@
               .data('value', text);
 
             // Change label text
-            $label.html(text);
+            $label.html(
+              $.isFunction(labelBuilder) ? labelBuilder(_this.items[selected]) : _utils.format(labelBuilder, _this.items[selected])
+            )
 
             _utils.triggerCallback('Change', _this);
           }
