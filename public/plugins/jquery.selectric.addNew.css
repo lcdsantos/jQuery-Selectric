@@ -1,16 +1,16 @@
 /* Add new item */
-.selectricScroll {
+.selectric-scroll {
   position: relative;
 }
 
-.selectricScroll .createNew {
+.selectric-scroll .createNew {
   position: absolute;
   top: 0;
   width: 100%;
 }
 
-.selectricScroll .createNew > input[type=text],
-.selectricScroll .createNew > button {
+.selectric-scroll .createNew > input[type=text],
+.selectric-scroll .createNew > button {
   height: 24px;
   margin: 3px 1%;
   padding: 5px;
@@ -19,7 +19,7 @@
   font-weight: normal;
 }
 
-.selectricScroll .createNew > input[type=text] {
+.selectric-scroll .createNew > input[type=text] {
   background: #fff;
   width: 76%;
   border: 1px solid #ddd;
@@ -28,7 +28,7 @@
   color: #444;
 }
 
-.selectricScroll .createNew > button {
+.selectric-scroll .createNew > button {
   width: 20%;
   background: #c02126;
   border: 1px solid #981317;
@@ -42,6 +42,6 @@
   text-transform: uppercase;
 }
 
-.selectricScroll .createNew + ul {
+.selectric-scroll .createNew + ul {
   margin-top: 30px;
 }
