@@ -5,7 +5,7 @@
       classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive Above Scroll Group GroupLabel',
       bindSufix = '.sl',
       defaults = {
-        onChange: function(elm) { $(elm).change()<input/>; },
+        onChange: function(elm) { $(elm).change(); },
         maxHeight: 300,
         keySearchTimeout: 500,
         arrowButtonMarkup: '<b class="button">&#x25be;</b>',
