@@ -5,7 +5,7 @@
       classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive Above Scroll Group GroupLabel',
       bindSufix = '.sl',
       defaults = {
-        onChange: function(elm) { $(elm).change(); },
+        onChange: function(elm) { $(elm).change()<input/>; },
         maxHeight: 300,
         keySearchTimeout: 500,
         arrowButtonMarkup: '<b class="button">&#x25be;</b>',
@@ -125,7 +125,7 @@
               originalWidth = $original.width();
 
           $.each(postfixes, function(i, currClass) {
-            var c = customClass.prefix + currClass;
+            var c = customClass.prefix + '-' + currClass;
             _this.classes[currClass.toLowerCase()] = customClass.camelCase ? c : _utils.toDash(c);
           });
 
