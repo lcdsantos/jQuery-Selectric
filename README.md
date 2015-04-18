@@ -1,3 +1,4 @@
+[![JS.ORG](https://img.shields.io/badge/js.org-selectric-ffb400.svg?style=flat-square)](http://js.org)
 #jQuery Selectric ![icon](http://i.imgur.com/D2hcnUN.png)
 
 jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.
