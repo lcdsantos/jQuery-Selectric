@@ -18,8 +18,8 @@
     }
   ],
   "main": [
-    "dist/jquery.selectric.js",
-    "dist/selectric.css"
+    "public/jquery.selectric.js",
+    "public/selectric.css"
   ],
   "ignore": [
     "**/.*",
