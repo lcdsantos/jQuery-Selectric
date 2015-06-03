@@ -79,7 +79,7 @@
   display: block;
 }
 
-.selectricDisabled {
+.selectric-disabled {
   filter: alpha(opacity=50);
   opacity: 0.5;
   cursor: default;
@@ -101,7 +101,7 @@
   display: none;
 }
 
-.selectricInput {
+.selectric-input {
   position: absolute !important;
   top: 0 !important;
   left: 0 !important;
@@ -117,7 +117,7 @@
   background: none !important;
 }
 
-.selectricTempShow {
+.selectric-temp-show {
   position: absolute !important;
   visibility: hidden !important;
   display: block !important;
