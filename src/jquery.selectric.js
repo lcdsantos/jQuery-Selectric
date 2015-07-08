@@ -161,7 +161,8 @@
 
           var $options = $original.children(),
               _$li = '<ul>',
-              selectedIndex = $options.filter(':selected').index(),
+              $justOptions = $original.find('option'),
+              selectedIndex = $justOptions.index($justOptions.filter(':selected')),
               currIndex = 0;
 
           currValue = (selected = ~selectedIndex ? selectedIndex : 0);

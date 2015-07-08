@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.9.3 (Jun 03 2015) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.9.3 (Jul 08 2015) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2015 Leonardo Santos; Dual licensed: MIT/GPL
  *
@@ -178,7 +178,8 @@
 
           var $options = $original.children(),
               _$li = '<ul>',
-              selectedIndex = $options.filter(':selected').index(),
+              $justOptions = $original.find('option'),
+              selectedIndex = $justOptions.index($justOptions.filter(':selected')),
               currIndex = 0;
 
           currValue = (selected = ~selectedIndex ? selectedIndex : 0);
