@@ -125,7 +125,7 @@
               originalWidth = $original.width();
 
           $.each(postfixes, function(i, currClass) {
-            var c = customClass.prefix + currClass;
+            var c = customClass.prefix + '-' + currClass;
             _this.classes[currClass.toLowerCase()] = customClass.camelCase ? c : _utils.toDash(c);
           });
 
