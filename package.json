@@ -1,6 +1,7 @@
 {
   "name": "selectric",
   "version": "1.9.3",
+  "main": "public/jquery.selectric.js",
   "title": "jQuery Selectric",
   "author": {
     "name": "Leonardo Santos",
