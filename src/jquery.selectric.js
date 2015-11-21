@@ -159,7 +159,7 @@
         function _populate() {
           _this.items = [];
 
-          var $options = $original.children(),
+          var $options = $original.children('option'),
               _$li = '<ul>',
               $justOptions = $original.find('option'),
               selectedIndex = $justOptions.index($justOptions.filter(':selected')),
