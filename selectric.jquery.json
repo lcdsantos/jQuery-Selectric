@@ -1,21 +1,15 @@
 {
   "name": "selectric",
-  "version": "1.9.3",
+  "version": "1.9.5",
   "title": "jQuery Selectric",
   "author": {
     "name": "Leonardo Santos",
     "email": "leocs.1991@gmail.com"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://opensource.org/licenses/MIT"
-    },
-    {
-      "type": "GPL-3.0",
-      "url": "http://opensource.org/licenses/GPL-3.0"
-    }
-  ],
+  "license": {
+    "type": "MIT",
+    "url": "http://opensource.org/licenses/MIT"
+  },
   "dependencies": {
     "jquery": ">=1.7"
   },

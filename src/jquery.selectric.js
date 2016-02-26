@@ -1,4 +1,26 @@
-;(function($) {
+(function(factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(['jquery'], factory);
+  } else if (typeof module === 'object' && module.exports) {
+    // Node/CommonJS
+    module.exports = function( root, jQuery ) {
+      if ( jQuery === undefined ) {
+        if ( typeof window !== 'undefined' ) {
+          jQuery = require('jquery');
+        }
+        else {
+          jQuery = require('jquery')(root);
+        }
+      }
+      factory(jQuery);
+      return jQuery;
+    };
+  } else {
+    // Browser globals
+    factory(jQuery);
+  }
+}(function($) {
+
   'use strict';
 
   var pluginName = 'selectric',
@@ -535,4 +557,5 @@
   };
 
   $.fn[pluginName].hooks = hooks;
-}(jQuery));
+
+}));

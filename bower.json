@@ -1,7 +1,7 @@
 {
   "name": "jquery-selectric",
   "description": "Fast, simple and light jQuery plugin to customize HTML selects",
-  "version": "1.9.3",
+  "version": "1.9.5",
   "keywords": [
     "select",
     "selectbox",
@@ -27,7 +27,7 @@
     "js",
     "src",
     "*.md",
-    "Gruntfile.js",
+    "gulpfile.js",
     "package.json"
   ],
   "dependencies": {

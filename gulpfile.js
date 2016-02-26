@@ -3,8 +3,9 @@ var gulp = require('gulp'),
     fs   = require('fs');
 
 var getPackageJson = function() {
-      return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-    };
+  return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+};
+
 
 /*======================================
   Bump version
@@ -19,6 +20,7 @@ gulp.task('bump', function() {
     }))
     .pipe(gulp.dest('./'));
 });
+
 
 /*======================================
   Javascript
@@ -37,9 +39,9 @@ gulp.task('js', ['bump'], function() {
         ' *    /,\'',
         ' *   /\'',
         ' *',
-        ' * Selectric \u03DE v<%= pkg.version %> (<%= new Date().toString().substr(4, 11) %>) - http://lcdsantos.github.io/jQuery-Selectric/',
+        ' * Selectric \u03DF v<%= pkg.version %> (<%= new Date().toString().substr(4, 11) %>) - http://lcdsantos.github.io/jQuery-Selectric/',
         ' *',
-        ' * Copyright (c) <%= new Date().getFullYear() %> Leonardo Santos; Dual licensed: MIT\/GPL',
+        ' * Copyright (c) <%= new Date().getFullYear() %> Leonardo Santos; MIT License',
         ' *',
         ' */\n\n'
       ].join('\n');
@@ -55,11 +57,12 @@ gulp.task('js-min', ['bump'], function() {
 
   return gulp.src('src/jquery.selectric.js')
     .pipe($.uglify())
-    .pipe($.header('/*! Selectric ϟ v<%= pkg.version %> (<%= new Date().toJSON().slice(0,10) %>) - git.io/tjl9sQ - Copyright (c) <%= new Date().getFullYear() %> Leonardo Santos - Dual licensed: MIT/GPL */\n', { pkg: pkg }))
+    .pipe($.header('/*! Selectric \u03DF v<%= pkg.version %> (<%= new Date().toJSON().slice(0,10) %>) - git.io/tjl9sQ - Copyright (c) <%= new Date().getFullYear() %> Leonardo Santos - MIT License */\n', { pkg: pkg }))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest('./public'))
     .pipe($.connect.reload());
 });
+
 
 /*======================================
   CSS
@@ -73,10 +76,15 @@ gulp.task('css', function() {
       browsers: ['last 2 versions', '> 1%', 'ie 8', 'ie 7']
     }))
     .pipe($.csscomb())
-    .pipe($.header('/*======================================\n  Selectric v<%= pkg.version %>\n======================================*/\n', { pkg: pkg }))
+    .pipe($.header([
+      '/*======================================',
+      '  Selectric v<%= pkg.version %>',
+      '======================================*/\n\n'
+    ].join('\n'), { pkg: pkg }))
     .pipe(gulp.dest('./public'))
     .pipe($.connect.reload());
 });
+
 
 /*======================================
   Live preview
@@ -93,6 +101,7 @@ gulp.task('html', function() {
     .pipe($.connect.reload());
 });
 
+
 /*======================================
   Watch
 ======================================*/
@@ -101,6 +110,7 @@ gulp.task('watch', ['serve'], function() {
   gulp.watch(['./src/*.scss'], ['css']);
   gulp.watch(['./public/*.html'], ['html']);
 });
+
 
 /*======================================
   ZIP
@@ -113,6 +123,7 @@ gulp.task('zip', function() {
     .pipe(gulp.dest('./'));
 });
 
+
 /*======================================
   GitHub Pages
 ======================================*/
@@ -120,6 +131,7 @@ gulp.task('gh-pages', function() {
   return gulp.src('./public/**/*')
     .pipe($.ghPages());
 });
+
 
 /*======================================
   Default tasks

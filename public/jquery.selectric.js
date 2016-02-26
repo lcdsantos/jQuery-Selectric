@@ -9,13 +9,35 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.9.3 (Jul 08 2015) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.9.5 (Feb 26 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
- * Copyright (c) 2015 Leonardo Santos; Dual licensed: MIT/GPL
+ * Copyright (c) 2016 Leonardo Santos; MIT License
  *
  */
 
-;(function($) {
+(function(factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(['jquery'], factory);
+  } else if (typeof module === 'object' && module.exports) {
+    // Node/CommonJS
+    module.exports = function( root, jQuery ) {
+      if ( jQuery === undefined ) {
+        if ( typeof window !== 'undefined' ) {
+          jQuery = require('jquery');
+        }
+        else {
+          jQuery = require('jquery')(root);
+        }
+      }
+      factory(jQuery);
+      return jQuery;
+    };
+  } else {
+    // Browser globals
+    factory(jQuery);
+  }
+}(function($) {
+
   'use strict';
 
   var pluginName = 'selectric',
@@ -142,7 +164,7 @@
               originalWidth = $original.width();
 
           $.each(postfixes, function(i, currClass) {
-            var c = customClass.prefix + currClass;
+            var c = customClass.prefix + '-' + currClass;
             _this.classes[currClass.toLowerCase()] = customClass.camelCase ? c : _utils.toDash(c);
           });
 
@@ -552,4 +574,5 @@
   };
 
   $.fn[pluginName].hooks = hooks;
-}(jQuery));
+
+}));
