@@ -174,7 +174,7 @@ $('select').selectric({
 
   /*
    * Type: String or Function
-   * Description: Define how each option should be rendered inside its &lt;li&gt; element.
+   * Description: Define how each option should be rendered inside its <li> element.
    *
    *              If it's a string, all keys wrapped in brackets will be replaced by
    *              the respective values in itemData. Available keys are:
