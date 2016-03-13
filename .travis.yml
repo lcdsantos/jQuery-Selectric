@@ -1,7 +1,12 @@
 language: node_js
+
 node_js:
-  - '4.2'
   - 'stable'
-script: npm run test:single
+
+script: npm test
+
 before_script:
   - npm install
+
+after_success:
+  - npm run codecov

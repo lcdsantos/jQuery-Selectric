@@ -80,8 +80,13 @@ module.exports = function(config) {
 
 		// optionally, configure the reporter
 		coverageReporter: {
-			type : 'html',
-			dir : 'coverage/'
+			// specify a common output directory
+			dir: 'coverage/',
+			reporters: [
+				// reporters not supporting the `file` property
+				{ type: 'html', subdir: 'report-html' },
+				{ type: 'lcov', subdir: 'report-lcov' }
+			]
 		}
 	})
 }
