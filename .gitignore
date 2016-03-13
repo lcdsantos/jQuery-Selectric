@@ -3,3 +3,5 @@ node_modules
 tmp
 .sass-cache
 .publish
+coverage
+*.sublime-*

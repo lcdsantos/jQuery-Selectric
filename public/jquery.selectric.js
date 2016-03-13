@@ -9,13 +9,14 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.9.5 (Feb 26 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.9.5 (Mar 13 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
  */
 
 (function(factory) {
+  /* istanbul ignore next */
   if (typeof define === 'function' && define.amd) {
     define(['jquery'], factory);
   } else if (typeof module === 'object' && module.exports) {
@@ -58,8 +59,7 @@
         allowWrap: true,
         customClass: {
           prefix: pluginName,
-          camelCase: false,
-          overwrite: true
+          camelCase: false
         },
         optionsItemBuilder: '{text}', // function(itemData, element, index)
         labelBuilder: '{text}' // function(currItem)
@@ -164,7 +164,7 @@
               originalWidth = $original.width();
 
           $.each(postfixes, function(i, currClass) {
-            var c = customClass.prefix + '-' + currClass;
+            var c = customClass.prefix + currClass;
             _this.classes[currClass.toLowerCase()] = customClass.camelCase ? c : _utils.toDash(c);
           });
 
@@ -267,9 +267,7 @@
 
           $outerWrapper.prop('class', [
             _this.classes.wrapper,
-            _this.options.customClass.overwrite ?
-              $original.prop('class').replace(/\S+/g, _this.options.customClass.prefix + '-$&') :
-              $original.prop('class'),
+            $original.prop('class').replace(/\S+/g, _this.options.customClass.prefix + '-$&'),
             _this.options.responsive ? _this.classes.responsive : ''
           ].join(' '));
 
@@ -325,12 +323,6 @@
                 }
               })
               .on('focusin' + bindSufix, function(e) {
-                // Stupid, but necessary... Prevent the flicker when
-                // focusing out and back again in the browser window
-                $input.one('blur', function() {
-                  $input.blur();
-                });
-
                 isOpen || _open(e);
               })
               .on('oninput' in $input[0] ? 'input' : 'keyup', function() {
@@ -445,7 +437,8 @@
             $outerWrapper.addClass(_this.classes.open);
 
             // Give dummy input focus
-            $input.val('').is(':focus') || $input.focus();
+            $input.val('');
+            e && e.type !== 'focusin' && $input.focus();
 
             $doc.on('click' + bindSufix, _close).on('scroll' + bindSufix, _isInViewport);
             _isInViewport();

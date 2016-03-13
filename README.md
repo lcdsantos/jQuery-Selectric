@@ -8,7 +8,7 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 * Pretty lightweight
 * Options box always stay visible
 * Doesn't rely on external libraries (besides jQuery)
-* Word search works with western latin characters set (e.g.: á, ñ, ç...)
+* Word search works with western latin characters set (for example: á, ñ, ç...)
 
 ###[Demo](http://lcdsantos.github.io/jQuery-Selectric/)
 
@@ -161,15 +161,10 @@ $('select').selectric({
   /*
    * Type: Object
    * Description: Customize classes.
-   *              Every class in 'postfixes' should be separate with a
-   *              space and follow this exact order:
-   *              'Input Items Open Disabled TempShow HideSelect Wrapper
-   *              Hover Responsive Above Scroll Group GroupLabel'
    */
   customClass: {
     prefix: 'selectric',
-    camelCase: false,
-    overwrite: true
+    camelCase: false
   },
 
   /*
@@ -219,7 +214,7 @@ $('select').selectric({
    *              first (or last) once reach the end (or start) item of list upon
    *              keyboard arrow navigation.
    */
-  allowWrap: false
+  allowWrap: true
 }
 ```
 
