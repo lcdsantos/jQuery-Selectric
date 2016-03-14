@@ -1,4 +1,8 @@
-[![JS.ORG](https://img.shields.io/badge/js.org-selectric-ffb400.svg?style=flat-square)](http://js.org)
+[![JS.ORG](https://img.shields.io/badge/js.org-selectric-ffb400.svg)](http://js.org)
+[![Travis](https://img.shields.io/travis/lcdsantos/jQuery-Selectric.svg)](https://travis-ci.org/lcdsantos/jQuery-Selectric)
+[![codecov.io](https://codecov.io/github/lcdsantos/jQuery-Selectric/coverage.svg?branch=master)](https://codecov.io/github/lcdsantos/jQuery-Selectric?branch=master)
+[![npm](https://img.shields.io/npm/v/selectric.svg)](https://www.npmjs.com/package/selectric)
+
 #jQuery Selectric ![icon](http://i.imgur.com/D2hcnUN.png)
 
 jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.
