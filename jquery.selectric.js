@@ -9,13 +9,36 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.9.3 (Jun 03 2015) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.9.6 (Mar 24 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
- * Copyright (c) 2015 Leonardo Santos; Dual licensed: MIT/GPL
+ * Copyright (c) 2016 Leonardo Santos; MIT License
  *
  */
 
-;(function($) {
+(function(factory) {
+  /* istanbul ignore next */
+  if (typeof define === 'function' && define.amd) {
+    define(['jquery'], factory);
+  } else if (typeof module === 'object' && module.exports) {
+    // Node/CommonJS
+    module.exports = function( root, jQuery ) {
+      if ( jQuery === undefined ) {
+        if ( typeof window !== 'undefined' ) {
+          jQuery = require('jquery');
+        }
+        else {
+          jQuery = require('jquery')(root);
+        }
+      }
+      factory(jQuery);
+      return jQuery;
+    };
+  } else {
+    // Browser globals
+    factory(jQuery);
+  }
+}(function($) {
+
   'use strict';
 
   var pluginName = 'selectric',
@@ -36,8 +59,7 @@
         allowWrap: true,
         customClass: {
           prefix: pluginName,
-          camelCase: false,
-          overwrite: true
+          camelCase: false
         },
         optionsItemBuilder: '{text}', // function(itemData, element, index)
         labelBuilder: '{text}' // function(currItem)
@@ -178,7 +200,8 @@
 
           var $options = $original.children(),
               _$li = '<ul>',
-              selectedIndex = $options.filter(':selected').index(),
+              $justOptions = $original.find('option'),
+              selectedIndex = $justOptions.index($justOptions.filter(':selected')),
               currIndex = 0;
 
           currValue = (selected = ~selectedIndex ? selectedIndex : 0);
@@ -244,9 +267,7 @@
 
           $outerWrapper.prop('class', [
             _this.classes.wrapper,
-            _this.options.customClass.overwrite ?
-              $original.prop('class').replace(/\S+/g, _this.options.customClass.prefix + '-$&') :
-              $original.prop('class'),
+            $original.prop('class').replace(/\S+/g, _this.options.customClass.prefix + '-$&'),
             _this.options.responsive ? _this.classes.responsive : ''
           ].join(' '));
 
@@ -302,12 +323,6 @@
                 }
               })
               .on('focusin' + bindSufix, function(e) {
-                // Stupid, but necessary... Prevent the flicker when
-                // focusing out and back again in the browser window
-                $input.one('blur', function() {
-                  $input.blur();
-                });
-
                 isOpen || _open(e);
               })
               .on('oninput' in $input[0] ? 'input' : 'keyup', function() {
@@ -422,7 +437,8 @@
             $outerWrapper.addClass(_this.classes.open);
 
             // Give dummy input focus
-            $input.val('').is(':focus') || $input.focus();
+            $input.val('');
+            e && e.type !== 'focusin' && $input.focus();
 
             $doc.on('click' + bindSufix, _close).on('scroll' + bindSufix, _isInViewport);
             _isInViewport();
@@ -453,7 +469,21 @@
 
         // Detect is the options box is inside the window
         function _isInViewport() {
-          $outerWrapper.toggleClass(_this.classes.above, $outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + $win.height());
+          var scrollTop = $win.scrollTop();
+          var winHeight = $win.height();
+          var uiPosX = $outerWrapper.offset().top;
+          var uiHeight = $outerWrapper.outerHeight();
+
+          var fitsDown = (uiPosX + uiHeight + itemsHeight) <= (scrollTop + winHeight);
+          var fitsAbove = (uiPosX - itemsHeight) > scrollTop;
+
+          // If it does not fit below, only render it
+          // above it fit's there.
+          // It's acceptable that the user needs to
+          // scroll the viewport to see the cut off UI
+          var renderAbove = !fitsDown && fitsAbove;
+
+          $outerWrapper.toggleClass(_this.classes.above, renderAbove);
         }
 
         // Close the select options box
@@ -551,4 +581,5 @@
   };
 
   $.fn[pluginName].hooks = hooks;
-}(jQuery));
+
+}));
