@@ -118,7 +118,7 @@ gulp.task('watch', ['serve'], function() {
 gulp.task('zip', function() {
   var pkg = getPackageJson();
 
-  return gulp.src('./public/*')
+  return gulp.src('./public/**/*')
     .pipe($.zip('selectric_v' + pkg.version + '.zip'))
     .pipe(gulp.dest('./'));
 });
