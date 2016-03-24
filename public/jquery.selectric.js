@@ -9,9 +9,9 @@
  *    /,'
  *   /'
  *
- * Selectric Ϟ v1.9.3 (Jul 08 2015) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric Ϟ v1.9.6 (Mar 24 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
- * Copyright (c) 2015 Leonardo Santos; Dual licensed: MIT/GPL
+ * Copyright (c) 2016 Leonardo Santos; Dual licensed: MIT/GPL
  *
  */
 
@@ -142,7 +142,7 @@
               originalWidth = $original.width();
 
           $.each(postfixes, function(i, currClass) {
-            var c = customClass.prefix + currClass;
+            var c = customClass.prefix + '-' + currClass;
             _this.classes[currClass.toLowerCase()] = customClass.camelCase ? c : _utils.toDash(c);
           });
 
@@ -454,7 +454,21 @@
 
         // Detect is the options box is inside the window
         function _isInViewport() {
-          $outerWrapper.toggleClass(_this.classes.above, $outerWrapper.offset().top + $outerWrapper.outerHeight() + itemsHeight > $win.scrollTop() + $win.height());
+          var scrollTop = $win.scrollTop();
+          var winHeight = $win.height();
+          var uiPosX = $outerWrapper.offset().top;
+          var uiHeight = $outerWrapper.outerHeight();
+
+          var fitsDown = (uiPosX + uiHeight + itemsHeight) <= (scrollTop + winHeight);
+          var fitsAbove = (uiPosX - itemsHeight) > scrollTop;
+
+          // If it does not fit below, only render it
+          // above it fit's there.
+          // It's acceptable that the user needs to 
+          // scroll the viewport to see the cut off UI
+          var renderAbove = !fitsDown && fitsAbove;
+
+          $outerWrapper.toggleClass(_this.classes.above, renderAbove);
         }
 
         // Close the select options box

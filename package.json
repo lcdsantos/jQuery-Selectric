@@ -1,6 +1,6 @@
 {
   "name": "selectric",
-  "version": "1.9.3",
+  "version": "1.9.6",
   "main": "public/jquery.selectric.js",
   "title": "jQuery Selectric",
   "author": {

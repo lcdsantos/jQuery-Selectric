@@ -1,5 +1,5 @@
 /*======================================
-  Selectric v1.9.3
+  Selectric v1.9.6
 ======================================*/
 .selectric-wrapper {
   position: relative;
@@ -36,7 +36,7 @@
   color: #BBB;
   text-align: center;
   font: 0/0 a;
-  *font: 20px/38px Lucida Sans Unicode, Arial Unicode MS, Arial;
+  *font: 20px / 38px Lucida Sans Unicode, Arial Unicode MS, Arial;
 }
 .selectric .button:after {
   content: " ";
