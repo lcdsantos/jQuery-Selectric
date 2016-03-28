@@ -1,6 +1,6 @@
 {
   "name": "selectric",
-  "version": "1.9.5",
+  "version": "1.9.6",
   "main": "public/jquery.selectric.js",
   "title": "jQuery Selectric",
   "author": {
@@ -31,13 +31,14 @@
     "jquery": "^2.1.4"
   },
   "devDependencies": {
-    "browserify": "^13.0.0",
     "codecov.io": "^0.1.6",
+    "eslint": "^2.5.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-bump": "^1.0.0",
     "gulp-connect": "^3.1.0",
     "gulp-csscomb": "^3.0.6",
+    "gulp-eslint": "^2.0.0",
     "gulp-gh-pages": "^0.5.4",
     "gulp-header": "^1.7.1",
     "gulp-load-plugins": "^1.2.0",
@@ -59,8 +60,10 @@
     "phantomjs-prebuilt": "^2.1.5"
   },
   "scripts": {
-    "test": "karma start --single-run --browsers PhantomJS",
+    "test": "npm run lint && npm run test:single",
+    "test:single": "karma start --single-run --browsers PhantomJS",
     "test:watch": "karma start",
+    "lint": "eslint src/*.js",
     "codecov": "cat coverage/*/lcov.info | codecov"
   }
 }

@@ -26,6 +26,10 @@
   line-height: 38px;
   color: #444;
   height: 38px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 .selectric .button {
   display: block;
@@ -147,9 +151,7 @@
 }
 .selectric-items li {
   display: block;
-  padding: 8px;
-  border-top: 1px solid #FFF;
-  border-bottom: 1px solid #EEE;
+  padding: 10px;
   color: #666;
   cursor: pointer;
 }

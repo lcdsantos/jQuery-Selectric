@@ -31,6 +31,7 @@ $selectric-inner-height:    $selectric-height - ($selectric-border-width * 2) !d
     line-height: $selectric-inner-height;
     color: $selectric-text-color;
     height: $selectric-inner-height;
+    user-select: none;
   }
 
   .button {
@@ -160,9 +161,7 @@ $selectric-inner-height:    $selectric-height - ($selectric-border-width * 2) !d
 
   li {
     display: block;
-    padding: 8px;
-    border-top: 1px solid #FFF;
-    border-bottom: 1px solid #EEE;
+    padding: 10px;
     color: #666;
     cursor: pointer;
 

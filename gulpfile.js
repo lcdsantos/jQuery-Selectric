@@ -25,7 +25,13 @@ gulp.task('bump', function() {
 /*======================================
   Javascript
 ======================================*/
-gulp.task('js', ['bump'], function() {
+gulp.task('lint', function() {
+  return gulp.src(['src/*.js', 'test/*.js'])
+    .pipe($.eslint())
+    .pipe($.eslint.format());
+});
+
+gulp.task('js', ['lint', 'bump'], function() {
   var pkg = getPackageJson(),
       banner = [
         '/*!',

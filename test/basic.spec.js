@@ -37,6 +37,13 @@ describe('basic suite', function() {
     expect($('.selectric-wrapper').hasClass('selectric-disabled')).toBe(true);
   });
 
+  it('should add responsive class', function() {
+    select.selectric({
+      responsive: true
+    });
+    expect($('.selectric-wrapper').hasClass('selectric-responsive')).toBe(true);
+  });
+
   it('should support <optgroup>', function() {
     loadFixtures('optgroup.html');
 
