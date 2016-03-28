@@ -1,8 +1,8 @@
 var gulp = require('gulp'),
-    $    = require('gulp-load-plugins')(),
-    fs   = require('fs');
+    $    = require('gulp-load-plugins')();
 
 var getPackageJson = function() {
+  var fs = require('fs');
   return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
 };
 
@@ -26,12 +26,12 @@ gulp.task('bump', function() {
   Javascript
 ======================================*/
 gulp.task('lint', function() {
-  return gulp.src(['src/*.js', 'test/*.js'])
-    .pipe($.eslint())
+  return gulp.src(['./src/*.js'])
+    .pipe($.eslint('.eslintrc'))
     .pipe($.eslint.format());
 });
 
-gulp.task('js', ['lint', 'bump'], function() {
+gulp.task('js', ['bump', 'lint'], function() {
   var pkg = getPackageJson(),
       banner = [
         '/*!',
@@ -124,7 +124,7 @@ gulp.task('watch', ['serve'], function() {
 gulp.task('zip', function() {
   var pkg = getPackageJson();
 
-  return gulp.src('./public/*')
+  return gulp.src('./public/**/*')
     .pipe($.zip('selectric_v' + pkg.version + '.zip'))
     .pipe(gulp.dest('./'));
 });

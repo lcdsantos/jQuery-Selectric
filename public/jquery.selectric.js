@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.9.5 (Mar 28 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.9.6 (Mar 28 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
@@ -18,9 +18,9 @@
 (function(factory) {
   /* global define */
   /* istanbul ignore next */
-  if (typeof define === 'function' && define.amd) {
+  if ( typeof define === 'function' && define.amd ) {
     define(['jquery'], factory);
-  } else if (typeof module === 'object' && module.exports) {
+  } else if ( typeof module === 'object' && module.exports ) {
     // Node/CommonJS
     module.exports = function( root, jQuery ) {
       if ( jQuery === undefined ) {
@@ -148,7 +148,9 @@
        * @return {object}               The next enabled item.
        */
       nextEnabledItem: function(selectItems, selected) {
-        while ( selectItems[ selected = (selected + 1) % selectItems.length ].disabled );
+        while ( selectItems[ selected = (selected + 1) % selectItems.length ].disabled ) {
+          // empty
+        }
         return selected;
       },
 
@@ -160,7 +162,9 @@
        * @return {object}               The previous enabled item.
        */
       previousEnabledItem: function(selectItems, selected) {
-        while ( selectItems[ selected = (selected > 0 ? selected : selectItems.length) - 1 ].disabled );
+        while ( selectItems[ selected = (selected > 0 ? selected : selectItems.length) - 1 ].disabled ) {
+          // empty
+        }
         return selected;
       },
 
@@ -399,7 +403,6 @@
     getItemsMarkup: function(items) {
       var _this = this;
       var markup = '<ul>';
-      var flattenItems = $.map(items, function(n) { return n; });
 
       $.each(items, function(i, elm) {
         if ( elm.label !== undefined ) {
@@ -649,7 +652,7 @@
         e.stopPropagation();
       }
 
-      if (_this.state.enabled) {
+      if ( _this.state.enabled ) {
         _this.setOptionsDimensions();
 
         // Find any other opened instances of select and close it
@@ -815,8 +818,9 @@
      * @param {function}         fn - Callback function.
      */
     add: function(callbackName, hookName, fn) {
-      if ( !this[callbackName] )
+      if ( !this[callbackName] ) {
         this[callbackName] = {};
+      }
 
       this[callbackName][hookName] = fn;
     },
