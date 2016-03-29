@@ -446,7 +446,6 @@
 
       _this.elements.outerWrapper.on('mouseenter' + bindSufix + ' mouseleave' + bindSufix, function(e) {
         $(this).toggleClass(_this.classes.hover, e.type === 'mouseenter');
-        console.log('hover');
 
         // Delay close effect when openOnHover is true
         if ( _this.options.openOnHover ) {
