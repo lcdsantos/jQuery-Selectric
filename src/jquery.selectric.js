@@ -445,12 +445,18 @@
         .off(bindSufix);
 
       _this.elements.outerWrapper.on('mouseenter' + bindSufix + ' mouseleave' + bindSufix, function(e) {
-        $(this).toggleClass(_this.classes.hover);
+        $(this).toggleClass(_this.classes.hover, e.type === 'mouseenter');
+        console.log('hover');
 
         // Delay close effect when openOnHover is true
         if ( _this.options.openOnHover ) {
           clearTimeout(_this.closeTimer);
-          e.type == 'mouseleave' ? _this.closeTimer = setTimeout($.proxy(_this.close, _this), _this.options.hoverIntentTimeout) : _this.open();
+
+          if ( e.type === 'mouseleave' ) {
+            _this.closeTimer = setTimeout($.proxy(_this.close, _this), _this.options.hoverIntentTimeout);
+          } else {
+            _this.open();
+          }
         }
       });
 
