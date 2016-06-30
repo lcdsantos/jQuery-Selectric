@@ -58,6 +58,10 @@
   border-bottom: none;
 }
 
+.selectric-focus .selectric {
+  border-color: #AAA;
+}
+
 .selectric-hover .selectric {
   border-color: #C4C4C4;
 }
@@ -156,11 +160,11 @@
   cursor: pointer;
 }
 .selectric-items li.selected {
-  background: #EFEFEF;
+  background: #E0E0E0;
   color: #444;
 }
 .selectric-items li:hover {
-  background: #F0F0F0;
+  background: #D5D5D5;
   color: #444;
 }
 .selectric-items .disabled {

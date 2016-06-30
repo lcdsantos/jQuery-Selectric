@@ -31,7 +31,7 @@ gulp.task('lint', function() {
     .pipe($.eslint.format());
 });
 
-gulp.task('js', ['bump', 'lint'], function() {
+gulp.task('js', ['lint'], function() {
   var pkg = getPackageJson(),
       banner = [
         '/*!',
@@ -58,7 +58,7 @@ gulp.task('js', ['bump', 'lint'], function() {
     .pipe($.connect.reload());
 });
 
-gulp.task('js-min', ['bump'], function() {
+gulp.task('js-min', function() {
   var pkg = getPackageJson();
 
   return gulp.src('src/jquery.selectric.js')
@@ -142,7 +142,7 @@ gulp.task('gh-pages', function() {
 /*======================================
   Default tasks
 ======================================*/
-gulp.task('build', ['js', 'js-min', 'css']);
+gulp.task('build', ['bump', 'js', 'js-min', 'css']);
 gulp.task('default', ['build', 'watch']);
 gulp.task('release', ['bump', 'build', 'zip']);
 gulp.task('publish', ['gh-pages']);

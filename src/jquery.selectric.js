@@ -27,7 +27,7 @@
   var $win = $(window);
 
   var pluginName = 'selectric';
-  var classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Hover Responsive Above Scroll Group GroupLabel';
+  var classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Focus Hover Responsive Above Scroll Group GroupLabel';
   var bindSufix = '.sl';
 
   var chars = ['a', 'e', 'i', 'o', 'u', 'n', 'c', 'y'];
@@ -85,10 +85,20 @@
       },
 
       /**
+       * Escape especial characters in string (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+       *
+       * @param  {string} str - The string to be escaped
+       * @return {string}       The string with the special characters escaped
+       */
+      escapeRegExp: function(str) {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+      },
+
+      /**
        * Replace diacritics
        *
-       * @param  {string} str - The string to replace the diacritics.
-       * @return {string}       The string with diacritics replaced with ascii characters.
+       * @param  {string} str - The string to replace the diacritics
+       * @return {string}       The string with diacritics replaced with ascii characters
        */
       replaceDiacritics: function(str) {
         var k = diacritics.length;
@@ -466,9 +476,24 @@
 
       _this.elements.input
         .prop({ tabindex: _this.originalTabindex, disabled: false })
-        .on('keypress' + bindSufix, _this.handleSystemKeys)
-        .on('keydown' + bindSufix, function(e) {
-          _this.handleSystemKeys(e);
+        .on('keydown' + bindSufix, $.proxy(_this.handleKeys, _this))
+        .on('focusin' + bindSufix, function(e) {
+          _this.elements.outerWrapper.addClass(_this.classes.focus);
+
+          // Prevent the flicker when focusing out and back again in the browser window
+          _this.elements.input.one('blur', function() {
+            _this.elements.input.blur();
+          });
+
+          if ( _this.options.openOnFocus && !_this.state.opened ) {
+            _this.open(e);
+          }
+        })
+        .on('focusout' + bindSufix, function() {
+          _this.elements.outerWrapper.removeClass(_this.classes.focus);
+        })
+        .on('input propertychange', function() {
+          var val = _this.elements.input.val();
 
           // Clear search
           clearTimeout(_this.resetStr);
@@ -476,31 +501,10 @@
             _this.elements.input.val('');
           }, _this.options.keySearchTimeout);
 
-          var key = e.keyCode || e.which;
-
-          // If it's a directional key
-          // 37 => Left
-          // 38 => Up
-          // 39 => Right
-          // 40 => Down
-          if ( key > 36 && key < 41 ) {
-            if ( !_this.options.allowWrap ) {
-              if ( (key < 39 && _this.state.selectedIdx === 0) || (key > 38 && (_this.state.selectedIdx + 1) === _this.items.length) ) {
-                return;
-              }
-            }
-
-            _this.select(_this.utils[(key < 39 ? 'previous' : 'next') + 'EnabledItem'](_this.items, _this.state.selectedIdx));
-          }
-        })
-        .on('focusin' + bindSufix, function(e) {
-          _this.state.opened || _this.open(e);
-        })
-        .on('oninput' in _this.elements.input[0] ? 'input' : 'keyup', function() {
-          if ( _this.elements.input.val().length ) {
+          if ( val.length ) {
             // Search in select options
             $.each(_this.items, function(i, elm) {
-              if ( RegExp('^' + _this.elements.input.val(), 'i').test(elm.slug) && !elm.disabled ) {
+              if ( RegExp('^' + _this.utils.escapeRegExp(val), 'i').test(elm.slug) && !elm.disabled ) {
                 _this.select(i);
                 return false;
               }
@@ -526,22 +530,54 @@
     },
 
     /**
-     * Behavior when system keys is pressed
+     * Behavior when keyboard keys is pressed
      *
      * @param {object} e - Event object
      */
-    handleSystemKeys: function(e) {
+    handleKeys: function(e) {
       var _this = this;
       var key = e.keyCode || e.which;
+      var keys = _this.options.keys;
 
-      if ( key == 13 ) {
+      var isPrev = $.inArray(key, keys.previous) > -1;
+      var isNext = $.inArray(key, keys.next) > -1;
+      var isSelect = $.inArray(key, keys.select) > -1;
+      var isOpen = $.inArray(key, keys.open) > -1;
+      var idx = _this.state.selectedIdx;
+      var isFirstOrLastItem = (isPrev && idx === 0) || (isNext && (idx + 1) === _this.items.length);
+      var goToItem = 0;
+
+      // Enter / Space
+      if ( key === 13 || key === 32 ) {
         e.preventDefault();
       }
 
+      // If it's a directional key
+      if ( isPrev || isNext ) {
+        if ( !_this.options.allowWrap && isFirstOrLastItem ) {
+          return;
+        }
+
+        if ( isPrev ) {
+          goToItem = _this.utils.previousEnabledItem(_this.items, idx);
+        }
+
+        if ( isNext ) {
+          goToItem = _this.utils.nextEnabledItem(_this.items, idx);
+        }
+
+        _this.select(goToItem);
+      }
+
       // Tab / Enter / ESC
-      if ( /^(9|13|27)$/.test(key) ) {
-        e.stopPropagation();
-        _this.select(_this.state.selectedIdx, true);
+      if ( isSelect && _this.state.opened ) {
+        _this.select(idx, true);
+        return;
+      }
+
+      // Space / Enter / Left / Up / Right / Down
+      if ( isOpen && !_this.state.opened ) {
+        _this.open();
       }
     },
 
@@ -828,23 +864,31 @@
    * @type {object}
    */
   $.fn[pluginName].defaults = {
-    onChange: function(elm) { $(elm).change(); },
-    maxHeight: 300,
-    keySearchTimeout: 500,
-    arrowButtonMarkup: '<b class="button">&#x25be;</b>',
-    disableOnMobile: true,
-    openOnHover: false,
-    hoverIntentTimeout: 500,
-    expandToItemText: false,
-    responsive: false,
-    preventWindowScroll: true,
-    inheritOriginalWidth: false,
-    allowWrap: true,
-    customClass: {
+    onChange             : function(elm) { $(elm).change(); },
+    maxHeight            : 300,
+    keySearchTimeout     : 500,
+    arrowButtonMarkup    : '<b class="button">&#x25be;</b>',
+    disableOnMobile      : true,
+    openOnFocus          : true,
+    openOnHover          : false,
+    hoverIntentTimeout   : 500,
+    expandToItemText     : false,
+    responsive           : false,
+    preventWindowScroll  : true,
+    inheritOriginalWidth : false,
+    allowWrap            : true,
+    optionsItemBuilder   : '{text}', // function(itemData, element, index)
+    labelBuilder         : '{text}', // function(currItem)
+    keys                 : {
+      previous : [37, 38],                 // Left / Up
+      next     : [39, 40],                 // Right / Down
+      select   : [9, 13, 27],              // Tab / Enter / Escape
+      open     : [13, 32, 37, 38, 39, 40], // Enter / Space / Left / Up / Right / Down
+      close    : [9, 27]                   // Tab / Escape
+    },
+    customClass          : {
       prefix: pluginName,
       camelCase: false
-    },
-    optionsItemBuilder: '{text}', // function(itemData, element, index)
-    labelBuilder: '{text}' // function(currItem)
+    }
   };
 }));

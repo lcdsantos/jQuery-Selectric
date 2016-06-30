@@ -28,10 +28,10 @@
     "url": "https://github.com/lcdsantos/jQuery-Selectric.git"
   },
   "dependencies": {
-    "codecov": "^1.0.1",
     "jquery": "^3.0.0"
   },
   "devDependencies": {
+    "codecov": "^1.0.1",
     "eslint": "^2.13.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
