@@ -1,5 +1,5 @@
 /*======================================
-  Selectric v1.10.0
+  Selectric v1.10.1
 ======================================*/
 
 .selectric-wrapper {
@@ -56,6 +56,10 @@
   border: 4px solid transparent;
   border-top-color: #BBB;
   border-bottom: none;
+}
+
+.selectric-focus .selectric {
+  border-color: #AAA;
 }
 
 .selectric-hover .selectric {
@@ -156,11 +160,11 @@
   cursor: pointer;
 }
 .selectric-items li.selected {
-  background: #EFEFEF;
+  background: #E0E0E0;
   color: #444;
 }
 .selectric-items li:hover {
-  background: #F0F0F0;
+  background: #D5D5D5;
   color: #444;
 }
 .selectric-items .disabled {
