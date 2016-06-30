@@ -221,7 +221,7 @@
       var items        = $('<div/>',   { 'class': _this.classes.items, 'tabindex': -1 });
       var itemsScroll  = $('<div/>',   { 'class': _this.classes.scroll });
       var wrapper      = $('<div/>',   { 'class': _this.classes.prefix, 'html': _this.options.arrowButtonMarkup });
-      var label        = $('<p/>',     { 'class': 'label' });
+      var label        = $('<span/>',  { 'class': 'label' });
       var outerWrapper = _this.$element.wrap('<div/>').parent().append(wrapper.prepend(label), items, input);
 
       _this.elements = {
