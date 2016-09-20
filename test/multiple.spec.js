@@ -10,6 +10,18 @@ describe('multiple selects', function() {
     select.selectric();
   });
 
+  it('should set a proper state for multiple', function() {
+    expect(select.data('selectric').state.multiple).toBe(true);
+  });
+
+  it('should set a proper state for currValue', function() {
+    select.find('option').eq(2).prop('selected', true);
+    select.find('option').eq(3).prop('selected', true);
+    select.selectric('refresh');
+    expect(select.data('selectric').state.currValue.length).toBe(2);
+  });
+
+
   it('should render the default option (please choose)', function () {
     $('.selectric').click();
     expect($('.selectric-wrapper').find('.label').text()).toBe('Please choose...');
