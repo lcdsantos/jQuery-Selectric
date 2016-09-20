@@ -721,7 +721,7 @@
     /**
      * Detect if currently selected option is visible and scroll the options box to show it
      *
-     * @param {number} index - Index of the selected items
+     * @param {Number|Array} index - Index of the selected items
      */
     detectItemVisibility: function(index) {
       var _this = this;
@@ -730,6 +730,7 @@
         // if index is an array, we can assume a multiple select and we
         // want to scroll to the uppermost selected item!
         // Math.min.apply(Math, index) returns the lowest entry in an Array.
+        index = ($.isArray(index) && index.length === 0) ? 0 : index;
         index = $.isArray(index) ? Math.min.apply(Math, index) : index;
       }
 
