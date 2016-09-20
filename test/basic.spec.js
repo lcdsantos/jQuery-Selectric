@@ -182,4 +182,11 @@ describe('basic suite', function() {
     expect(select.data('selectric')).toBeUndefined();
     expect($('.selectric-wrapper').length).toBe(0);
   });
+
+  it('should prevent default event action on mousedown', function() {
+    var event = $.Event('mousedown');
+    $('.selectric').click();
+    $('.selectric-wrapper').find('li').eq(2).trigger(event);
+    expect(event.isDefaultPrevented()).toBeTruthy();
+  });
 });

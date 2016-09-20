@@ -56,6 +56,7 @@
     _this.$element = $(element);
 
     _this.state = {
+      multiple    : !!_this.$element.attr('multiple'),
       enabled     : false,
       opened      : false,
       currValue   : -1,
@@ -306,13 +307,58 @@
     setLabel: function() {
       var _this = this;
       var labelBuilder = _this.options.labelBuilder;
-      var currItem = _this.lookupItems[_this.state.currValue];
 
-      _this.elements.label.html(
-        $.isFunction(labelBuilder)
-          ? labelBuilder(currItem)
-          : _this.utils.format(labelBuilder, currItem)
-      );
+      if (_this.state.multiple) {
+        // make sure currentValues is an array
+        var currentValues = $.isArray(_this.state.currValue) ? _this.state.currValue : [_this.state.currValue];
+        // i'm not happy with this, but currentValues can be an empty
+        // array and we need to fallback to the default option.
+        currentValues = currentValues.length === 0 ? [0] : currentValues;
+
+        var labelMarkup = currentValues
+          .map(function(value) {
+            return _this.lookupItems.filter(function(item) {
+              return item.index === value;
+            })[0]; // we don't want nested arrays here
+          })
+          .filter(function(item, index, arr) {
+            // hide default (please choose) if more then one element were selected.
+            // if no option value were given value is set to option text by default
+            if (arr.length > 1 || arr.length === 0) {
+              return $.trim(item.value) !== '' && item.value !== item.text;
+            }
+            return item;
+          })
+          .map(function(item) {
+            return $.isFunction(labelBuilder)
+              ? labelBuilder(item)
+              : _this.utils.format(labelBuilder, item);
+          });
+
+        // limit the amount of selected values shown in label
+        if (_this.options.multiple.maxLabelEntries) {
+
+          if (labelMarkup.length >= _this.options.multiple.maxLabelEntries + 1) {
+            labelMarkup = labelMarkup.slice(0, _this.options.multiple.maxLabelEntries);
+            labelMarkup.push(
+              $.isFunction(labelBuilder)
+                ? labelBuilder({ text: '...' })
+                : _this.utils.format(labelBuilder, { text: '...' }));
+          } else {
+            labelMarkup.slice(labelMarkup.length - 1);
+          }
+        }
+        _this.elements.label.html(labelMarkup.join(_this.options.multiple.seperator));
+
+      } else {
+        var currItem = _this.lookupItems[_this.state.currValue];
+
+        _this.elements.label.html(
+          $.isFunction(labelBuilder)
+            ? labelBuilder(currItem)
+            : _this.utils.format(labelBuilder, currItem)
+        );
+      }
     },
 
     /** Get and save the available options */
@@ -320,10 +366,18 @@
       var _this = this;
       var $options = _this.$element.children();
       var $justOptions = _this.$element.find('option');
-      var selectedIndex = $justOptions.index($justOptions.filter(':selected'));
+      var $selected = $justOptions.filter(':selected');
+      var selectedIndex = $justOptions.index($selected);
       var currIndex = 0;
 
-      _this.state.currValue = (_this.state.selected = ~selectedIndex ? selectedIndex : 0);
+      if ($selected.length > 1 && _this.state.multiple) {
+        selectedIndex = [];
+        $selected.each(function() {
+          selectedIndex.push($(this).index());
+        });
+      }
+
+      _this.state.currValue = (~selectedIndex ? selectedIndex : 0);
       _this.state.selectedIdx = _this.state.currValue;
       _this.items = [];
       _this.lookupItems = [];
@@ -352,7 +406,8 @@
                 value    : $elm.val(),
                 text     : optionText,
                 slug     : _this.utils.replaceDiacritics(optionText),
-                disabled : optionsGroup.groupDisabled
+                disabled : optionsGroup.groupDisabled,
+                selected : $elm.prop('selected')
               };
 
               _this.lookupItems[currIndex] = optionsGroup.items[i];
@@ -372,7 +427,8 @@
               value    : $elm.val(),
               text     : optionText,
               slug     : _this.utils.replaceDiacritics(optionText),
-              disabled : $elm.prop('disabled')
+              disabled : $elm.prop('disabled'),
+              selected : $elm.prop('selected')
             };
 
             _this.lookupItems[currIndex] = _this.items[i];
@@ -436,9 +492,9 @@
       return _this.utils.format('<li data-index="{1}" class="{2}">{3}</li>',
         i,
         $.trim([
-          i === _this.state.currValue  ? 'selected' : '',
           i === _this.items.length - 1 ? 'last'     : '',
-          elm.disabled                 ? 'disabled' : ''
+          elm.disabled                 ? 'disabled' : '',
+          elm.selected                 ? 'selected' : ''
         ].join(' ')),
         $.isFunction(itemBuilder) ? itemBuilder(elm, elm.element, i) : _this.utils.format(itemBuilder, elm)
       );
@@ -504,7 +560,7 @@
           if ( val.length ) {
             // Search in select options
             $.each(_this.items, function(i, elm) {
-              if ( RegExp('^' + _this.utils.escapeRegExp(val), 'i').test(elm.slug) && !elm.disabled ) {
+              if (new RegExp('^' + _this.utils.escapeRegExp(val), 'i').test(elm.slug) && !elm.disabled) {
                 _this.select(i);
                 return false;
               }
@@ -520,7 +576,7 @@
         },
         click: function() {
           // The second parameter is to close the box after click
-          _this.select($(this).data('index'), true);
+          _this.select($(this).data('index'), !_this.options.multiple.keepMenuOpen);
 
           // Chrome doesn't close options box if select is wrapped with a label
           // We need to 'return false' to avoid that
@@ -535,6 +591,9 @@
      * @param {object} e - Event object
      */
     handleKeys: function(e) {
+      if (this.state.multiple) {
+        return;
+      }
       var _this = this;
       var key = e.keyCode || e.which;
       var keys = _this.options.keys;
@@ -645,10 +704,19 @@
     /**
      * Detect if currently selected option is visible and scroll the options box to show it
      *
-     * @param {number} index - Index of the selected items
+     * @param {Number|Array} index - Index of the selected items
      */
     detectItemVisibility: function(index) {
       var _this = this;
+
+      if (_this.state.multiple) {
+        // if index is an array, we can assume a multiple select and we
+        // want to scroll to the uppermost selected item!
+        // Math.min.apply(Math, index) returns the lowest entry in an Array.
+        index = ($.isArray(index) && index.length === 0) ? 0 : index;
+        index = $.isArray(index) ? Math.min.apply(Math, index) : index;
+      }
+
       var liHeight = _this.$li.eq(index).outerHeight();
       var liTop = _this.$li[index].offsetTop;
       var itemsScrollTop = _this.elements.itemsScroll.scrollTop();
@@ -664,7 +732,7 @@
     /**
      * Open the select options box
      *
-     * @param {event} e - Event
+     * @param {Event} e - Event
      */
     open: function(e) {
       var _this = this;
@@ -750,7 +818,26 @@
 
       _this.utils.triggerCallback('BeforeChange', _this);
 
-      if ( _this.state.currValue !== _this.state.selectedIdx ) {
+      if (_this.state.multiple) {
+
+        // reset old selected
+        $.each(_this.lookupItems, function(idx) {
+          _this.lookupItems[idx].selected = false;
+          _this.$element.find('option').prop('selected', false);
+        });
+
+        // set new selected
+        $.each(_this.state.selectedIdx, function(idx, value) {
+          _this.lookupItems[value].selected = true;
+          _this.$element.find('option').eq(value).prop('selected', true);
+        });
+
+        _this.state.currValue = _this.state.selectedIdx;
+
+        _this.setLabel();
+      }
+
+      if (_this.state.currValue !== _this.state.selectedIdx && !_this.state.multiple) {
         // Apply changed value to original select
         _this.$element
           .prop('selectedIndex', _this.state.currValue = _this.state.selectedIdx)
@@ -778,12 +865,26 @@
       }
 
       // If element is disabled, can't select it
-      if ( !_this.lookupItems[index].disabled ) {
-        _this.$li.filter('[data-index]')
-          .removeClass('selected')
-          .eq(_this.state.selectedIdx = index)
-          .addClass('selected');
+      if (!_this.lookupItems[index].disabled) {
+        if (_this.state.multiple) {
+          _this.$li.filter('[data-index]')
+            .eq(index)
+            .toggleClass('selected');
 
+          // make sure selectedIdx is an array
+          _this.state.selectedIdx = $.isArray(_this.state.selectedIdx) ? _this.state.selectedIdx : [_this.state.selectedIdx];
+
+          if ($.inArray(index, _this.state.selectedIdx) !== -1) {
+            _this.state.selectedIdx.splice(_this.state.selectedIdx.indexOf(index), 1);
+          } else {
+            _this.state.selectedIdx.push(index);
+          }
+        } else {
+          _this.$li.filter('[data-index]')
+            .removeClass('selected')
+            .eq(_this.state.selectedIdx = index)
+            .addClass('selected');
+        }
         _this.detectItemVisibility(index);
 
         // If 'close' is false (default), the options box won't close after
@@ -889,6 +990,11 @@
     customClass          : {
       prefix: pluginName,
       camelCase: false
+    },
+    multiple              : {
+      seperator: ', ',
+      keepMenuOpen: false,
+      maxLabelEntries: false
     }
   };
 }));
