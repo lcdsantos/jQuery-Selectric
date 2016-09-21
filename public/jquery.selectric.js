@@ -910,8 +910,9 @@
         // Make sure selectedIdx is an array
         _this.state.selectedIdx = $.isArray(_this.state.selectedIdx) ? _this.state.selectedIdx : [_this.state.selectedIdx];
 
-        if ( $.inArray(index, _this.state.selectedIdx) !== -1 ) {
-          _this.state.selectedIdx.splice(_this.state.selectedIdx.indexOf(index), 1);
+        var hasSelectedIndex = $.inArray(index, _this.state.selectedIdx);
+        if (hasSelectedIndex !== -1 ) {
+          _this.state.selectedIdx.splice(hasSelectedIndex, 1);
         } else {
           _this.state.selectedIdx.push(index);
         }
