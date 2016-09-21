@@ -141,4 +141,23 @@ describe('events', function() {
     expect(hooks.change).toHaveBeenCalled();
     expect(hooks.refresh).toHaveBeenCalled();
   });
+
+  it('should allow to chain hooks', function() {
+    var hooks = jasmine.createSpyObj('hooks', [
+      'beforeInit',
+    ]);
+
+    select.selectric('destroy');
+    $.fn.selectric.hooks
+      .add('BeforeInit',   'test', hooks.beforeInit)
+      .add('BeforeInit',   'test2', hooks.beforeInit);
+    select.selectric();
+
+    $('.selectric').click();
+    $('.selectric-items').find('li:eq(4)').click();
+    select.selectric('refresh');
+
+    expect(hooks.beforeInit).toHaveBeenCalledTimes(2);
+
+  });
 });

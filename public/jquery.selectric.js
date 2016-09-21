@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.10.1 (Jun 30 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.10.1 (Sep 21 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
@@ -864,6 +864,8 @@
       }
 
       this[callbackName][hookName] = fn;
+
+      return this;
     },
 
     /**
@@ -872,6 +874,8 @@
      */
     remove: function(callbackName, hookName) {
       delete this[callbackName][hookName];
+
+      return this;
     }
   };
 

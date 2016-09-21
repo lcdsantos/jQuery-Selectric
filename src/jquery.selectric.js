@@ -847,6 +847,8 @@
       }
 
       this[callbackName][hookName] = fn;
+
+      return this;
     },
 
     /**
@@ -855,6 +857,8 @@
      */
     remove: function(callbackName, hookName) {
       delete this[callbackName][hookName];
+
+      return this;
     }
   };
 
