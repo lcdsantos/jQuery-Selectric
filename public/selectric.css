@@ -163,6 +163,10 @@
   background: #E0E0E0;
   color: #444;
 }
+.selectric-items li.highlighted {
+  background: #D0D0D0;
+  color: #444;
+}
 .selectric-items li:hover {
   background: #D5D5D5;
   color: #444;

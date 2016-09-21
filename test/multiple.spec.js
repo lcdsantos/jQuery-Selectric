@@ -21,7 +21,6 @@ describe('multiple selects', function() {
     expect(select.data('selectric').state.currValue.length).toBe(2);
   });
 
-
   it('should render the default option (please choose)', function () {
     $('.selectric').click();
     expect($('.selectric-wrapper').find('.label').text()).toBe('Please choose...');

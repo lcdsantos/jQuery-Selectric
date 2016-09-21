@@ -776,11 +776,11 @@ label p {
 .fr { float: right; }
 
 .row { width: 100%; display: table; table-layout: fixed; }
-.col { display: table-cell; vertical-align: bottom; }
+.col { display: table-cell; vertical-align: top; }
 
-.selectric-wrapper {
-  margin-bottom: 10px;
-  width: 300px;
+.examples .item {
+  margin-top: 10px;
+  max-width: 300px;
 }
 
 .selectric {

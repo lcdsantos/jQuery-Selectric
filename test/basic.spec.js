@@ -62,7 +62,7 @@ describe('basic suite', function() {
 
   it('should search an option', function() {
     $('.selectric-input').val('banana').trigger('input');
-    $('.selectric-items').find('.selected').click();
+    $('.selectric-items').find('.highlighted').click();
     expect(select.val()).toBe('banana');
   });
 
