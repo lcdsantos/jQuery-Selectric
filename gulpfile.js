@@ -1,5 +1,5 @@
-var gulp = require('gulp'),
-    $    = require('gulp-load-plugins')();
+var gulp = require('gulp');
+var $    = require('gulp-load-plugins')();
 
 var getPackageJson = function() {
   var fs = require('fs');
@@ -7,12 +7,12 @@ var getPackageJson = function() {
 };
 
 
-/*======================================
-  Bump version
-======================================*/
+/**
+ * Bump version
+ */
 gulp.task('bump', function() {
-  var pkg = getPackageJson(),
-      newVersion = $.util.env.bump || pkg.version;
+  var pkg = getPackageJson();
+  var newVersion = $.util.env.bump || pkg.version;
 
   return gulp.src(['./package.json', './bower.json', './selectric.jquery.json'])
     .pipe($.bump({
@@ -22,16 +22,16 @@ gulp.task('bump', function() {
 });
 
 
-/*======================================
-  Javascript
-======================================*/
+/**
+ * Javascript
+ */
 gulp.task('lint', function() {
   return gulp.src(['./src/*.js'])
     .pipe($.eslint('.eslintrc'))
     .pipe($.eslint.format());
 });
 
-gulp.task('js', ['bump', 'lint'], function() {
+gulp.task('js', ['lint'], function() {
   var pkg = getPackageJson(),
       banner = [
         '/*!',
@@ -58,7 +58,7 @@ gulp.task('js', ['bump', 'lint'], function() {
     .pipe($.connect.reload());
 });
 
-gulp.task('js-min', ['bump'], function() {
+gulp.task('js-min', function() {
   var pkg = getPackageJson();
 
   return gulp.src('src/jquery.selectric.js')
@@ -70,9 +70,9 @@ gulp.task('js-min', ['bump'], function() {
 });
 
 
-/*======================================
-  CSS
-======================================*/
+/**
+ * CSS
+ */
 gulp.task('css', function() {
   var pkg = getPackageJson();
 
@@ -91,10 +91,9 @@ gulp.task('css', function() {
     .pipe($.connect.reload());
 });
 
-
-/*======================================
-  Live preview
-======================================*/
+/**
+ * Live preview
+ */
 gulp.task('serve', function() {
   $.connect.server({
     root: './public',
@@ -108,19 +107,19 @@ gulp.task('html', function() {
 });
 
 
-/*======================================
-  Watch
-======================================*/
+/**
+ * Watch
+ */
 gulp.task('watch', ['serve'], function() {
-  gulp.watch(['./src/*.js'], ['js', 'js-min']);
-  gulp.watch(['./src/*.scss'], ['css']);
-  gulp.watch(['./public/*.html'], ['html']);
+  gulp.watch(['*.js'],   { cwd: './src/' },    ['js', 'js-min']);
+  gulp.watch(['*.scss'], { cwd: './src/' },    ['css']);
+  gulp.watch(['*.html'], { cwd: './public/' }, ['html']);
 });
 
 
-/*======================================
-  ZIP
-======================================*/
+/**
+ * ZIP
+ */
 gulp.task('zip', function() {
   var pkg = getPackageJson();
 
@@ -130,19 +129,19 @@ gulp.task('zip', function() {
 });
 
 
-/*======================================
-  GitHub Pages
-======================================*/
+/**
+ * GitHub Pages
+ */
 gulp.task('gh-pages', function() {
   return gulp.src('./public/**/*')
     .pipe($.ghPages());
 });
 
 
-/*======================================
-  Default tasks
-======================================*/
-gulp.task('build', ['js', 'js-min', 'css']);
+/**
+ * Default tasks
+ */
+gulp.task('build', ['bump', 'js', 'js-min', 'css']);
 gulp.task('default', ['build', 'watch']);
 gulp.task('release', ['bump', 'build', 'zip']);
 gulp.task('publish', ['gh-pages']);

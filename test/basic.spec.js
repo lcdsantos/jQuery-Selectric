@@ -62,7 +62,7 @@ describe('basic suite', function() {
 
   it('should search an option', function() {
     $('.selectric-input').val('banana').trigger('input');
-    $('.selectric-items').find('.selected').click();
+    $('.selectric-items').find('.highlighted').click();
     expect(select.val()).toBe('banana');
   });
 
@@ -181,5 +181,12 @@ describe('basic suite', function() {
     select.selectric('destroy');
     expect(select.data('selectric')).toBeUndefined();
     expect($('.selectric-wrapper').length).toBe(0);
+  });
+
+  it('should prevent default event action on mousedown', function() {
+    var event = $.Event('mousedown');
+    $('.selectric').click();
+    $('.selectric-wrapper').find('li').eq(2).trigger(event);
+    expect(event.isDefaultPrevented()).toBeTruthy();
   });
 });

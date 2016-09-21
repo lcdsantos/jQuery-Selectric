@@ -63,6 +63,10 @@ $selectric-inner-height:    $selectric-height - ($selectric-border-width * 2) !d
   }
 }
 
+.selectric-focus .selectric {
+  border-color: darken($selectric-main-color, 20%);
+}
+
 .selectric-hover .selectric {
   border-color: darken($selectric-main-color, 10%);
 
@@ -166,12 +170,17 @@ $selectric-inner-height:    $selectric-height - ($selectric-border-width * 2) !d
     cursor: pointer;
 
     &.selected {
-      background: #EFEFEF;
+      background: #E0E0E0;
+      color: #444;
+    }
+
+    &.highlighted {
+      background: #D0D0D0;
       color: #444;
     }
 
     &:hover {
-      background: #F0F0F0;
+      background: #D5D5D5;
       color: #444;
     }
   }
