@@ -333,25 +333,26 @@
         // array and we need to fallback to the default option.
         currentValues = currentValues.length === 0 ? [0] : currentValues;
 
-        var labelMarkup = currentValues
-          .map(function(value) {
-            return _this.lookupItems.filter(function(item) {
-              return item.index === value;
-            })[0]; // we don't want nested arrays here
-          })
-          .filter(function(item, index, arr) {
-            // Hide default (please choose) if more then one element were selected.
-            // If no option value were given value is set to option text by default
-            if (arr.length > 1 || arr.length === 0) {
-              return $.trim(item.value) !== '' && item.value !== item.text;
-            }
-            return item;
-          })
-          .map(function(item) {
-            return $.isFunction(labelBuilder)
-              ? labelBuilder(item)
-              : _this.utils.format(labelBuilder, item);
-          });
+        var labelMarkup = $.map(currentValues, function(value) {
+          return $.grep(_this.lookupItems, function(item) {
+            return item.index === value;
+          })[0]; // we don't want nested arrays here
+        });
+
+        labelMarkup = $.grep(labelMarkup, function(item) {
+          // Hide default (please choose) if more then one element were selected.
+          // If no option value were given value is set to option text by default
+          if (labelMarkup.length > 1 || labelMarkup.length === 0) {
+            return $.trim(item.value) !== '' && item.value !== item.text;
+          }
+          return item;
+        });
+
+        labelMarkup = $.map(labelMarkup, function(item) {
+          return $.isFunction(labelBuilder)
+            ? labelBuilder(item)
+            : _this.utils.format(labelBuilder, item);
+        });
 
         // Limit the amount of selected values shown in label
         if ( _this.options.multiple.maxLabelEntries ) {
