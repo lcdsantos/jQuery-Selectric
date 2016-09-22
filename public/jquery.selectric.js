@@ -281,7 +281,10 @@
     /** Activates the plugin */
     activate: function() {
       var _this = this;
+      var hiddenChildren = _this.elements.items.closest(':visible').children(':hidden').addClass(_this.classes.tempshow);
       var originalWidth = _this.$element.width();
+
+      hiddenChildren.removeClass(_this.classes.tempshow);
 
       _this.utils.triggerCallback('BeforeActivate', _this);
 
