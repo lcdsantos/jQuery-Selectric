@@ -478,7 +478,7 @@
         value     : $elm.val(),
         className : $elm.prop('class'),
         text      : $elm.html(),
-        slug      : _this.utils.replaceDiacritics($elm.html()),
+        slug      : $.trim(_this.utils.replaceDiacritics($elm.html())),
         selected  : $elm.prop('selected'),
         disabled  : isDisabled
       };
