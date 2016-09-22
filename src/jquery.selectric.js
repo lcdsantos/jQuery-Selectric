@@ -533,6 +533,11 @@
         _this.state.opened ? _this.close() : _this.open(e);
       });
 
+      // Translate original element focus event to dummy input
+      _this.$element.on('focus' + bindSufix, function() {
+        _this.elements.input.focus();
+      });
+
       _this.elements.input
         .prop({ tabindex: _this.originalTabindex, disabled: false })
         .on('keydown' + bindSufix, $.proxy(_this.handleKeys, _this))
@@ -771,9 +776,13 @@
           _this.elements.input.focus();
         }
 
-        $doc
-          .on('click' + bindSufix, $.proxy(_this.close, _this))
-          .on('scroll' + bindSufix, $.proxy(_this.isInViewport, _this));
+        // Delayed binds events on Document to make label clicks work
+        setTimeout(function() {
+          $doc
+            .on('click' + bindSufix, $.proxy(_this.close, _this))
+            .on('scroll' + bindSufix, $.proxy(_this.isInViewport, _this));
+        }, 1);
+
         _this.isInViewport();
 
         // Prevent window scroll when using mouse wheel inside items box

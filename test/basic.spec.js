@@ -1,7 +1,10 @@
+/* eslint-env jasmine, jquery */
+/* global loadFixtures */
+
 'use strict';
 
 describe('basic suite', function() {
-  var select;
+  var select = false;
 
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
@@ -28,12 +31,12 @@ describe('basic suite', function() {
   });
 
   it('should hide original <select>', function() {
-    expect(select.is(':visible')).toBe(false);
+    expect(select.parent().is(':visible')).toBe(false);
   });
 
   it('should add disabled class', function() {
     select.prop('disabled', true);
-    select.selectric('refresh')
+    select.selectric('refresh');
     expect($('.selectric-wrapper').hasClass('selectric-disabled')).toBe(true);
   });
 
@@ -74,7 +77,7 @@ describe('basic suite', function() {
   });
 
   it('should be able to change button markup', function() {
-    var char = String.fromCharCode(0x30A0 + Math.random() * (0x30FF-0x30A0+1));
+    var char = String.fromCharCode(0x30A0 + Math.random() * (0x30FF - 0x30A0 + 1));
 
     select.selectric({
       arrowButtonMarkup: '<b class="button">' + char + '</b>',
@@ -97,14 +100,14 @@ describe('basic suite', function() {
     var len = $('.selectric-items').find('li').length;
     select.append('<option>New</option>');
     select.selectric('refresh');
-    expect($('.selectric-items').find('li').length).toBe(len+1);
+    expect($('.selectric-items').find('li').length).toBe(len + 1);
   });
 
   it('should remove items', function() {
     var len = $('.selectric-items').find('li').length;
     select.find('option:eq(1)').remove();
     select.selectric('refresh');
-    expect($('.selectric-items').find('li').length).toBe(len-1);
+    expect($('.selectric-items').find('li').length).toBe(len - 1);
   });
 
   it('should disable items', function() {
@@ -136,7 +139,7 @@ describe('basic suite', function() {
 
   it('should have custom option item text', function() {
     select.selectric({
-      optionsItemBuilder: function(itemData, element, index) {
+      optionsItemBuilder: function(itemData) {
         return '<span>' + itemData.text + '</span>';
       }
     });
@@ -184,9 +187,14 @@ describe('basic suite', function() {
   });
 
   it('should prevent default event action on mousedown', function() {
-    var event = $.Event('mousedown');
+    var event = new $.Event('mousedown');
     $('.selectric').click();
     $('.selectric-wrapper').find('li').eq(2).trigger(event);
     expect(event.isDefaultPrevented()).toBeTruthy();
+  });
+
+  it('should open on label click', function() {
+    $('label').click();
+    expect($('.selectric-wrapper').hasClass('selectric-open')).toBe(true);
   });
 });

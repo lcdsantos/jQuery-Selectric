@@ -101,7 +101,6 @@
 .selectric-hide-select select {
   position: absolute;
   left: -100%;
-  display: none;
 }
 
 .selectric-input {
