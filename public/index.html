@@ -627,6 +627,9 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
       });
 
       $('select').selectric();
+      $('select').on('change', function() {
+        console.log('Change: ', this, $(this).val());
+      });
     });
 
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

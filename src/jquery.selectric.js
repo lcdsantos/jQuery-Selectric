@@ -842,9 +842,9 @@
         _this.state.currValue = _this.state.selectedIdx;
 
         _this.setLabel();
-      }
 
-      if ( _this.state.currValue !== _this.state.selectedIdx && !_this.state.multiple ) {
+        _this.utils.triggerCallback('Change', _this);
+      } else if ( _this.state.currValue !== _this.state.selectedIdx ) {
         // Apply changed value to original select
         _this.$element
           .prop('selectedIndex', _this.state.currValue = _this.state.selectedIdx)
@@ -852,9 +852,9 @@
 
         // Change label text
         _this.setLabel();
-      }
 
-      _this.utils.triggerCallback('Change', _this);
+        _this.utils.triggerCallback('Change', _this);
+      }
     },
 
     /**

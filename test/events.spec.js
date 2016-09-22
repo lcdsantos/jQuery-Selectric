@@ -19,6 +19,14 @@ describe('events', function() {
     expect(changedFn).toHaveBeenCalled();
   });
 
+  it('should not trigger change event', function() {
+    var notChangedFn = jasmine.createSpy('notChangedFn');
+    select.on('change', notChangedFn);
+    $('.selectric').click();
+    $('.selectric-items').find('li.selected').click();
+    expect(notChangedFn).not.toHaveBeenCalled();
+  });
+
   it('should trigger events', function() {
     var events = jasmine.createSpyObj('events', [
       'beforeInit',
