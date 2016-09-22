@@ -197,4 +197,8 @@ describe('basic suite', function() {
     $('label').click();
     expect($('.selectric-wrapper').hasClass('selectric-open')).toBe(true);
   });
+
+  it('should inherit option tag class', function() {
+    expect(select.find('.customOptionClass').length).toBe(1);
+  });
 });

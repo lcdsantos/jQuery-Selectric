@@ -211,6 +211,19 @@
         }
 
         $(elm).trigger(pluginName + '-' + this.toDash(fn), scope);
+      },
+
+      /**
+       * Transform array list to concatenated string and remove empty values
+       * @param  {array} arr - Class list
+       * @return {string}    - Concatenated string
+       */
+      arrayToClassname: function(arr) {
+        var newArr = $.grep(arr, function(item) {
+          return !!item;
+        });
+
+        return $.trim(newArr.join(' '));
       }
     },
 
@@ -272,11 +285,13 @@
 
       _this.utils.triggerCallback('BeforeActivate', _this);
 
-      _this.elements.outerWrapper.prop('class', [
-        _this.classes.wrapper,
-        _this.$element.prop('class').replace(/\S+/g, _this.classes.prefix + '-$&'),
-        _this.options.responsive ? _this.classes.responsive : ''
-      ].join(' '));
+      _this.elements.outerWrapper.prop('class',
+        _this.utils.arrayToClassname([
+          _this.classes.wrapper,
+          _this.$element.prop('class').replace(/\S+/g, _this.classes.prefix + '-$&'),
+          _this.options.responsive ? _this.classes.responsive : ''
+        ])
+      );
 
       if ( _this.options.inheritOriginalWidth && originalWidth > 0 ) {
         _this.elements.outerWrapper.width(originalWidth);
@@ -342,7 +357,7 @@
         labelMarkup = $.grep(labelMarkup, function(item) {
           // Hide default (please choose) if more then one element were selected.
           // If no option value were given value is set to option text by default
-          if (labelMarkup.length > 1 || labelMarkup.length === 0) {
+          if ( labelMarkup.length > 1 || labelMarkup.length === 0 ) {
             return $.trim(item.value) !== '' && item.value !== item.text;
           }
           return item;
@@ -418,17 +433,8 @@
 
             $elm.children().each(function(i) {
               var $elm = $(this);
-              var optionText = $elm.html();
 
-              optionsGroup.items[i] = {
-                index    : currIndex,
-                element  : $elm,
-                value    : $elm.val(),
-                text     : optionText,
-                slug     : _this.utils.replaceDiacritics(optionText),
-                disabled : optionsGroup.groupDisabled,
-                selected : $elm.prop('selected')
-              };
+              optionsGroup.items[i] = _this.getItemData(currIndex, $elm, optionsGroup.groupDisabled);
 
               _this.lookupItems[currIndex] = optionsGroup.items[i];
 
@@ -439,17 +445,7 @@
 
           } else {
 
-            var optionText = $elm.html();
-
-            _this.items[i] = {
-              index    : currIndex,
-              element  : $elm,
-              value    : $elm.val(),
-              text     : optionText,
-              slug     : _this.utils.replaceDiacritics(optionText),
-              disabled : $elm.prop('disabled'),
-              selected : $elm.prop('selected')
-            };
+            _this.items[i] = _this.getItemData(currIndex, $elm, $elm.prop('disabled'));
 
             _this.lookupItems[currIndex] = _this.items[i];
 
@@ -461,6 +457,28 @@
         _this.setLabel();
         _this.elements.items.append( _this.elements.itemsScroll.html( _this.getItemsMarkup(_this.items) ) );
       }
+    },
+
+    /**
+     * Generate items object data
+     * @param  {integer} index      - Current item index
+     * @param  {node}    $elm       - Current element node
+     * @param  {boolean} isDisabled - Current element disabled state
+     * @return {object}             - Item object
+     */
+    getItemData: function(index, $elm, isDisabled) {
+      var _this = this;
+
+      return {
+        index     : index,
+        element   : $elm,
+        value     : $elm.val(),
+        className : $elm.prop('class'),
+        text      : $elm.html(),
+        slug      : _this.utils.replaceDiacritics($elm.html()),
+        selected  : $elm.prop('selected'),
+        disabled  : isDisabled
+      };
     },
 
     /**
@@ -477,7 +495,11 @@
         if ( elm.label !== undefined ) {
 
           markup += _this.utils.format('<ul class="{1}"><li class="{2}">{3}</li>',
-            $.trim([_this.classes.group, elm.groupDisabled ? 'disabled' : '', elm.element.prop('class')].join(' ')),
+            _this.utils.arrayToClassname([
+              _this.classes.group,
+              elm.groupDisabled ? 'disabled' : '',
+              elm.element.prop('class')
+            ]),
             _this.classes.grouplabel,
             elm.element.prop('label')
           );
@@ -511,11 +533,12 @@
 
       return _this.utils.format('<li data-index="{1}" class="{2}">{3}</li>',
         i,
-        $.trim([
+        _this.utils.arrayToClassname([
+          elm.className,
           i === _this.items.length - 1 ? 'last'     : '',
           elm.disabled                 ? 'disabled' : '',
           elm.selected                 ? 'selected' : ''
-        ].join(' ')),
+        ]),
         $.isFunction(itemBuilder) ? itemBuilder(elm, elm.element, i) : _this.utils.format(itemBuilder, elm)
       );
     },
