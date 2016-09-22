@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.10.1 (Sep 21 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.10.1 (Sep 22 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
@@ -903,6 +903,11 @@
      * @param {number}  index - Index of the option that will be selected
      */
     select: function(index) {
+      // don't select disabled items
+      if (index !== -1 && this.lookupItems[index].disabled) {
+        return false;
+      }
+
       var _this = this;
       var $filteredLi = _this.$li.filter('[data-index]').removeClass('selected');
 

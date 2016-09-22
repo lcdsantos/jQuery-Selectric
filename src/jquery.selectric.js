@@ -886,6 +886,11 @@
      * @param {number}  index - Index of the option that will be selected
      */
     select: function(index) {
+      // don't select disabled items
+      if (index !== -1 && this.lookupItems[index].disabled) {
+        return false;
+      }
+
       var _this = this;
       var $filteredLi = _this.$li.filter('[data-index]').removeClass('selected');
 
