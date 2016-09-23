@@ -118,8 +118,7 @@
   border: none;
   z-index: 1;
   box-sizing: border-box;
-  -moz-opacity: 0;
-       opacity: 0;
+  opacity: 0;
 }
 
 .selectric-input {
