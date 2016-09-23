@@ -14,6 +14,14 @@ describe('keyboard', function() {
     select.selectric();
   });
 
+  it('should open if has focus', function() {
+    $('.selectric-input').focus();
+    $('.selectric-items').find('li').click();
+    var inputElm = document.activeElement;
+    keyvent.on(inputElm).down('down');
+    expect($('.selectric-items').is(':visible')).toBe(true);
+  });
+
   it('should close on tab keypress', function() {
     $('.selectric').click();
     var inputElm = document.activeElement;
