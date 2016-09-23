@@ -232,12 +232,13 @@
       _this.classes = _this.getClassNames();
 
       // Create elements
-      var input        = $('<input/>', { 'class': _this.classes.input, 'readonly': _this.utils.isMobile() });
-      var items        = $('<div/>',   { 'class': _this.classes.items, 'tabindex': -1 });
-      var itemsScroll  = $('<div/>',   { 'class': _this.classes.scroll });
-      var wrapper      = $('<div/>',   { 'class': _this.classes.prefix, 'html': _this.options.arrowButtonMarkup });
-      var label        = $('<span/>',  { 'class': 'label' });
-      var outerWrapper = _this.$element.wrap('<div/>').parent().append(wrapper.prepend(label), items, input);
+      var input              = $('<input/>', { 'class': _this.classes.input, 'readonly': _this.utils.isMobile() });
+      var items              = $('<div/>',   { 'class': _this.classes.items, 'tabindex': -1 });
+      var itemsScroll        = $('<div/>',   { 'class': _this.classes.scroll });
+      var wrapper            = $('<div/>',   { 'class': _this.classes.prefix, 'html': _this.options.arrowButtonMarkup });
+      var label              = $('<span/>',  { 'class': 'label' });
+      var outerWrapper       = _this.$element.wrap('<div/>').parent().append(wrapper.prepend(label), items, input);
+      var hideSelectWrapper  = $('<div/>',   { 'class': _this.classes.hideselect });
 
       _this.elements = {
         input        : input,
@@ -248,9 +249,18 @@
         outerWrapper : outerWrapper
       };
 
+      if (_this.options.nativeOnMobile && _this.utils.isMobile()) {
+        _this.elements.input = undefined;
+        hideSelectWrapper.addClass(_this.classes.prefix + '-is-native');
+
+        _this.$element.on('change', function () {
+          _this.refresh();
+        });
+      }
+
       _this.$element
         .on(_this.eventTriggers)
-        .wrap('<div class="' + _this.classes.hideselect + '"/>');
+        .wrap(hideSelectWrapper);
 
       _this.originalTabindex = _this.$element.prop('tabindex');
       _this.$element.prop('tabindex', false);
@@ -556,48 +566,52 @@
         _this.state.opened ? _this.close() : _this.open(e);
       });
 
-      // Translate original element focus event to dummy input
-      _this.$element.on('focus' + eventNamespaceSuffix, function() {
-        _this.elements.input.focus();
-      });
-
-      _this.elements.input
-        .prop({ tabindex: _this.originalTabindex, disabled: false })
-        .on('keydown' + eventNamespaceSuffix, $.proxy(_this.handleKeys, _this))
-        .on('focusin' + eventNamespaceSuffix, function(e) {
-          _this.elements.outerWrapper.addClass(_this.classes.focus);
-
-          // Prevent the flicker when focusing out and back again in the browser window
-          _this.elements.input.one('blur', function() {
-            _this.elements.input.blur();
-          });
-
-          if ( _this.options.openOnFocus && !_this.state.opened ) {
-            _this.open(e);
-          }
-        })
-        .on('focusout' + eventNamespaceSuffix, function() {
-          _this.elements.outerWrapper.removeClass(_this.classes.focus);
-        })
-        .on('input propertychange', function() {
-          var val = _this.elements.input.val();
-
-          // Clear search
-          clearTimeout(_this.resetStr);
-          _this.resetStr = setTimeout(function() {
-            _this.elements.input.val('');
-          }, _this.options.keySearchTimeout);
-
-          if ( val.length ) {
-            // Search in select options
-            $.each(_this.items, function(i, elm) {
-              if ( new RegExp('^' + _this.utils.escapeRegExp(val), 'i').test(elm.slug) && !elm.disabled ) {
-                _this.highlight(i);
-                return false;
-              }
-            });
-          }
+      // Translate original element focus event to dummy input.
+      // Disabled on mobile devices because the default option list isn't
+      // shown due the fact that hidden input gets focused
+      if ( !(_this.options.nativeOnMobile && _this.utils.isMobile()) ) {
+        _this.$element.on('focus' + eventNamespaceSuffix, function() {
+          _this.elements.input.focus();
         });
+
+        _this.elements.input
+          .prop({ tabindex: _this.originalTabindex, disabled: false })
+          .on('keydown' + eventNamespaceSuffix, $.proxy(_this.handleKeys, _this))
+          .on('focusin' + eventNamespaceSuffix, function(e) {
+            _this.elements.outerWrapper.addClass(_this.classes.focus);
+
+            // Prevent the flicker when focusing out and back again in the browser window
+            _this.elements.input.one('blur', function() {
+              _this.elements.input.blur();
+            });
+
+            if ( _this.options.openOnFocus && !_this.state.opened ) {
+              _this.open(e);
+            }
+          })
+          .on('focusout' + eventNamespaceSuffix, function() {
+            _this.elements.outerWrapper.removeClass(_this.classes.focus);
+          })
+          .on('input propertychange', function() {
+            var val = _this.elements.input.val();
+
+            // Clear search
+            clearTimeout(_this.resetStr);
+            _this.resetStr = setTimeout(function() {
+              _this.elements.input.val('');
+            }, _this.options.keySearchTimeout);
+
+            if ( val.length ) {
+              // Search in select options
+              $.each(_this.items, function(i, elm) {
+                if ( new RegExp('^' + _this.utils.escapeRegExp(val), 'i').test(elm.slug) && !elm.disabled ) {
+                  _this.highlight(i);
+                  return false;
+                }
+              });
+            }
+          });
+      }
 
       _this.$li.on({
         // Prevent <input> blur on Chrome
@@ -772,6 +786,10 @@
      */
     open: function(e) {
       var _this = this;
+
+      if ( _this.options.nativeOnMobile && _this.utils.isMobile()) {
+        return false;
+      }
 
       _this.utils.triggerCallback('BeforeOpen', _this);
 
@@ -1030,6 +1048,7 @@
     keySearchTimeout     : 500,
     arrowButtonMarkup    : '<b class="button">&#x25be;</b>',
     disableOnMobile      : true,
+    nativeOnMobile       : true,
     openOnFocus          : true,
     openOnHover          : false,
     hoverIntentTimeout   : 500,
