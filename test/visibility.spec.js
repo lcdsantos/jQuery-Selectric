@@ -26,6 +26,22 @@ describe('visibility', function() {
     expect($('.selectric-items').is(':visible')).toBe(true);
   });
 
+  it('should add .selectric-focus on focusin', function() {
+    $('.selectric-input').focusin();
+    expect($('.selectric-wrapper').hasClass('selectric-focus')).toBe(true);
+  });
+
+  it('should remove .selectric-focus on focusout', function() {
+    $('.selectric-input').focusin().focusout();
+    expect($('.selectric-wrapper').hasClass('selectric-focus')).toBe(false);
+  });
+
+  it('should prevent the flicker when focusing out and back again', function() {
+    var spy = spyOn($.fn, 'blur');
+    $('.selectric-input').focusin().trigger('blur').trigger('blur').trigger('blur');
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
   it('should open/close on click', function() {
     $('.selectric').click();
     expect($('.selectric-items').is(':visible')).toBe(true);
