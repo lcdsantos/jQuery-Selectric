@@ -155,6 +155,17 @@ describe('basic suite', function() {
     expect($('.selectric-wrapper').width()).toBe(selectWidth);
   });
 
+  it('should have same width of original <select> even if parent is hidden', function() {
+    loadFixtures('hidden.html');
+    var selectHidden = $('#select-hidden').selectric({
+      inheritOriginalWidth: true
+    });
+    selectHidden.closest('.wrapper').show();
+    var selectWidth = selectHidden.width();
+    selectHidden.closest('.wrapper').hide();
+    expect($('.selectric-wrapper').width()).toBe(selectWidth);
+  });
+
   it('should replace diacritics', function() {
     select.append('<option>áàãéèíìóòõúùñçÿ</option>');
     select.selectric('refresh');

@@ -274,7 +274,10 @@
     /** Activates the plugin */
     activate: function() {
       var _this = this;
+      var hiddenChildren = _this.elements.items.closest(':visible').children(':hidden').addClass(_this.classes.tempshow);
       var originalWidth = _this.$element.width();
+
+      hiddenChildren.removeClass(_this.classes.tempshow);
 
       _this.utils.triggerCallback('BeforeActivate', _this);
 
@@ -468,7 +471,7 @@
         value     : $elm.val(),
         className : $elm.prop('class'),
         text      : $elm.html(),
-        slug      : _this.utils.replaceDiacritics($elm.html()),
+        slug      : $.trim(_this.utils.replaceDiacritics($elm.html())),
         selected  : $elm.prop('selected'),
         disabled  : isDisabled
       };
