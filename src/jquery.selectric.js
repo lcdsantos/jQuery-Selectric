@@ -28,7 +28,7 @@
 
   var pluginName = 'selectric';
   var classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Focus Hover Responsive Above Scroll Group GroupLabel';
-  var bindSufix = '.sl';
+  var eventNamespaceSuffix = '.sl';
 
   var chars = ['a', 'e', 'i', 'o', 'u', 'n', 'c', 'y'];
   var diacritics = [
@@ -232,12 +232,13 @@
       _this.classes = _this.getClassNames();
 
       // Create elements
-      var input        = $('<input/>', { 'class': _this.classes.input, 'readonly': _this.utils.isMobile() });
-      var items        = $('<div/>',   { 'class': _this.classes.items, 'tabindex': -1 });
-      var itemsScroll  = $('<div/>',   { 'class': _this.classes.scroll });
-      var wrapper      = $('<div/>',   { 'class': _this.classes.prefix, 'html': _this.options.arrowButtonMarkup });
-      var label        = $('<span/>',  { 'class': 'label' });
-      var outerWrapper = _this.$element.wrap('<div/>').parent().append(wrapper.prepend(label), items, input);
+      var input              = $('<input/>', { 'class': _this.classes.input, 'readonly': _this.utils.isMobile() });
+      var items              = $('<div/>',   { 'class': _this.classes.items, 'tabindex': -1 });
+      var itemsScroll        = $('<div/>',   { 'class': _this.classes.scroll });
+      var wrapper            = $('<div/>',   { 'class': _this.classes.prefix, 'html': _this.options.arrowButtonMarkup });
+      var label              = $('<span/>',  { 'class': 'label' });
+      var outerWrapper       = _this.$element.wrap('<div/>').parent().append(wrapper.prepend(label), items, input);
+      var hideSelectWrapper  = $('<div/>',   { 'class': _this.classes.hideselect });
 
       _this.elements = {
         input        : input,
@@ -248,9 +249,18 @@
         outerWrapper : outerWrapper
       };
 
+      if (_this.options.nativeOnMobile && _this.utils.isMobile()) {
+        _this.elements.input = undefined;
+        hideSelectWrapper.addClass(_this.classes.prefix + '-is-native');
+
+        _this.$element.on('change', function () {
+          _this.refresh();
+        });
+      }
+
       _this.$element
         .on(_this.eventTriggers)
-        .wrap('<div class="' + _this.classes.hideselect + '"/>');
+        .wrap(hideSelectWrapper);
 
       _this.originalTabindex = _this.$element.prop('tabindex');
       _this.$element.prop('tabindex', false);
@@ -537,9 +547,9 @@
         .add(_this.$element)
         .add(_this.elements.outerWrapper)
         .add(_this.elements.input)
-        .off(bindSufix);
+        .off(eventNamespaceSuffix);
 
-      _this.elements.outerWrapper.on('mouseenter' + bindSufix + ' mouseleave' + bindSufix, function(e) {
+      _this.elements.outerWrapper.on('mouseenter' + eventNamespaceSuffix + ' mouseleave' + eventNamespaceSuffix, function(e) {
         $(this).toggleClass(_this.classes.hover, e.type === 'mouseenter');
 
         // Delay close effect when openOnHover is true
@@ -555,52 +565,56 @@
       });
 
       // Toggle open/close
-      _this.elements.wrapper.on('click' + bindSufix, function(e) {
+      _this.elements.wrapper.on('click' + eventNamespaceSuffix, function(e) {
         _this.state.opened ? _this.close() : _this.open(e);
       });
 
-      // Translate original element focus event to dummy input
-      _this.$element.on('focus' + bindSufix, function() {
-        _this.elements.input.focus();
-      });
-
-      _this.elements.input
-        .prop({ tabindex: _this.originalTabindex, disabled: false })
-        .on('keydown' + bindSufix, $.proxy(_this.handleKeys, _this))
-        .on('focusin' + bindSufix, function(e) {
-          _this.elements.outerWrapper.addClass(_this.classes.focus);
-
-          // Prevent the flicker when focusing out and back again in the browser window
-          _this.elements.input.one('blur', function() {
-            _this.elements.input.blur();
-          });
-
-          if ( _this.options.openOnFocus && !_this.state.opened ) {
-            _this.open(e);
-          }
-        })
-        .on('focusout' + bindSufix, function() {
-          _this.elements.outerWrapper.removeClass(_this.classes.focus);
-        })
-        .on('input propertychange', function() {
-          var val = _this.elements.input.val();
-
-          // Clear search
-          clearTimeout(_this.resetStr);
-          _this.resetStr = setTimeout(function() {
-            _this.elements.input.val('');
-          }, _this.options.keySearchTimeout);
-
-          if ( val.length ) {
-            // Search in select options
-            $.each(_this.items, function(i, elm) {
-              if ( new RegExp('^' + _this.utils.escapeRegExp(val), 'i').test(elm.slug) && !elm.disabled ) {
-                _this.highlight(i);
-                return false;
-              }
-            });
-          }
+      // Translate original element focus event to dummy input.
+      // Disabled on mobile devices because the default option list isn't
+      // shown due the fact that hidden input gets focused
+      if ( !(_this.options.nativeOnMobile && _this.utils.isMobile()) ) {
+        _this.$element.on('focus' + eventNamespaceSuffix, function() {
+          _this.elements.input.focus();
         });
+
+        _this.elements.input
+          .prop({ tabindex: _this.originalTabindex, disabled: false })
+          .on('keydown' + eventNamespaceSuffix, $.proxy(_this.handleKeys, _this))
+          .on('focusin' + eventNamespaceSuffix, function(e) {
+            _this.elements.outerWrapper.addClass(_this.classes.focus);
+
+            // Prevent the flicker when focusing out and back again in the browser window
+            _this.elements.input.one('blur', function() {
+              _this.elements.input.blur();
+            });
+
+            if ( _this.options.openOnFocus && !_this.state.opened ) {
+              _this.open(e);
+            }
+          })
+          .on('focusout' + eventNamespaceSuffix, function() {
+            _this.elements.outerWrapper.removeClass(_this.classes.focus);
+          })
+          .on('input propertychange', function() {
+            var val = _this.elements.input.val();
+
+            // Clear search
+            clearTimeout(_this.resetStr);
+            _this.resetStr = setTimeout(function() {
+              _this.elements.input.val('');
+            }, _this.options.keySearchTimeout);
+
+            if ( val.length ) {
+              // Search in select options
+              $.each(_this.items, function(i, elm) {
+                if ( new RegExp('^' + _this.utils.escapeRegExp(val), 'i').test(elm.slug) && !elm.disabled ) {
+                  _this.highlight(i);
+                  return false;
+                }
+              });
+            }
+          });
+      }
 
       _this.$li.on({
         // Prevent <input> blur on Chrome
@@ -776,6 +790,10 @@
     open: function(e) {
       var _this = this;
 
+      if ( _this.options.nativeOnMobile && _this.utils.isMobile()) {
+        return false;
+      }
+
       _this.utils.triggerCallback('BeforeOpen', _this);
 
       if ( e ) {
@@ -805,8 +823,8 @@
         // Delayed binds events on Document to make label clicks work
         setTimeout(function() {
           $doc
-            .on('click' + bindSufix, $.proxy(_this.close, _this))
-            .on('scroll' + bindSufix, $.proxy(_this.isInViewport, _this));
+            .on('click' + eventNamespaceSuffix, $.proxy(_this.close, _this))
+            .on('scroll' + eventNamespaceSuffix, $.proxy(_this.isInViewport, _this));
         }, 1);
 
         _this.isInViewport();
@@ -814,7 +832,7 @@
         // Prevent window scroll when using mouse wheel inside items box
         if ( _this.options.preventWindowScroll ) {
           /* istanbul ignore next */
-          $doc.on('mousewheel' + bindSufix + ' DOMMouseScroll' + bindSufix, '.' + _this.classes.scroll, function(e) {
+          $doc.on('mousewheel' + eventNamespaceSuffix + ' DOMMouseScroll' + eventNamespaceSuffix, '.' + _this.classes.scroll, function(e) {
             var orgEvent = e.originalEvent;
             var scrollTop = $(this).scrollTop();
             var deltaY = 0;
@@ -845,7 +863,7 @@
       _this.utils.triggerCallback('BeforeClose', _this);
 
       // Remove custom events on document
-      $doc.off(bindSufix);
+      $doc.off(eventNamespaceSuffix);
 
       // Remove visible class to hide options box
       _this.elements.outerWrapper.removeClass(_this.classes.open);
@@ -969,7 +987,7 @@
           _this.$element.removeData(pluginName).removeData('value');
         }
 
-        _this.$element.prop('tabindex', _this.originalTabindex).off(bindSufix).off(_this.eventTriggers).unwrap().unwrap();
+        _this.$element.prop('tabindex', _this.originalTabindex).off(eventNamespaceSuffix).off(_this.eventTriggers).unwrap().unwrap();
 
         _this.state.enabled = false;
       }
@@ -1033,6 +1051,7 @@
     keySearchTimeout     : 500,
     arrowButtonMarkup    : '<b class="button">&#x25be;</b>',
     disableOnMobile      : true,
+    nativeOnMobile       : true,
     openOnFocus          : true,
     openOnHover          : false,
     hoverIntentTimeout   : 500,

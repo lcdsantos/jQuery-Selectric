@@ -69,6 +69,10 @@ describe('basic suite', function() {
     expect(select.val()).toBe('banana');
   });
 
+  it('highlight() should return undefined if index is undefined', function () {
+    expect(select.data('selectric').highlight(undefined)).toBe(undefined);
+  });
+
   it('should not be bigger than max-height', function() {
     select.selectric({
       maxHeight: 120
