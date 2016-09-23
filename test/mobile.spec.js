@@ -107,6 +107,13 @@ describe('mobile', function() {
         expect($('.selectric-wrapper').find('.label').text()).toBe('Apple');
       });
     });
+
+    it('open() should return false on mobile', function () {
+      spyOn(select.data('selectric').utils, 'isMobile').and.returnValue(true);
+      spyOn(select.data('selectric').options, 'nativeOnMobile').and.returnValue(true);
+      expect(select.data('selectric').open()).toBe(false);
+    });
+
   });
 
   describe('Multi Selects', function () {
