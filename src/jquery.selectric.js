@@ -182,18 +182,19 @@
       triggerCallback: function(fn, scope) {
         var elm = scope.element;
         var func = scope.options['on' + fn];
+        var args = [elm].concat([].slice.call(arguments).slice(1));
 
         if ( $.isFunction(func) ) {
-          func.call(elm, elm, scope);
+          func.apply(elm, args);
         }
 
         if ( $.fn[pluginName].hooks[fn] ) {
           $.each($.fn[pluginName].hooks[fn], function() {
-            this.call(elm, elm, scope);
+            this.apply(elm, args);
           });
         }
 
-        $(elm).trigger(pluginName + '-' + this.toDash(fn), scope);
+        $(elm).trigger(pluginName + '-' + this.toDash(fn), args);
       },
 
       /**
@@ -632,10 +633,6 @@
         click: function() {
           _this.select($(this).data('index'));
 
-          if ( !_this.state.multiple || !_this.options.multiple.keepMenuOpen ) {
-            _this.close();
-          }
-
           // Chrome doesn't close options box if select is wrapped with a label
           // We need to 'return false' to avoid that
           return false;
@@ -925,6 +922,8 @@
       var _this = this;
       var $filteredLi = _this.$li.filter('[data-index]').removeClass('highlighted');
 
+      _this.utils.triggerCallback('BeforeHighlight', _this);
+
       // Parameter index is required
       if ( index === undefined ) {
         return;
@@ -938,6 +937,8 @@
 
         _this.detectItemVisibility(index);
       }
+
+      _this.utils.triggerCallback('Highlight', _this);
     },
 
     /**
@@ -946,20 +947,22 @@
      * @param {number}  index - Index of the option that will be selected
      */
     select: function(index) {
-      // don't select disabled items
-      if (index !== -1 && this.lookupItems[index].disabled) {
-        return false;
-      }
-
       var _this = this;
       var $filteredLi = _this.$li.filter('[data-index]').removeClass('selected');
+
+      _this.utils.triggerCallback('BeforeSelect', _this, index);
+
+      // Don't select disabled items
+      if (index !== -1 && _this.lookupItems[index].disabled) {
+        return false;
+      }
 
       if ( _this.state.multiple ) {
         // Make sure selectedIdx is an array
         _this.state.selectedIdx = $.isArray(_this.state.selectedIdx) ? _this.state.selectedIdx : [_this.state.selectedIdx];
 
         var hasSelectedIndex = $.inArray(index, _this.state.selectedIdx);
-        if (hasSelectedIndex !== -1 ) {
+        if ( hasSelectedIndex !== -1 ) {
           _this.state.selectedIdx.splice(hasSelectedIndex, 1);
         } else {
           _this.state.selectedIdx.push(index);
@@ -976,7 +979,13 @@
           .addClass('selected');
       }
 
+      if ( !_this.state.multiple || !_this.options.multiple.keepMenuOpen ) {
+        _this.close();
+      }
+
       _this.change();
+
+      _this.utils.triggerCallback('Select', _this, index);
     },
 
     /**

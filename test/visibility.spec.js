@@ -43,7 +43,7 @@ describe('visibility', function() {
   it('should open on mouseover and close after timeout', function(done) {
     select.selectric({
       openOnHover: true,
-      hoverIntentTimeout: 50
+      hoverIntentTimeout: 30
     });
 
     var $wrapper = $('.selectric-wrapper');
@@ -56,6 +56,6 @@ describe('visibility', function() {
     setTimeout(function() {
       expect($optionsBox.is(':visible')).toBe(false);
       done();
-    }, 100);
+    }, 40);
   });
 });
