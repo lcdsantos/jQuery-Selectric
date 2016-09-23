@@ -1,7 +1,10 @@
+/* eslint-env jasmine, jquery */
+/* global loadFixtures */
+
 'use strict';
 
 describe('events', function() {
-  var select;
+  var select = false;
 
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
@@ -167,5 +170,11 @@ describe('events', function() {
 
     expect(hooks.beforeInit).toHaveBeenCalledTimes(2);
 
+  });
+
+  it('should not bind events when select is disabled after init', function() {
+    select.prop('disabled', true).selectric('refresh');
+    $('.selectric').trigger('click');
+    expect($('.selectric-wrapper').hasClass('selectric-open')).toBe(false);
   });
 });

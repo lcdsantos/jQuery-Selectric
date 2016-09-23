@@ -1,3 +1,6 @@
+/* eslint-env jasmine, jquery */
+/* global loadFixtures */
+
 'use strict';
 
 describe('mobile', function() {

@@ -136,12 +136,12 @@
        * @param  {string} f - String to be formated
        * @return {string}     String formated
        */
-      format: function (f) {
+      format: function(f) {
         var a = arguments; // store outer arguments
         return ('' + f) // force format specifier to String
           .replace( // replace tokens in format specifier
             /\{(?:(\d+)|(\w+))\}/g, // match {token} references
-            function (
+            function(
               s, // the matched string (ignored)
               i, // an argument index
               p // a property name
@@ -266,11 +266,11 @@
         outerWrapper : outerWrapper
       };
 
-      if (_this.options.nativeOnMobile && _this.utils.isMobile()) {
+      if ( _this.options.nativeOnMobile && _this.utils.isMobile() ) {
         _this.elements.input = undefined;
         hideSelectWrapper.addClass(_this.classes.prefix + '-is-native');
 
-        _this.$element.on('change', function () {
+        _this.$element.on('change', function() {
           _this.refresh();
         });
       }
@@ -309,6 +309,8 @@
       if ( _this.options.inheritOriginalWidth && originalWidth > 0 ) {
         _this.elements.outerWrapper.width(originalWidth);
       }
+
+      _this.unbindEvents();
 
       if ( !_this.$element.prop('disabled') ) {
         _this.state.enabled = true;
@@ -556,8 +558,8 @@
       );
     },
 
-    /** Bind events on the elements */
-    bindEvents: function() {
+    /** Remove events on the elements */
+    unbindEvents: function() {
       var _this = this;
 
       _this.elements.wrapper
@@ -565,6 +567,11 @@
         .add(_this.elements.outerWrapper)
         .add(_this.elements.input)
         .off(eventNamespaceSuffix);
+    },
+
+    /** Bind events on the elements */
+    bindEvents: function() {
+      var _this = this;
 
       _this.elements.outerWrapper.on('mouseenter' + eventNamespaceSuffix + ' mouseleave' + eventNamespaceSuffix, function(e) {
         $(this).toggleClass(_this.classes.hover, e.type === 'mouseenter');

@@ -1,7 +1,10 @@
+/* eslint-env jasmine, jquery */
+/* global loadFixtures */
+
 'use strict';
 
 describe('multiple selects', function() {
-  var select;
+  var select = false;
 
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
@@ -77,7 +80,7 @@ describe('multiple selects', function() {
     $('.selectric').click();
     expect($('.selectric-wrapper').find('.label > h2').length).toBe(1);
   });
-  
+
   it('should not select disabled items', function() {
     var listItems = $('.selectric-items');
     select.find('option').eq(3).prop('disabled', true);

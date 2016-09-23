@@ -1,7 +1,10 @@
+/* eslint-env jasmine, jquery */
+/* global loadFixtures, keyvent */
+
 'use strict';
 
 describe('keyboard', function() {
-  var select;
+  var select = false;
 
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
