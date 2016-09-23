@@ -87,6 +87,18 @@ describe('mobile', function() {
       });
       expect($('.selectric-wrapper').length).toBe(1);
     });
+
+    it('should refresh the select after change', function () {
+      setUserAgent(window, 'Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19');
+      var spy = spyOn(select.data('selectric'), 'refresh');
+      select.selectric({
+        disableOnMobile: false,
+        nativeOnMobile: true
+      });
+      select.trigger('change');
+      expect(spy).toHaveBeenCalled();
+    });
+
     describe('nativeOnMobile',  function () {
       beforeEach(function () {
         setUserAgent(window, 'Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3');
@@ -94,6 +106,10 @@ describe('mobile', function() {
           disableOnMobile: false,
           nativeOnMobile: true
         });
+      });
+
+      afterEach(function() {
+        setUserAgent(window, oldUserAgent);
       });
 
       it('should add class `selectric-is-native`', function () {
