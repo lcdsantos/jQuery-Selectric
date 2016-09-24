@@ -1,7 +1,10 @@
+/* eslint-env jasmine, jquery */
+/* global loadFixtures */
+
 'use strict';
 
 describe('events', function() {
-  var select;
+  var select = false;
 
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
@@ -19,6 +22,14 @@ describe('events', function() {
     expect(changedFn).toHaveBeenCalled();
   });
 
+  it('should not trigger change event', function() {
+    var notChangedFn = jasmine.createSpy('notChangedFn');
+    select.on('change', notChangedFn);
+    $('.selectric').click();
+    $('.selectric-items').find('li.selected').click();
+    expect(notChangedFn).not.toHaveBeenCalled();
+  });
+
   it('should trigger events', function() {
     var events = jasmine.createSpyObj('events', [
       'beforeInit',
@@ -27,21 +38,29 @@ describe('events', function() {
       'open',
       'beforeClose',
       'close',
+      'beforeHighlight',
+      'highlight',
+      'beforeSelect',
+      'select',
       'beforeChange',
       'change',
       'refresh'
     ]);
 
     select.selectric('destroy');
-    select.on('selectric-before-init',   events.beforeInit);
-    select.on('selectric-init',          events.init);
-    select.on('selectric-before-open',   events.beforeOpen);
-    select.on('selectric-open',          events.open);
-    select.on('selectric-before-close',  events.beforeClose);
-    select.on('selectric-close',         events.close);
-    select.on('selectric-before-change', events.beforeChange);
-    select.on('selectric-change',        events.change);
-    select.on('selectric-refresh',       events.refresh);
+    select.on('selectric-before-init',      events.beforeInit);
+    select.on('selectric-init',             events.init);
+    select.on('selectric-before-open',      events.beforeOpen);
+    select.on('selectric-open',             events.open);
+    select.on('selectric-before-close',     events.beforeClose);
+    select.on('selectric-close',            events.close);
+    select.on('selectric-before-highlight', events.beforeHighlight);
+    select.on('selectric-highlight',        events.highlight);
+    select.on('selectric-before-select',    events.beforeSelect);
+    select.on('selectric-select',           events.select);
+    select.on('selectric-before-change',    events.beforeChange);
+    select.on('selectric-change',           events.change);
+    select.on('selectric-refresh',          events.refresh);
     select.selectric();
 
     $('.selectric').click();
@@ -54,6 +73,10 @@ describe('events', function() {
     expect(events.open).toHaveBeenCalled();
     expect(events.beforeClose).toHaveBeenCalled();
     expect(events.close).toHaveBeenCalled();
+    expect(events.beforeHighlight).toHaveBeenCalled();
+    expect(events.highlight).toHaveBeenCalled();
+    expect(events.beforeSelect).toHaveBeenCalled();
+    expect(events.select).toHaveBeenCalled();
     expect(events.beforeChange).toHaveBeenCalled();
     expect(events.change).toHaveBeenCalled();
     expect(events.refresh).toHaveBeenCalled();
@@ -140,5 +163,30 @@ describe('events', function() {
     expect(hooks.beforeChange).toHaveBeenCalled();
     expect(hooks.change).toHaveBeenCalled();
     expect(hooks.refresh).toHaveBeenCalled();
+  });
+
+  it('should allow to chain hooks', function() {
+    var hooks = jasmine.createSpyObj('hooks', [
+      'beforeInit'
+    ]);
+
+    select.selectric('destroy');
+    $.fn.selectric.hooks
+      .add('BeforeInit',   'test', hooks.beforeInit)
+      .add('BeforeInit',   'test2', hooks.beforeInit);
+    select.selectric();
+
+    $('.selectric').click();
+    $('.selectric-items').find('li:eq(4)').click();
+    select.selectric('refresh');
+
+    expect(hooks.beforeInit).toHaveBeenCalledTimes(2);
+
+  });
+
+  it('should not bind events when select is disabled after init', function() {
+    select.prop('disabled', true).selectric('refresh');
+    $('.selectric').trigger('click');
+    expect($('.selectric-wrapper').hasClass('selectric-open')).toBe(false);
   });
 });

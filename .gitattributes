@@ -1,5 +1,17 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Enforce Unix newlines
+*.css   text eol=lf
+*.html  text eol=lf
+*.js    text eol=lf
+*.json  text eol=lf
+*.md    text eol=lf
+*.py    text eol=lf
+*.rb    text eol=lf
+*.scss  text eol=lf
+*.svg   text eol=lf
+*.yml   text eol=lf
+
+# Don't diff or textually merge source maps
+*.map   binary
 
 # Custom for Visual Studio
 *.cs     diff=csharp

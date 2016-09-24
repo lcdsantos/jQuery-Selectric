@@ -50,6 +50,10 @@
     $('#button-round-slider').data('key', 'buttonRadius');
     $('#button-position-slider').data('key', 'buttonPosition');
 
+    if ( /android|ip(hone|od|ad)/i.test(navigator.userAgent) ) {
+      $('#presets').find('option[value="custom"]').remove();
+    }
+
     $('#presets').change(function(e) {
       e.preventDefault();
 
@@ -152,6 +156,8 @@
     /*======================================
       Demos
     ======================================*/
+    $.fn.selectric.defaults.disableOnMobile = false;
+
     $('#basic').selectric();
 
     /*------------------------------------*/
@@ -235,9 +241,9 @@
     /*------------------------------------*/
 
     $('.custom-options').selectric({
-      optionsItemBuilder: function(itemData, element, index) {
-        return element.val().length ?
-          '<span class="ico ico-' + element.val() +  '"></span>' + itemData.text :
+      optionsItemBuilder: function(itemData) {
+        return itemData.value.length ?
+          '<span class="ico ico-' + itemData.value +  '"></span>' + itemData.text :
           itemData.text;
       }
     });

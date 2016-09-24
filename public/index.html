@@ -68,13 +68,14 @@
     </ul>
 
     <div class="button-group">
-      <a href="./demo.html" class="bt">Demos</a>
-      <a target="_blank" href="https://github.com/lcdsantos/jQuery-Selectric" class="bt">View on Github</a>
-      <a target="_blank" href="https://github.com/lcdsantos/jQuery-Selectric/zipball/master" class="bt">Download (ZIP)</a>
-      <a target="_blank" href="https://github.com/lcdsantos/jQuery-Selectric/tarball/master" class="bt">Download (TAR)</a>
+      <a class="bt" href="./demo.html">Demos</a>
+      <a class="bt" target="_blank" href="https://github.com/lcdsantos/jQuery-Selectric">View on Github</a>
+      <a class="bt" target="_blank" href="https://github.com/lcdsantos/jQuery-Selectric/zipball/master">Download (ZIP)</a>
+      <a class="bt" target="_blank" href="https://github.com/lcdsantos/jQuery-Selectric/tarball/master">Download (TAR)</a>
       <div class="clear"></div>
-      <a href="https://raw.githubusercontent.com/lcdsantos/jQuery-Selectric/master/public/jquery.selectric.js" class="link">jquery.selectric.js</a>
-      <a href="https://raw.githubusercontent.com/lcdsantos/jQuery-Selectric/master/public/jquery.selectric.min.js" class="link">jquery.selectric.min.js</a>
+      <a class="link" href="https://raw.githubusercontent.com/lcdsantos/jQuery-Selectric/master/public/jquery.selectric.js">jquery.selectric.js</a>
+      <a class="link" href="https://raw.githubusercontent.com/lcdsantos/jQuery-Selectric/master/public/jquery.selectric.min.js">jquery.selectric.min.js</a>
+      <a class="link" href="https://raw.githubusercontent.com/lcdsantos/jQuery-Selectric/master/public/selectric.css">selectric.css</a>
     </div>
 
     <ul class="social-buttons">
@@ -99,248 +100,328 @@
       </li>
     </ul>
 
-    <h2>How to use</h2>
+    <div class="section">
+      <h2>How to use</h2>
 
-    <p>1. Make sure to include jQuery in your page:</p>
-    <pre><code class="language-markup">&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+      <div class="how-to">
+        <ul>
+          <li>
+            <p>1. Make sure to include jQuery in your page:</p>
+            <pre><code class="language-markup">&lt;script src=&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+          </li>
 
-    <p>2. Include <strong>jQuery Selectric:</strong></p>
-    <pre><code class="language-markup">&lt;script src=&quot;jquery.selectric.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+          <li>
+            <p>2. Include <strong>jQuery Selectric:</strong></p>
+            <pre><code class="language-markup">&lt;script src=&quot;jquery.selectric.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+          </li>
 
-    <p>3. Include <strong>jQuery Selectric</strong> styles, and change it to your taste :D <span class="note">(please refer to our <a href="./demo.html">demo page</a> for more themes and other customizations)</span></p>
-    <pre><code class="language-markup">&lt;link rel=&quot;stylesheet&quot; href=&quot;selectric.css&quot;&gt;</code></pre>
+          <li>
+            <p>3. Include <strong>jQuery Selectric</strong> styles, and change it to your taste :D <span class="note">(please refer to our <a href="./demo.html">demo page</a> for more themes and other customizations)</span></p>
+            <pre><code class="language-markup">&lt;link rel=&quot;stylesheet&quot; href=&quot;selectric.css&quot;&gt;</code></pre>
+          </li>
 
-    <p>4. Initialize <strong>jQuery Selectric:</strong></p>
-    <pre><code class="language-javascript">$(function(){
+          <li>
+            <p>4. Initialize <strong>jQuery Selectric:</strong></p>
+            <pre><code class="language-javascript">$(function() {
   $('select').selectric();
 });</code></pre>
+          </li>
+        </ul>
+      </div>
+    </div>
 
-    <h2>Options</h2>
-    <p>You can pass an options object as the first parameter when you call the plugin. For example:</p>
-    <pre><code class="language-javascript">$('select').selectric({
+    <div class="section">
+      <h2>Options</h2>
+      <p>You can pass an options object as the first parameter when you call the plugin. For example:</p>
+      <pre><code class="language-javascript">$('select').selectric({
   maxHeight: 200
 });</code></pre>
 
-    <pre><code class="language-javascript">{
-  /*
-   * Type: Function
-   * Description: Function called before plugin initialize
-   */
-  onBeforeInit: function() {},
+      <pre><code class="language-javascript">{
+    /*
+     * Type: Function
+     * Description: Function called before plugin initialize
+     */
+    onBeforeInit: function() {},
 
-  /*
-   * Type: Function
-   * Description: Function called plugin has been fully initialized
-   */
-  onInit: function() {},
+    /*
+     * Type: Function
+     * Description: Function called plugin has been fully initialized
+     */
+    onInit: function() {},
 
-  /*
-   * Type: Function
-   * Description: Function called plugin has been fully initialized
-   */
-  onBeforeOpen: function() {},
+    /*
+     * Type: Function
+     * Description: Function called plugin has been fully initialized
+     */
+    onBeforeOpen: function() {},
 
-  /*
-   * Type: Function
-   * Description: Function called after select options opens
-   */
-  onOpen: function() {},
+    /*
+     * Type: Function
+     * Description: Function called after select options opens
+     */
+    onOpen: function() {},
 
-  /*
-   * Type: Function
-   * Description: Function called before select options closes
-   */
-  onBeforeClose: function() {},
+    /*
+     * Type: Function
+     * Description: Function called before select options closes
+     */
+    onBeforeClose: function() {},
 
-  /*
-   * Type: Function
-   * Description: Function called after select options closes
-   */
-  onClose: function() {},
+    /*
+     * Type: Function
+     * Description: Function called after select options closes
+     */
+    onClose: function() {},
 
-  /*
-   * Type: Function
-   * Description: Function called before select options change
-   */
-  onBeforeChange: function() {},
+    /*
+     * Type: Function
+     * Description: Function called before select options change
+     */
+    onBeforeChange: function() {},
 
-  /*
-   * Type: Function
-   * Description: Function called when select options change
-   */
-  onChange: function(element) {
-    $(element).change();
-  },
+    /*
+     * Type: Function
+     * Description: Function called when select options change
+     */
+    onChange: function(element) {
+      $(element).change();
+    },
 
-  /*
-   * Type: Function
-   * Description: Function called when the Selectric is refreshed
-   */
-  onRefresh: function() {},
+    /*
+     * Type: Function
+     * Description: Function called when the Selectric is refreshed
+     */
+    onRefresh: function() {},
 
-  /*
-   * Type: Integer
-   * Description: Maximum height options box can be
-   */
-  maxHeight: 300,
+    /*
+     * Type: Integer
+     * Description: Maximum height options box can be
+     */
+    maxHeight: 300,
 
-  /*
-   * Type: Integer
-   * Description: After this time without pressing
-   *              any key, the search string is reset
-   */
-  keySearchTimeout: 500,
+    /*
+     * Type: Integer
+     * Description: After this time without pressing
+     *              any key, the search string is reset
+     */
+    keySearchTimeout: 500,
 
-  /*
-   * Type: String [HTML]
-   * Description: Markup for open options button
-   */
-  arrowButtonMarkup: '&lt;b class=&quot;button&quot;&gt;&amp;#x25be;&lt;/b&gt;',
+    /*
+     * Type: String [HTML]
+     * Description: Markup for open options button
+     */
+    arrowButtonMarkup: '&lt;b class=&quot;button&quot;&gt;&amp;#x25be;&lt;/b&gt;',
 
-  /*
-   * Type: Boolean
-   * Description: Initialize plugin on mobile browsers
-   */
-  disableOnMobile: true,
+    /*
+     * Type: Boolean
+     * Description: Initialize plugin on mobile browsers
+     */
+    disableOnMobile: true,
 
-  /*
-   * Type: Boolean
-   * Description: Open select box on hover, instead of click
-   */
-  openOnHover: false,
+    /*
+     * Type: Boolean
+     * Description: Retain native dropdown behavior on mobile devices
+     */
+     nativeOnMobile: true,
 
-  /*
-   * Type: Integer
-   * Description: Timeout to close options box after mouse leave plugin area
-   */
-  hoverIntentTimeout: 500,
+    /*
+     * Type: Boolean
+     * Description: Open select box on hover, instead of click
+     */
+    openOnHover: false,
 
-  /*
-   * Type: Boolean
-   * Description: Expand options box past wrapper
-   */
-  expandToItemText: false,
+    /*
+     * Type: Integer
+     * Description: Timeout to close options box after mouse leave plugin area
+     */
+    hoverIntentTimeout: 500,
 
-  /*
-   * Type: Boolean
-   * Description: The select element become responsive
-   */
-  responsive: false,
+    /*
+     * Type: Boolean
+     * Description: Expand options box past wrapper
+     */
+    expandToItemText: false,
 
-  /*
-   * Type: Object
-   * Description: Customize classes.
-   */
-  customClass: {
-    prefix: 'selectric',
-    camelCase: false
-  },
+    /*
+     * Type: Boolean
+     * Description: The select element become responsive
+     */
+    responsive: false,
 
-  /*
-   * Type: String or Function
-   * Description: Define how each option should be rendered inside its &lt;li&gt; element.
-   *
-   *              If it's a string, all keys wrapped in brackets will be replaced by
-   *              the respective values in itemData. Available keys are:
-   *              'value', 'text', 'slug', 'disabled'.
-   *
-   *              If it's a function, it will be called with the following parameters:
-   *              (itemData, element, index). The function must return a string,
-   *              no keys will be replaced in this method.
-   */
-  optionsItemBuilder: '{text}',
+    /*
+     * Type: Object
+     * Description: Customize classes.
+     */
+    customClass: {
+      prefix: 'selectric', // Type: String.  Description: Prefixed string of every class name.
+      camelCase: false     // Type: Boolean. Description: Switch classes style between camelCase or dash-case.
+    },
 
-  /*
-   * Type: String or Function
-   * Description: Define how each select label should be rendered. Allows HTML.
-   *
-   *              If it's a string, all keys wrapped in brackets will be replaced by
-   *              the respective values in currItem. Available keys are:
-   *              'value', 'text', 'slug', 'disabled'.
-   *
-   *              If it's a function, it will be called with the following parameters:
-   *              (currItem). The function must return a string, no keys will be
-   *              replaced in this method.
-   */
-  labelBuilder: '{text}',
+    /*
+     * Type: String or Function
+     * Description: Define how each option should be rendered inside its &lt;li&gt; element.
+     *
+     *              If it's a string, all keys wrapped in brackets will be replaced by
+     *              the respective values in itemData. Available keys are:
+     *              'value', 'text', 'slug', 'index'.
+     *
+     *              If it's a function, it will be called with the following parameter:
+     *              (itemData). The function must return a string. If available all keys
+     *              will be replaced by the respective values in itemData.
+     *
+     *              itemData&lt;Object&gt; {
+     *                 className // Type: String.          Description: option class names.
+     *                 disabled  // Type: Boolean.         Description: option is disabled true/false
+     *                 selected  // Type: Boolean.         Description: option is selected true/false
+     *                 element   // Type: HTMLDomElement.  Description: current select element
+     *                 index     // Type: Number.          Description: current option index
+     *                 slug      // Type: String.          Description: option slug
+     *                 text      // Type: String.          Description: option text
+     *                 value     // Type: String.          Description: option value
+     *              }
+     *
+     *              EXAMPLE:
+     *
+     *              function(itemData) {
+     *                  return '<span class="item-{index}">{text}</span>';
+     *              }
+     *
+     *              // you're free to build and return your own strings
+     *              function(itemData) {
+     *                  return itemData.text + '(' + itemData.index + ')';
+     *              }
+     */
+    optionsItemBuilder: '{text}',
 
-  /*
-   * Type: Boolean
-   * Description: Prevent scroll on window when using mouse wheel inside options box
-   *              to match common browsers behavior.
-   */
-  preventWindowScroll: true,
+    /*
+     * Type: String or Function
+     * Description: Define how each select label should be rendered. Allows HTML.
+     *
+     *              If it's a string, all keys wrapped in brackets will be replaced by
+     *              the respective values in currItem. Available keys are:
+     *              'value', 'text', 'slug', 'disabled'.
+     *
+     *              If it's a function, it will be called with the following parameters:
+     *              (currItem). The function must return a string, no keys will be
+     *              replaced in this method.
+     */
+    labelBuilder: '{text}',
 
-  /*
-   * Type: Boolean
-   * Description: Inherit width from original element
-   */
-  inheritOriginalWidth: false,
+    /*
+     * Type: Boolean
+     * Description: Prevent scroll on window when using mouse wheel inside options box
+     *              to match common browsers behavior.
+     */
+    preventWindowScroll: true,
 
-  /*
-   * Type: Boolean
-   * Description: Determine if current selected option should jump to
-   *              first (or last) once reach the end (or start) item of list upon
-   *              keyboard arrow navigation.
-   */
-  allowWrap: true
-}</code></pre>
+    /*
+     * Type: Boolean
+     * Description: Inherit width from original element
+     */
+    inheritOriginalWidth: false,
 
-    <h2>Events</h2>
+    /*
+     * Type: Boolean
+     * Description: Determine if current selected option should jump to
+     *              first (or last) once reach the end (or start) item of list upon
+     *              keyboard arrow navigation.
+     */
+    allowWrap: true,
 
-    <p>All events are called on original element, first argument is the original element too. And can be bound like this:</p>
+    /*
+     * Type: Object
+     * Description: Customize select "multiple" behavior
+     */
+    multiple: {
+      separator: ', ',       // Type: String.             Description: Items separator.
+      keepMenuOpen: true,    // Type: Boolean.            Description: Close after an item is selected.
+      maxLabelEntries: false // Type: Boolean or Integer. Description: Max selected items do show.
+    }
+  }</code></pre>
+    </div>
 
-    <pre><code class="language-javascript">$('select').on('eventname', function(element){
-&nbsp;&nbsp;// your code
-});</code></pre>
+    <div class="section">
+      <h2>Events</h2>
 
-    <p><code>eventname</code> can be one of the following:</p>
+      <p>All events are called on original element. Within the callback you have access to the <code>event object</code>, the original
+        <code>select element</code> and to the current <code>selectric instance</code>. It can be bound like this:</p>
 
-    <table>
-      <tr>
-        <td><strong>Event name</strong></td>
-        <td><strong>Description</strong></td>
-      </tr>
-      <tr>
-        <td><code>selectric-before-init</code></td>
-        <td>Fired before plugin initialize</td>
-      </tr>
-      <tr>
-        <td><code>selectric-init</code></td>
-        <td>Fired plugin has been fully initialized</td>
-      </tr>
-      <tr>
-        <td><code>selectric-before-open</code></td>
-        <td>Fired before select options opens</td>
-      </tr>
-      <tr>
-        <td><code>selectric-open</code></td>
-        <td>Fired after select options opens</td>
-      </tr>
-      <tr>
-        <td><code>selectric-before-close</code></td>
-        <td>Fired before select options closes</td>
-      </tr>
-      <tr>
-        <td><code>selectric-close</code></td>
-        <td>Fired after select options closes</td>
-      </tr>
-      <tr>
-        <td><code>selectric-before-change</code></td>
-        <td>Fired before select options change</td>
-      </tr>
-      <tr>
-        <td><code>selectric-change</code></td>
-        <td>Fired when select options change</td>
-      </tr>
-      <tr>
-        <td><code>selectric-refresh</code></td>
-        <td>Fired when the Selectric is refreshed</td>
-      </tr>
-    </table>
+      <pre><code class="language-javascript">/**
+ * @param {Object}          event - jQuery event object
+ * @param {HTMLElement}   element - Original DOM element
+ * @param {Object}      selectric - Current Selectric instance
+ */
+ $('select').on('eventname', function(event, element, selectric) {
+ &nbsp;&nbsp;// your code
+ });</code></pre>
 
-    <h2>Public methods</h2>
-    <pre><code class="language-javascript">$('select').selectric('open');    // Open options
+      <p><code>eventname</code> can be one of the following:</p>
+
+      <table>
+        <tr>
+          <td><strong>Event name</strong></td>
+          <td><strong>Description</strong></td>
+        </tr>
+        <tr>
+          <td><code>selectric-before-init</code></td>
+          <td>Fired before plugin initialization</td>
+        </tr>
+        <tr>
+          <td><code>selectric-init</code></td>
+          <td>Fired after plugin has been fully initialized</td>
+        </tr>
+        <tr>
+          <td><code>selectric-before-open</code></td>
+          <td>Fired before dropdown opens</td>
+        </tr>
+        <tr>
+          <td><code>selectric-open</code></td>
+          <td>Fired after dropdown has been opened</td>
+        </tr>
+        <tr>
+          <td><code>selectric-before-close</code></td>
+          <td>Fired before the dropdown is closed</td>
+        </tr>
+        <tr>
+          <td><code>selectric-close</code></td>
+          <td>Fired after dropdown has been closed</td>
+        </tr>
+        <tr>
+          <td><code>selectric-before-highlight</code></td>
+          <td>Fired before a select option is highlighted</td>
+        </tr>
+        <tr>
+          <td><code>selectric-highlight</code></td>
+          <td>Fired when a select option is highlighted</td>
+        </tr>
+        <tr>
+          <td><code>selectric-before-select</code></td>
+          <td>Fired before a select option is selected</td>
+        </tr>
+        <tr>
+          <td><code>selectric-select</code></td>
+          <td>Fired after a select option was selected</td>
+        </tr>
+        <tr>
+          <td><code>selectric-before-change</code></td>
+          <td>Fired before a select option changed</td>
+        </tr>
+        <tr>
+          <td><code>selectric-change</code></td>
+          <td>Fired when a select option changed</td>
+        </tr>
+        <tr>
+          <td><code>selectric-refresh</code></td>
+          <td>Fired after Selectric was refreshed</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>Public methods</h2>
+
+      <pre><code class="language-javascript">$('select').selectric('open');    // Open options
 $('select').selectric('close');   // Close options
 $('select').selectric('destroy'); // Destroy select and go back to normal
 $('select').selectric('refresh'); // Reconstruct the plugin options box
@@ -354,226 +435,260 @@ Selectric.close();   // Close options
 Selectric.destroy(); // Destroy select and go back to normal
 Selectric.refresh(); // Reconstruct the plugin options box
 Selectric.init();    // Reinitialize the plugin</code></pre>
+    </div>
 
-    <h2>Hooks</h2>
-    <p>Check <a href="plugins/jquery.selectric.placeholder.js">jquery.selectric.placeholder.js</a> source for a usage example</p>
-    <pre><code class="language-javascript">// Add a callback everytime '<i>callbackName</i>' is called
+    <div class="section">
+      <h2>Hooks</h2>
+
+      <p>Check <a href="plugins/jquery.selectric.placeholder.js">jquery.selectric.placeholder.js</a> source for a usage example</p>
+      <pre><code class="language-javascript">// Add a callback everytime '<i>callbackName</i>' is called
 $.fn.selectric.hooks.add('<i>callbackName</i>', '<i>hookName</i>', function(element, data) {});
 
 // Remove a callback
 $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></pre>
+    </div>
 
-    <h2>Browser support</h2>
+    <div class="section">
+      <h2>Browser support</h2>
 
-    <ul>
-      <li>Firefox</li>
-      <li>Chrome</li>
-      <li>Safari</li>
-      <li>Internet Explorer 7+</li>
-      <li>Opera</li>
-    </ul>
+      <ul>
+        <li>Firefox</li>
+        <li>Chrome</li>
+        <li>Safari</li>
+        <li>Internet Explorer 7+</li>
+        <li>Opera</li>
+      </ul>
+    </div>
 
-    <h2>Basic demo</h2>
-    <h4><a href="./demo.html">view more advanced demos and customization →</a></h4>
+    <div class="section">
+      <h2>Basic demos</h2>
+      <h4><a href="./demo.html">view more advanced demos and customization →</a></h4>
 
-    <select>
-      <option value="">Select with few options</option>
-      <option value="apple">Apple</option>
-      <option value="banana">Banana</option>
-      <option value="orange">Orange</option>
-    </select>
+      <div class="examples">
+        <div class="item">
+          <select>
+            <option value="apple">Apple</option>
+            <option value="banana">Banana</option>
+            <option value="orange">Orange</option>
+          </select>
+        </div>
 
-    <select>
-      <option>Select with optgroup</option>
-      <optgroup label="Group 1">
-        <option>Option 1.1</option>
-      </optgroup>
-      <optgroup label="Group 2">
-        <option>Option 2.1</option>
-        <option>Option 2.2</option>
-      </optgroup>
-      <optgroup label="Group 3" disabled>
-        <option>Option 3.1</option>
-        <option>Option 3.2</option>
-        <option>Option 3.3</option>
-      </optgroup>
-    </select>
+        <div class="item">
+          <select multiple>
+            <option value="">Select with "multiple" attribute</option>
+            <option value="ant">Ant</option>
+            <option value="bird">Bird</option>
+            <option value="cat">Cat</option>
+            <option value="chicken">Chicken</option>
+            <option value="cow">Cow</option>
+            <option value="dog">Dog</option>
+            <option value="elephant">Elephant</option>
+            <option value="fish">Fish</option>
+            <option value="fox">Fox</option>
+            <option value="horse">Horse</option>
+            <option value="kangaroo">Kangaroo</option>
+            <option value="lion">Lion</option>
+            <option value="monkey">Monkey</option>
+            <option value="penguin">Penguin</option>
+            <option value="pig">Pig</option>
+            <option value="rabbit">Rabbit</option>
+            <option value="sheep">Sheep</option>
+            <option value="tiger">Tiger</option>
+            <option value="whale">Whale</option>
+            <option value="wolf">Wolf</option>
+          </select>
+        </div>
 
-    <select>
-      <option value="">Select with big option mauris nec orci ut tortor consectetuer dapibus mauris nec orci ut tortor consectetuer dapibus</option>
-      <option value="apple">Apple</option>
-      <option selected value="apricot">Apricot</option>
-      <option value="banana">Banana</option>
-      <option value="bilberry">Bilberry</option>
-      <option value="blackberry">Blackberry</option>
-      <option value="blackcurrant">Blackcurrant</option>
-      <option value="blueberry">Blueberry</option>
-      <option value="cantaloupe">Cantaloupe</option>
-      <option value="cherimoya">Cherimoya</option>
-      <option value="cherry">Cherry</option>
-      <option value="clementine">Clementine</option>
-      <option value="coconut">Coconut</option>
-      <option value="currant">Currant</option>
-      <option value="damson">Damson</option>
-      <option value="date">Date</option>
-      <option value="durian">Durian</option>
-      <option value="elderberry">Elderberry</option>
-      <option value="feijoa">Feijoa</option>
-      <option value="fig">Fig</option>
-      <option value="gooseberry">Gooseberry</option>
-      <option value="grape">Grape</option>
-      <option value="grapefruit">Grapefruit</option>
-      <option value="honeydew">Honeydew</option>
-      <option value="huckleberry">Huckleberry</option>
-      <option value="jackfruit">Jackfruit</option>
-      <option value="jambul">Jambul</option>
-      <option value="jujube">Jujube</option>
-      <option value="kiwifruit">Kiwifruit</option>
-      <option value="kumquat">Kumquat</option>
-      <option value="lemon">Lemon</option>
-      <option value="lime">Lime</option>
-      <option value="loquat">Loquat</option>
-      <option value="lychee">Lychee</option>
-      <option value="mango">Mango</option>
-      <option value="mangostine">Mangostine</option>
-      <option value="melon">Melon</option>
-      <option value="nectarine">Nectarine</option>
-      <option value="orange">Orange</option>
-      <option value="passionfruit">Passionfruit</option>
-      <option value="peach">Peach</option>
-      <option value="pear">Pear</option>
-      <option value="pineapple">Pineapple</option>
-      <option value="plum">Plum</option>
-      <option value="pomegranate">Pomegranate</option>
-      <option value="pomelo">Pomelo</option>
-      <option value="prune">Prune</option>
-      <option value="raisin">Raisin</option>
-      <option value="rambutan">Rambutan</option>
-      <option value="raspberry">Raspberry</option>
-      <option value="redcurrant">Redcurrant</option>
-      <option value="rock melon">Rock melon</option>
-      <option value="satsuma">Satsuma</option>
-      <option value="strawberry">Strawberry</option>
-      <option value="tangerine">Tangerine</option>
-      <option value="ugli fruit">Ugli Fruit</option>
-      <option value="watermelon">Watermelon</option>
-    </select>
+        <div class="item">
+          <select>
+            <option>Select with optgroup</option>
+            <optgroup label="Group 1">
+              <option>Option 1.1</option>
+            </optgroup>
+            <optgroup label="Group 2">
+              <option>Option 2.1</option>
+              <option>Option 2.2</option>
+            </optgroup>
+            <optgroup label="Group 3" disabled>
+              <option>Option 3.1</option>
+              <option>Option 3.2</option>
+              <option>Option 3.3</option>
+            </optgroup>
+          </select>
+        </div>
 
-    <select class="customOptions">
-      <option value="">Select with icons</option>
-      <option value="firefox">Firefox</option>
-      <option value="chrome">Chrome</option>
-      <option value="safari">Safari</option>
-      <option value="ie">Internet Explorer</option>
-      <option value="opera">Opera</option>
-    </select>
+        <div class="item">
+          <select>
+            <option value="">Select with big option mauris nec orci ut tortor consectetuer dapibus mauris nec orci ut tortor consectetuer dapibus</option>
+            <option value="apple">Apple</option>
+            <option selected value="apricot">Apricot</option>
+            <option value="banana">Banana</option>
+            <option value="bilberry">Bilberry</option>
+            <option value="blackberry">Blackberry</option>
+            <option value="blackcurrant">Blackcurrant</option>
+            <option value="blueberry">Blueberry</option>
+            <option value="cantaloupe">Cantaloupe</option>
+            <option value="cherimoya">Cherimoya</option>
+            <option value="cherry">Cherry</option>
+            <option value="clementine">Clementine</option>
+            <option value="coconut">Coconut</option>
+            <option value="currant">Currant</option>
+            <option value="damson">Damson</option>
+            <option value="date">Date</option>
+            <option value="durian">Durian</option>
+            <option value="elderberry">Elderberry</option>
+            <option value="feijoa">Feijoa</option>
+            <option value="fig">Fig</option>
+            <option value="gooseberry">Gooseberry</option>
+            <option value="grape">Grape</option>
+            <option value="grapefruit">Grapefruit</option>
+            <option value="honeydew">Honeydew</option>
+            <option value="huckleberry">Huckleberry</option>
+            <option value="jackfruit">Jackfruit</option>
+            <option value="jambul">Jambul</option>
+            <option value="jujube">Jujube</option>
+            <option value="kiwifruit">Kiwifruit</option>
+            <option value="kumquat">Kumquat</option>
+            <option value="lemon">Lemon</option>
+            <option value="lime">Lime</option>
+            <option value="loquat">Loquat</option>
+            <option value="lychee">Lychee</option>
+            <option value="mango">Mango</option>
+            <option value="mangostine">Mangostine</option>
+            <option value="melon">Melon</option>
+            <option value="nectarine">Nectarine</option>
+            <option value="orange">Orange</option>
+            <option value="passionfruit">Passionfruit</option>
+            <option value="peach">Peach</option>
+            <option value="pear">Pear</option>
+            <option value="pineapple">Pineapple</option>
+            <option value="plum">Plum</option>
+            <option value="pomegranate">Pomegranate</option>
+            <option value="pomelo">Pomelo</option>
+            <option value="prune">Prune</option>
+            <option value="raisin">Raisin</option>
+            <option value="rambutan">Rambutan</option>
+            <option value="raspberry">Raspberry</option>
+            <option value="redcurrant">Redcurrant</option>
+            <option value="rock melon">Rock melon</option>
+            <option value="satsuma">Satsuma</option>
+            <option value="strawberry">Strawberry</option>
+            <option value="tangerine">Tangerine</option>
+            <option value="ugli fruit">Ugli Fruit</option>
+            <option value="watermelon">Watermelon</option>
+          </select>
+        </div>
 
-    <select class="customLabel">
-      <option value="">Select with custom label builder</option>
-      <option value="ant">Ant</option>
-      <option value="bird">Bird</option>
-      <option value="cat">Cat</option>
-      <option value="chicken">Chicken</option>
-      <option value="cow">Cow</option>
-      <option value="dog">Dog</option>
-      <option value="elephant">Elephant</option>
-      <option value="fish">Fish</option>
-      <option value="fox">Fox</option>
-      <option value="horse">Horse</option>
-      <option value="kangaroo">Kangaroo</option>
-      <option value="lion">Lion</option>
-      <option value="monkey">Monkey</option>
-      <option value="penguin">Penguin</option>
-      <option value="pig">Pig</option>
-      <option value="rabbit">Rabbit</option>
-      <option value="sheep">Sheep</option>
-      <option value="tiger">Tiger</option>
-      <option value="whale">Whale</option>
-      <option value="wolf">Wolf</option>
-    </select>
+        <div class="item">
+          <select class="customOptions">
+            <option value="">Select with icons</option>
+            <option value="firefox">Firefox</option>
+            <option value="chrome">Chrome</option>
+            <option value="safari">Safari</option>
+            <option value="ie">Internet Explorer</option>
+            <option value="opera">Opera</option>
+          </select>
+        </div>
 
-    <select disabled>
-      <option value="">Select disabled</option>
-      <option value="apple">Apple</option>
-      <option value="banana">Banana</option>
-    </select>
+        <div class="item">
+          <select class="customLabel">
+            <option value="">Select with custom label builder</option>
+            <option value="ant">Ant</option>
+            <option value="bird">Bird</option>
+            <option value="cat">Cat</option>
+            <option value="chicken">Chicken</option>
+            <option value="cow">Cow</option>
+            <option value="dog">Dog</option>
+            <option value="elephant">Elephant</option>
+            <option value="fish">Fish</option>
+            <option value="fox">Fox</option>
+            <option value="horse">Horse</option>
+            <option value="kangaroo">Kangaroo</option>
+            <option value="lion">Lion</option>
+            <option value="monkey">Monkey</option>
+            <option value="penguin">Penguin</option>
+            <option value="pig">Pig</option>
+            <option value="rabbit">Rabbit</option>
+            <option value="sheep">Sheep</option>
+            <option value="tiger">Tiger</option>
+            <option value="whale">Whale</option>
+            <option value="wolf">Wolf</option>
+          </select>
+        </div>
 
-    <select>
-      <option value="">Select with disabled options</option>
-      <option disabled value="apple">Apple</option>
-      <option disabled value="apricot">Apricot</option>
-      <option disabled value="banana">Banana</option>
-      <option value="bilberry">Bilberry</option>
-      <option value="blackberry">Blackberry</option>
-      <option value="blackcurrant">Blackcurrant</option>
-      <option disabled value="blueberry">Blueberry</option>
-      <option value="cantaloupe">Cantaloupe</option>
-      <option value="cherimoya">Cherimoya</option>
-      <option disabled value="cherry">Cherry</option>
-      <option value="clementine">Clementine</option>
-      <option value="coconut">Coconut</option>
-      <option value="currant">Currant</option>
-      <option disabled value="damson">Damson</option>
-      <option value="date">Date</option>
-      <option value="durian">Durian</option>
-      <option value="elderberry">Elderberry</option>
-      <option value="feijoa">Feijoa</option>
-      <option value="fig">Fig</option>
-      <option value="gooseberry">Gooseberry</option>
-      <option value="grape">Grape</option>
-      <option disabled value="grapefruit">Grapefruit</option>
-      <option value="honeydew">Honeydew</option>
-      <option value="huckleberry">Huckleberry</option>
-      <option value="jackfruit">Jackfruit</option>
-      <option value="jambul">Jambul</option>
-      <option value="jujube">Jujube</option>
-      <option value="kiwifruit">Kiwifruit</option>
-      <option value="kumquat">Kumquat</option>
-      <option disabled value="lemon">Lemon</option>
-      <option value="lime">Lime</option>
-      <option disabled value="loquat">Loquat</option>
-      <option disabled value="lychee">Lychee</option>
-      <option disabled value="mango">Mango</option>
-      <option value="mangostine">Mangostine</option>
-      <option value="melon">Melon</option>
-      <option value="nectarine">Nectarine</option>
-      <option disabled value="orange">Orange</option>
-      <option value="passionfruit">Passionfruit</option>
-      <option value="peach">Peach</option>
-      <option value="pear">Pear</option>
-      <option value="pineapple">Pineapple</option>
-      <option value="plum">Plum</option>
-      <option value="pomegranate">Pomegranate</option>
-      <option value="pomelo">Pomelo</option>
-      <option disabled value="prune">Prune</option>
-      <option value="raisin">Raisin</option>
-      <option disabled value="rambutan">Rambutan</option>
-      <option value="raspberry">Raspberry</option>
-      <option value="redcurrant">Redcurrant</option>
-      <option value="rock melon">Rock melon</option>
-      <option disabled value="satsuma">Satsuma</option>
-      <option value="strawberry">Strawberry</option>
-      <option value="tangerine">Tangerine</option>
-      <option value="ugli fruit">Ugli Fruit</option>
-      <option disabled value="watermelon">Watermelon</option>
-    </select>
+        <div class="item">
+          <select disabled>
+            <option value="">Select disabled</option>
+            <option value="apple">Apple</option>
+            <option value="banana">Banana</option>
+          </select>
+        </div>
 
-    <ul class="select">
-      <li>Custom element</li>
-      <li>Item 1</li>
-      <li>Item 2</li>
-      <li>Item 3</li>
-      <li>Item 4</li>
-      <li>Item 5</li>
-      <li>Item 6</li>
-      <li>Item 7</li>
-      <li>Item 8</li>
-      <li>Item 9</li>
-      <li>Item 10</li>
-      <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, aliquid alias ipsum facilis dolorum doloremque excepturi consequatur nihil earum corporis. Voluptate molestiae, natus enim soluta sapiente praesentium ex dolorem veniam.</li>
-    </ul>
+        <div class="item">
+          <select>
+            <option value="">Select with disabled options</option>
+            <option disabled value="apple">Apple</option>
+            <option disabled value="apricot">Apricot</option>
+            <option disabled value="banana">Banana</option>
+            <option value="bilberry">Bilberry</option>
+            <option value="blackberry">Blackberry</option>
+            <option value="blackcurrant">Blackcurrant</option>
+            <option disabled value="blueberry">Blueberry</option>
+            <option value="cantaloupe">Cantaloupe</option>
+            <option value="cherimoya">Cherimoya</option>
+            <option disabled value="cherry">Cherry</option>
+            <option value="clementine">Clementine</option>
+            <option value="coconut">Coconut</option>
+            <option value="currant">Currant</option>
+            <option disabled value="damson">Damson</option>
+            <option value="date">Date</option>
+            <option value="durian">Durian</option>
+            <option value="elderberry">Elderberry</option>
+            <option value="feijoa">Feijoa</option>
+            <option value="fig">Fig</option>
+            <option value="gooseberry">Gooseberry</option>
+            <option value="grape">Grape</option>
+            <option disabled value="grapefruit">Grapefruit</option>
+            <option value="honeydew">Honeydew</option>
+            <option value="huckleberry">Huckleberry</option>
+            <option value="jackfruit">Jackfruit</option>
+            <option value="jambul">Jambul</option>
+            <option value="jujube">Jujube</option>
+            <option value="kiwifruit">Kiwifruit</option>
+            <option value="kumquat">Kumquat</option>
+            <option disabled value="lemon">Lemon</option>
+            <option value="lime">Lime</option>
+            <option disabled value="loquat">Loquat</option>
+            <option disabled value="lychee">Lychee</option>
+            <option disabled value="mango">Mango</option>
+            <option value="mangostine">Mangostine</option>
+            <option value="melon">Melon</option>
+            <option value="nectarine">Nectarine</option>
+            <option disabled value="orange">Orange</option>
+            <option value="passionfruit">Passionfruit</option>
+            <option value="peach">Peach</option>
+            <option value="pear">Pear</option>
+            <option value="pineapple">Pineapple</option>
+            <option value="plum">Plum</option>
+            <option value="pomegranate">Pomegranate</option>
+            <option value="pomelo">Pomelo</option>
+            <option disabled value="prune">Prune</option>
+            <option value="raisin">Raisin</option>
+            <option disabled value="rambutan">Rambutan</option>
+            <option value="raspberry">Raspberry</option>
+            <option value="redcurrant">Redcurrant</option>
+            <option value="rock melon">Rock melon</option>
+            <option disabled value="satsuma">Satsuma</option>
+            <option value="strawberry">Strawberry</option>
+            <option value="tangerine">Tangerine</option>
+            <option value="ugli fruit">Ugli Fruit</option>
+            <option disabled value="watermelon">Watermelon</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
-    <div style="height: 300px;"></div>
+    <div class="bottom-spacer"></div>
 
     <div class="copy">
       <p style="float: left;">Project maintained by <b>Leonardo Santos</b> <br>
@@ -588,11 +703,9 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
   <script src="jquery.selectric.js"></script>
   <script>
     $(function() {
-      $('select, .select').selectric();
-
       $('.customOptions').selectric({
-        optionsItemBuilder: function(itemData, element, index) {
-          return element.val().length ? '<span class="ico ico-' + element.val() +  '"></span>' + itemData.text : itemData.text;
+        optionsItemBuilder: function(itemData) {
+          return itemData.value.length ? '<span class="ico ico-' + itemData.value +  '"></span>' + itemData.text : itemData.text;
         }
       });
 
@@ -601,6 +714,10 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
           return '<strong><em>' + currItem.text + '</em></strong>';
         }
       });
+
+      $('select').selectric({
+        disableOnMobile: false
+      });
     });
 
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -608,7 +725,7 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-42240250-1', 'lcdsantos.github.io');
+    ga('create', 'UA-42240250-1', 'auto');
     ga('require', 'displayfeatures');
     ga('send', 'pageview');
 

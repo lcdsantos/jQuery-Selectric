@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.10.1 (Jun 30 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.11.0 (Sep 24 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
@@ -45,7 +45,7 @@
 
   var pluginName = 'selectric';
   var classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Focus Hover Responsive Above Scroll Group GroupLabel';
-  var bindSufix = '.sl';
+  var eventNamespaceSuffix = '.sl';
 
   var chars = ['a', 'e', 'i', 'o', 'u', 'n', 'c', 'y'];
   var diacritics = [
@@ -73,10 +73,12 @@
     _this.$element = $(element);
 
     _this.state = {
-      enabled     : false,
-      opened      : false,
-      currValue   : -1,
-      selectedIdx : -1
+      multiple       : !!_this.$element.attr('multiple'),
+      enabled        : false,
+      opened         : false,
+      currValue      : -1,
+      selectedIdx    : -1,
+      highlightedIdx : -1
     };
 
     _this.eventTriggers = {
@@ -134,12 +136,12 @@
        * @param  {string} f - String to be formated
        * @return {string}     String formated
        */
-      format: function (f) {
+      format: function(f) {
         var a = arguments; // store outer arguments
         return ('' + f) // force format specifier to String
           .replace( // replace tokens in format specifier
             /\{(?:(\d+)|(\w+))\}/g, // match {token} references
-            function (
+            function(
               s, // the matched string (ignored)
               i, // an argument index
               p // a property name
@@ -197,18 +199,32 @@
       triggerCallback: function(fn, scope) {
         var elm = scope.element;
         var func = scope.options['on' + fn];
+        var args = [elm].concat([].slice.call(arguments).slice(1));
 
         if ( $.isFunction(func) ) {
-          func.call(elm, elm, scope);
+          func.apply(elm, args);
         }
 
         if ( $.fn[pluginName].hooks[fn] ) {
           $.each($.fn[pluginName].hooks[fn], function() {
-            this.call(elm, elm, scope);
+            this.apply(elm, args);
           });
         }
 
-        $(elm).trigger(pluginName + '-' + this.toDash(fn), scope);
+        $(elm).trigger(pluginName + '-' + this.toDash(fn), args);
+      },
+
+      /**
+       * Transform array list to concatenated string and remove empty values
+       * @param  {array} arr - Class list
+       * @return {string}      Concatenated string
+       */
+      arrayToClassname: function(arr) {
+        var newArr = $.grep(arr, function(item) {
+          return !!item;
+        });
+
+        return $.trim(newArr.join(' '));
       }
     },
 
@@ -234,12 +250,13 @@
       _this.classes = _this.getClassNames();
 
       // Create elements
-      var input        = $('<input/>', { 'class': _this.classes.input, 'readonly': _this.utils.isMobile() });
-      var items        = $('<div/>',   { 'class': _this.classes.items, 'tabindex': -1 });
-      var itemsScroll  = $('<div/>',   { 'class': _this.classes.scroll });
-      var wrapper      = $('<div/>',   { 'class': _this.classes.prefix, 'html': _this.options.arrowButtonMarkup });
-      var label        = $('<span/>',  { 'class': 'label' });
-      var outerWrapper = _this.$element.wrap('<div/>').parent().append(wrapper.prepend(label), items, input);
+      var input              = $('<input/>', { 'class': _this.classes.input, 'readonly': _this.utils.isMobile() });
+      var items              = $('<div/>',   { 'class': _this.classes.items, 'tabindex': -1 });
+      var itemsScroll        = $('<div/>',   { 'class': _this.classes.scroll });
+      var wrapper            = $('<div/>',   { 'class': _this.classes.prefix, 'html': _this.options.arrowButtonMarkup });
+      var label              = $('<span/>',  { 'class': 'label' });
+      var outerWrapper       = _this.$element.wrap('<div/>').parent().append(wrapper.prepend(label), items, input);
+      var hideSelectWrapper  = $('<div/>',   { 'class': _this.classes.hideselect });
 
       _this.elements = {
         input        : input,
@@ -250,9 +267,18 @@
         outerWrapper : outerWrapper
       };
 
+      if ( _this.options.nativeOnMobile && _this.utils.isMobile() ) {
+        _this.elements.input = undefined;
+        hideSelectWrapper.addClass(_this.classes.prefix + '-is-native');
+
+        _this.$element.on('change', function() {
+          _this.refresh();
+        });
+      }
+
       _this.$element
         .on(_this.eventTriggers)
-        .wrap('<div class="' + _this.classes.hideselect + '"/>');
+        .wrap(hideSelectWrapper);
 
       _this.originalTabindex = _this.$element.prop('tabindex');
       _this.$element.prop('tabindex', false);
@@ -266,19 +292,26 @@
     /** Activates the plugin */
     activate: function() {
       var _this = this;
+      var hiddenChildren = _this.elements.items.closest(':visible').children(':hidden').addClass(_this.classes.tempshow);
       var originalWidth = _this.$element.width();
+
+      hiddenChildren.removeClass(_this.classes.tempshow);
 
       _this.utils.triggerCallback('BeforeActivate', _this);
 
-      _this.elements.outerWrapper.prop('class', [
-        _this.classes.wrapper,
-        _this.$element.prop('class').replace(/\S+/g, _this.classes.prefix + '-$&'),
-        _this.options.responsive ? _this.classes.responsive : ''
-      ].join(' '));
+      _this.elements.outerWrapper.prop('class',
+        _this.utils.arrayToClassname([
+          _this.classes.wrapper,
+          _this.$element.prop('class').replace(/\S+/g, _this.classes.prefix + '-$&'),
+          _this.options.responsive ? _this.classes.responsive : ''
+        ])
+      );
 
       if ( _this.options.inheritOriginalWidth && originalWidth > 0 ) {
         _this.elements.outerWrapper.width(originalWidth);
       }
+
+      _this.unbindEvents();
 
       if ( !_this.$element.prop('disabled') ) {
         _this.state.enabled = true;
@@ -293,7 +326,10 @@
         _this.bindEvents();
       } else {
         _this.elements.outerWrapper.addClass(_this.classes.disabled);
-        _this.elements.input.prop('disabled', true);
+
+        if ( _this.elements.input ) {
+          _this.elements.input.prop('disabled', true);
+        }
       }
 
       _this.utils.triggerCallback('Activate', _this);
@@ -307,7 +343,7 @@
     getClassNames: function() {
       var _this = this;
       var customClass = _this.options.customClass;
-      var classesObj  = {};
+      var classesObj = {};
 
       $.each(classList.split(' '), function(i, currClass) {
         var c = customClass.prefix + currClass;
@@ -323,13 +359,58 @@
     setLabel: function() {
       var _this = this;
       var labelBuilder = _this.options.labelBuilder;
-      var currItem = _this.lookupItems[_this.state.currValue];
 
-      _this.elements.label.html(
-        $.isFunction(labelBuilder)
-          ? labelBuilder(currItem)
-          : _this.utils.format(labelBuilder, currItem)
-      );
+      if ( _this.state.multiple ) {
+        // Make sure currentValues is an array
+        var currentValues = $.isArray(_this.state.currValue) ? _this.state.currValue : [_this.state.currValue];
+        // I'm not happy with this, but currentValues can be an empty
+        // array and we need to fallback to the default option.
+        currentValues = currentValues.length === 0 ? [0] : currentValues;
+
+        var labelMarkup = $.map(currentValues, function(value) {
+          return $.grep(_this.lookupItems, function(item) {
+            return item.index === value;
+          })[0]; // we don't want nested arrays here
+        });
+
+        labelMarkup = $.grep(labelMarkup, function(item) {
+          // Hide default (please choose) if more then one element were selected.
+          // If no option value were given value is set to option text by default
+          if ( labelMarkup.length > 1 || labelMarkup.length === 0 ) {
+            return $.trim(item.value) !== '' && item.value !== item.text;
+          }
+          return item;
+        });
+
+        labelMarkup = $.map(labelMarkup, function(item) {
+          return $.isFunction(labelBuilder)
+            ? labelBuilder(item)
+            : _this.utils.format(labelBuilder, item);
+        });
+
+        // Limit the amount of selected values shown in label
+        if ( _this.options.multiple.maxLabelEntries ) {
+          if ( labelMarkup.length >= _this.options.multiple.maxLabelEntries + 1 ) {
+            labelMarkup = labelMarkup.slice(0, _this.options.multiple.maxLabelEntries);
+            labelMarkup.push(
+              $.isFunction(labelBuilder)
+                ? labelBuilder({ text: '...' })
+                : _this.utils.format(labelBuilder, { text: '...' }));
+          } else {
+            labelMarkup.slice(labelMarkup.length - 1);
+          }
+        }
+        _this.elements.label.html(labelMarkup.join(_this.options.multiple.separator));
+
+      } else {
+        var currItem = _this.lookupItems[_this.state.currValue];
+
+        _this.elements.label.html(
+          $.isFunction(labelBuilder)
+            ? labelBuilder(currItem)
+            : _this.utils.format(labelBuilder, currItem)
+        );
+      }
     },
 
     /** Get and save the available options */
@@ -337,11 +418,21 @@
       var _this = this;
       var $options = _this.$element.children();
       var $justOptions = _this.$element.find('option');
-      var selectedIndex = $justOptions.index($justOptions.filter(':selected'));
+      var $selected = $justOptions.filter(':selected');
+      var selectedIndex = $justOptions.index($selected);
       var currIndex = 0;
+      var emptyValue = (_this.state.multiple ? [] : 0);
 
-      _this.state.currValue = (_this.state.selected = ~selectedIndex ? selectedIndex : 0);
+      if ( $selected.length > 1 && _this.state.multiple ) {
+        selectedIndex = [];
+        $selected.each(function() {
+          selectedIndex.push($(this).index());
+        });
+      }
+
+      _this.state.currValue = (~selectedIndex ? selectedIndex : emptyValue);
       _this.state.selectedIdx = _this.state.currValue;
+      _this.state.highlightedIdx = _this.state.currValue;
       _this.items = [];
       _this.lookupItems = [];
 
@@ -361,16 +452,8 @@
 
             $elm.children().each(function(i) {
               var $elm = $(this);
-              var optionText = $elm.html();
 
-              optionsGroup.items[i] = {
-                index    : currIndex,
-                element  : $elm,
-                value    : $elm.val(),
-                text     : optionText,
-                slug     : _this.utils.replaceDiacritics(optionText),
-                disabled : optionsGroup.groupDisabled
-              };
+              optionsGroup.items[i] = _this.getItemData(currIndex, $elm, optionsGroup.groupDisabled);
 
               _this.lookupItems[currIndex] = optionsGroup.items[i];
 
@@ -381,16 +464,7 @@
 
           } else {
 
-            var optionText = $elm.html();
-
-            _this.items[i] = {
-              index    : currIndex,
-              element  : $elm,
-              value    : $elm.val(),
-              text     : optionText,
-              slug     : _this.utils.replaceDiacritics(optionText),
-              disabled : $elm.prop('disabled')
-            };
+            _this.items[i] = _this.getItemData(currIndex, $elm, $elm.prop('disabled'));
 
             _this.lookupItems[currIndex] = _this.items[i];
 
@@ -402,6 +476,28 @@
         _this.setLabel();
         _this.elements.items.append( _this.elements.itemsScroll.html( _this.getItemsMarkup(_this.items) ) );
       }
+    },
+
+    /**
+     * Generate items object data
+     * @param  {integer} index      - Current item index
+     * @param  {node}    $elm       - Current element node
+     * @param  {boolean} isDisabled - Current element disabled state
+     * @return {object}               Item object
+     */
+    getItemData: function(index, $elm, isDisabled) {
+      var _this = this;
+
+      return {
+        index     : index,
+        element   : $elm,
+        value     : $elm.val(),
+        className : $elm.prop('class'),
+        text      : $elm.html(),
+        slug      : $.trim(_this.utils.replaceDiacritics($elm.html())),
+        selected  : $elm.prop('selected'),
+        disabled  : isDisabled
+      };
     },
 
     /**
@@ -418,7 +514,11 @@
         if ( elm.label !== undefined ) {
 
           markup += _this.utils.format('<ul class="{1}"><li class="{2}">{3}</li>',
-            $.trim([_this.classes.group, elm.groupDisabled ? 'disabled' : '', elm.element.prop('class')].join(' ')),
+            _this.utils.arrayToClassname([
+              _this.classes.group,
+              elm.groupDisabled ? 'disabled' : '',
+              elm.element.prop('class')
+            ]),
             _this.classes.grouplabel,
             elm.element.prop('label')
           );
@@ -442,36 +542,52 @@
     /**
      * Generate every option markup
      *
-     * @param  {number} i   - Index of current item
-     * @param  {object} elm - Current item
-     * @return {string}       HTML for the option
+     * @param  {number} index    - Index of current item
+     * @param  {object} itemData - Current item
+     * @return {string}            HTML for the option
      */
-    getItemMarkup: function(i, elm) {
+    getItemMarkup: function(index, itemData) {
       var _this = this;
       var itemBuilder = _this.options.optionsItemBuilder;
+      // limit access to item data to provide a simple interface
+      // to most relevant options.
+      var filteredItemData = {
+        value: itemData.value,
+        text : itemData.text,
+        slug : itemData.slug,
+        index: itemData.index
+      };
 
       return _this.utils.format('<li data-index="{1}" class="{2}">{3}</li>',
-        i,
-        $.trim([
-          i === _this.state.currValue  ? 'selected' : '',
-          i === _this.items.length - 1 ? 'last'     : '',
-          elm.disabled                 ? 'disabled' : ''
-        ].join(' ')),
-        $.isFunction(itemBuilder) ? itemBuilder(elm, elm.element, i) : _this.utils.format(itemBuilder, elm)
+        index,
+        _this.utils.arrayToClassname([
+          itemData.className,
+          index === _this.items.length - 1  ? 'last'     : '',
+          itemData.disabled                 ? 'disabled' : '',
+          itemData.selected                 ? 'selected' : ''
+        ]),
+        $.isFunction(itemBuilder)
+          ? _this.utils.format(itemBuilder(itemData), itemData)
+          : _this.utils.format(itemBuilder, filteredItemData)
       );
     },
 
-    /** Bind events on the elements */
-    bindEvents: function() {
+    /** Remove events on the elements */
+    unbindEvents: function() {
       var _this = this;
 
       _this.elements.wrapper
         .add(_this.$element)
         .add(_this.elements.outerWrapper)
         .add(_this.elements.input)
-        .off(bindSufix);
+        .off(eventNamespaceSuffix);
+    },
 
-      _this.elements.outerWrapper.on('mouseenter' + bindSufix + ' mouseleave' + bindSufix, function(e) {
+    /** Bind events on the elements */
+    bindEvents: function() {
+      var _this = this;
+
+      _this.elements.outerWrapper.on('mouseenter' + eventNamespaceSuffix + ' mouseleave' + eventNamespaceSuffix, function(e) {
         $(this).toggleClass(_this.classes.hover, e.type === 'mouseenter');
 
         // Delay close effect when openOnHover is true
@@ -487,47 +603,56 @@
       });
 
       // Toggle open/close
-      _this.elements.wrapper.on('click' + bindSufix, function(e) {
+      _this.elements.wrapper.on('click' + eventNamespaceSuffix, function(e) {
         _this.state.opened ? _this.close() : _this.open(e);
       });
 
-      _this.elements.input
-        .prop({ tabindex: _this.originalTabindex, disabled: false })
-        .on('keydown' + bindSufix, $.proxy(_this.handleKeys, _this))
-        .on('focusin' + bindSufix, function(e) {
-          _this.elements.outerWrapper.addClass(_this.classes.focus);
-
-          // Prevent the flicker when focusing out and back again in the browser window
-          _this.elements.input.one('blur', function() {
-            _this.elements.input.blur();
-          });
-
-          if ( _this.options.openOnFocus && !_this.state.opened ) {
-            _this.open(e);
-          }
-        })
-        .on('focusout' + bindSufix, function() {
-          _this.elements.outerWrapper.removeClass(_this.classes.focus);
-        })
-        .on('input propertychange', function() {
-          var val = _this.elements.input.val();
-
-          // Clear search
-          clearTimeout(_this.resetStr);
-          _this.resetStr = setTimeout(function() {
-            _this.elements.input.val('');
-          }, _this.options.keySearchTimeout);
-
-          if ( val.length ) {
-            // Search in select options
-            $.each(_this.items, function(i, elm) {
-              if ( RegExp('^' + _this.utils.escapeRegExp(val), 'i').test(elm.slug) && !elm.disabled ) {
-                _this.select(i);
-                return false;
-              }
-            });
-          }
+      // Translate original element focus event to dummy input.
+      // Disabled on mobile devices because the default option list isn't
+      // shown due the fact that hidden input gets focused
+      if ( !(_this.options.nativeOnMobile && _this.utils.isMobile()) ) {
+        _this.$element.on('focus' + eventNamespaceSuffix, function() {
+          _this.elements.input.focus();
         });
+
+        _this.elements.input
+          .prop({ tabindex: _this.originalTabindex, disabled: false })
+          .on('keydown' + eventNamespaceSuffix, $.proxy(_this.handleKeys, _this))
+          .on('focusin' + eventNamespaceSuffix, function(e) {
+            _this.elements.outerWrapper.addClass(_this.classes.focus);
+
+            // Prevent the flicker when focusing out and back again in the browser window
+            _this.elements.input.one('blur', function() {
+              _this.elements.input.blur();
+            });
+
+            if ( _this.options.openOnFocus && !_this.state.opened ) {
+              _this.open(e);
+            }
+          })
+          .on('focusout' + eventNamespaceSuffix, function() {
+            _this.elements.outerWrapper.removeClass(_this.classes.focus);
+          })
+          .on('input propertychange', function() {
+            var val = _this.elements.input.val();
+
+            // Clear search
+            clearTimeout(_this.resetStr);
+            _this.resetStr = setTimeout(function() {
+              _this.elements.input.val('');
+            }, _this.options.keySearchTimeout);
+
+            if ( val.length ) {
+              // Search in select options
+              $.each(_this.items, function(i, elm) {
+                if ( new RegExp('^' + _this.utils.escapeRegExp(val), 'i').test(elm.slug) && !elm.disabled ) {
+                  _this.highlight(i);
+                  return false;
+                }
+              });
+            }
+          });
+      }
 
       _this.$li.on({
         // Prevent <input> blur on Chrome
@@ -536,8 +661,7 @@
           e.stopPropagation();
         },
         click: function() {
-          // The second parameter is to close the box after click
-          _this.select($(this).data('index'), true);
+          _this.select($(this).data('index'));
 
           // Chrome doesn't close options box if select is wrapped with a label
           // We need to 'return false' to avoid that
@@ -556,12 +680,12 @@
       var key = e.keyCode || e.which;
       var keys = _this.options.keys;
 
-      var isPrev = $.inArray(key, keys.previous) > -1;
-      var isNext = $.inArray(key, keys.next) > -1;
-      var isSelect = $.inArray(key, keys.select) > -1;
-      var isOpen = $.inArray(key, keys.open) > -1;
-      var idx = _this.state.selectedIdx;
-      var isFirstOrLastItem = (isPrev && idx === 0) || (isNext && (idx + 1) === _this.items.length);
+      var isPrevKey = $.inArray(key, keys.previous) > -1;
+      var isNextKey = $.inArray(key, keys.next) > -1;
+      var isSelectKey = $.inArray(key, keys.select) > -1;
+      var isOpenKey = $.inArray(key, keys.open) > -1;
+      var idx = _this.state.highlightedIdx;
+      var isFirstOrLastItem = (isPrevKey && idx === 0) || (isNextKey && (idx + 1) === _this.items.length);
       var goToItem = 0;
 
       // Enter / Space
@@ -570,30 +694,35 @@
       }
 
       // If it's a directional key
-      if ( isPrev || isNext ) {
+      if ( isPrevKey || isNextKey ) {
         if ( !_this.options.allowWrap && isFirstOrLastItem ) {
           return;
         }
 
-        if ( isPrev ) {
+        if ( isPrevKey ) {
           goToItem = _this.utils.previousEnabledItem(_this.items, idx);
         }
 
-        if ( isNext ) {
+        if ( isNextKey ) {
           goToItem = _this.utils.nextEnabledItem(_this.items, idx);
         }
 
-        _this.select(goToItem);
+        _this.highlight(goToItem);
       }
 
       // Tab / Enter / ESC
-      if ( isSelect && _this.state.opened ) {
-        _this.select(idx, true);
+      if ( isSelectKey && _this.state.opened ) {
+        _this.select(idx);
+
+        if ( !_this.state.multiple || !_this.options.multiple.keepMenuOpen ) {
+          _this.close();
+        }
+
         return;
       }
 
       // Space / Enter / Left / Up / Right / Down
-      if ( isOpen && !_this.state.opened ) {
+      if ( isOpenKey && !_this.state.opened ) {
         _this.open();
       }
     },
@@ -662,10 +791,19 @@
     /**
      * Detect if currently selected option is visible and scroll the options box to show it
      *
-     * @param {number} index - Index of the selected items
+     * @param {Number|Array} index - Index of the selected items
      */
     detectItemVisibility: function(index) {
       var _this = this;
+
+      if ( _this.state.multiple ) {
+        // If index is an array, we can assume a multiple select and we
+        // want to scroll to the uppermost selected item!
+        // Math.min.apply(Math, index) returns the lowest entry in an Array.
+        index = ($.isArray(index) && index.length === 0) ? 0 : index;
+        index = $.isArray(index) ? Math.min.apply(Math, index) : index;
+      }
+
       var liHeight = _this.$li.eq(index).outerHeight();
       var liTop = _this.$li[index].offsetTop;
       var itemsScrollTop = _this.elements.itemsScroll.scrollTop();
@@ -681,10 +819,14 @@
     /**
      * Open the select options box
      *
-     * @param {event} e - Event
+     * @param {Event} e - Event
      */
     open: function(e) {
       var _this = this;
+
+      if ( _this.options.nativeOnMobile && _this.utils.isMobile()) {
+        return false;
+      }
 
       _this.utils.triggerCallback('BeforeOpen', _this);
 
@@ -712,15 +854,19 @@
           _this.elements.input.focus();
         }
 
-        $doc
-          .on('click' + bindSufix, $.proxy(_this.close, _this))
-          .on('scroll' + bindSufix, $.proxy(_this.isInViewport, _this));
+        // Delayed binds events on Document to make label clicks work
+        setTimeout(function() {
+          $doc
+            .on('click' + eventNamespaceSuffix, $.proxy(_this.close, _this))
+            .on('scroll' + eventNamespaceSuffix, $.proxy(_this.isInViewport, _this));
+        }, 1);
+
         _this.isInViewport();
 
         // Prevent window scroll when using mouse wheel inside items box
         if ( _this.options.preventWindowScroll ) {
           /* istanbul ignore next */
-          $doc.on('mousewheel' + bindSufix + ' DOMMouseScroll' + bindSufix, '.' + _this.classes.scroll, function(e) {
+          $doc.on('mousewheel' + eventNamespaceSuffix + ' DOMMouseScroll' + eventNamespaceSuffix, '.' + _this.classes.scroll, function(e) {
             var orgEvent = e.originalEvent;
             var scrollTop = $(this).scrollTop();
             var deltaY = 0;
@@ -738,6 +884,8 @@
 
         _this.detectItemVisibility(_this.state.selectedIdx);
 
+        _this.highlight(_this.state.multiple ? -1 : _this.state.selectedIdx);
+
         _this.utils.triggerCallback('Open', _this);
       }
     },
@@ -748,10 +896,8 @@
 
       _this.utils.triggerCallback('BeforeClose', _this);
 
-      _this.change();
-
       // Remove custom events on document
-      $doc.off(bindSufix);
+      $doc.off(eventNamespaceSuffix);
 
       // Remove visible class to hide options box
       _this.elements.outerWrapper.removeClass(_this.classes.open);
@@ -767,7 +913,25 @@
 
       _this.utils.triggerCallback('BeforeChange', _this);
 
-      if ( _this.state.currValue !== _this.state.selectedIdx ) {
+      if ( _this.state.multiple ) {
+        // Reset old selected
+        $.each(_this.lookupItems, function(idx) {
+          _this.lookupItems[idx].selected = false;
+          _this.$element.find('option').prop('selected', false);
+        });
+
+        // Set new selected
+        $.each(_this.state.selectedIdx, function(idx, value) {
+          _this.lookupItems[value].selected = true;
+          _this.$element.find('option').eq(value).prop('selected', true);
+        });
+
+        _this.state.currValue = _this.state.selectedIdx;
+
+        _this.setLabel();
+
+        _this.utils.triggerCallback('Change', _this);
+      } else if ( _this.state.currValue !== _this.state.selectedIdx ) {
         // Apply changed value to original select
         _this.$element
           .prop('selectedIndex', _this.state.currValue = _this.state.selectedIdx)
@@ -775,19 +939,20 @@
 
         // Change label text
         _this.setLabel();
-      }
 
-      _this.utils.triggerCallback('Change', _this);
+        _this.utils.triggerCallback('Change', _this);
+      }
     },
 
     /**
-     * Select option
-     *
-     * @param {number}  index - Index of the option that will be selected
-     * @param {boolean} close - Close the options box after selecting
+     * Highlight option
+     * @param {number} index - Index of the options that will be highlighted
      */
-    select: function(index, close) {
+    highlight: function(index) {
       var _this = this;
+      var $filteredLi = _this.$li.filter('[data-index]').removeClass('highlighted');
+
+      _this.utils.triggerCallback('BeforeHighlight', _this);
 
       // Parameter index is required
       if ( index === undefined ) {
@@ -795,20 +960,62 @@
       }
 
       // If element is disabled, can't select it
-      if ( !_this.lookupItems[index].disabled ) {
-        _this.$li.filter('[data-index]')
-          .removeClass('selected')
-          .eq(_this.state.selectedIdx = index)
-          .addClass('selected');
+      if ( index !== -1 && !_this.lookupItems[index].disabled ) {
+        $filteredLi
+          .eq(_this.state.highlightedIdx = index)
+          .addClass('highlighted');
 
         _this.detectItemVisibility(index);
-
-        // If 'close' is false (default), the options box won't close after
-        // each selected item, this is necessary for keyboard navigation
-        if ( close ) {
-          _this.close();
-        }
       }
+
+      _this.utils.triggerCallback('Highlight', _this);
+    },
+
+    /**
+     * Select option
+     *
+     * @param {number} index - Index of the option that will be selected
+     */
+    select: function(index) {
+      var _this = this;
+      var $filteredLi = _this.$li.filter('[data-index]').removeClass('selected');
+
+      _this.utils.triggerCallback('BeforeSelect', _this, index);
+
+      // Don't select disabled items
+      if (index !== -1 && _this.lookupItems[index].disabled) {
+        return false;
+      }
+
+      if ( _this.state.multiple ) {
+        // Make sure selectedIdx is an array
+        _this.state.selectedIdx = $.isArray(_this.state.selectedIdx) ? _this.state.selectedIdx : [_this.state.selectedIdx];
+
+        var hasSelectedIndex = $.inArray(index, _this.state.selectedIdx);
+        if ( hasSelectedIndex !== -1 ) {
+          _this.state.selectedIdx.splice(hasSelectedIndex, 1);
+        } else {
+          _this.state.selectedIdx.push(index);
+        }
+
+        $filteredLi
+          .filter(function(index) {
+            return $.inArray(index, _this.state.selectedIdx) !== -1;
+          })
+          .addClass('selected');
+      } else {
+        $filteredLi
+          .eq(_this.state.selectedIdx = index)
+          .addClass('selected');
+      }
+
+      if ( !_this.state.multiple || !_this.options.multiple.keepMenuOpen ) {
+        _this.close();
+      }
+
+      _this.change();
+
+      _this.utils.triggerCallback('Select', _this, index);
     },
 
     /**
@@ -826,7 +1033,7 @@
           _this.$element.removeData(pluginName).removeData('value');
         }
 
-        _this.$element.prop('tabindex', _this.originalTabindex).off(bindSufix).off(_this.eventTriggers).unwrap().unwrap();
+        _this.$element.prop('tabindex', _this.originalTabindex).off(eventNamespaceSuffix).off(_this.eventTriggers).unwrap().unwrap();
 
         _this.state.enabled = false;
       }
@@ -864,6 +1071,8 @@
       }
 
       this[callbackName][hookName] = fn;
+
+      return this;
     },
 
     /**
@@ -872,6 +1081,8 @@
      */
     remove: function(callbackName, hookName) {
       delete this[callbackName][hookName];
+
+      return this;
     }
   };
 
@@ -886,6 +1097,7 @@
     keySearchTimeout     : 500,
     arrowButtonMarkup    : '<b class="button">&#x25be;</b>',
     disableOnMobile      : true,
+    nativeOnMobile       : true,
     openOnFocus          : true,
     openOnHover          : false,
     hoverIntentTimeout   : 500,
@@ -906,6 +1118,11 @@
     customClass          : {
       prefix: pluginName,
       camelCase: false
+    },
+    multiple              : {
+      separator: ', ',
+      keepMenuOpen: true,
+      maxLabelEntries: false
     }
   };
 }));

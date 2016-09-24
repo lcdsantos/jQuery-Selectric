@@ -1,7 +1,10 @@
+/* eslint-env jasmine, jquery */
+/* global loadFixtures, keyvent */
+
 'use strict';
 
 describe('keyboard', function() {
-  var select;
+  var select = false;
 
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
@@ -9,6 +12,14 @@ describe('keyboard', function() {
 
     select = $('#basic');
     select.selectric();
+  });
+
+  it('should open if has focus', function() {
+    $('.selectric-input').focus();
+    $('.selectric-items').find('li').click();
+    var inputElm = document.activeElement;
+    keyvent.on(inputElm).down('down');
+    expect($('.selectric-items').is(':visible')).toBe(true);
   });
 
   it('should close on tab keypress', function() {
