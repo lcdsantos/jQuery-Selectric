@@ -318,8 +318,9 @@ table code {
 }
 
 .demo .view {
-  width: 40%;
+  width: 38%;
   float: left;
+  margin-right: 2%;
 }
 
 .demo .code {
@@ -867,6 +868,62 @@ table code {
 
   .bottom-spacer {
     height: 40px;
+  }
+
+  /* Demo page */
+  .theme-roller {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: auto;
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid #CCC;
+    padding: 10px;
+    box-shadow: 0 -1px 10px -6px #000;
+  }
+
+  .theme-roller h2 {
+    font-size: 16px;
+  }
+
+  .theme-roller form {
+    float: left;
+    width: 50%;
+  }
+
+  .theme-roller select {
+    height: 34px;
+  }
+
+  .theme-roller .bt-download {
+    float: right;
+    width: 46%;
+    margin-top: 0;
+  }
+
+  .theme-roller .bt-view-raw {
+    clear: both;
+    position: absolute;
+    top: 4px;
+    right: 10px;
+  }
+
+  .demo .view,
+  .demo .code {
+    float: none;
+    width: auto;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .demo .code {
+    margin-top: 10px;
+  }
+
+  .demo-spacer {
+    height: 88px;
   }
 }
 
