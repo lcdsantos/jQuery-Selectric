@@ -338,11 +338,17 @@
     <div class="section">
       <h2>Events</h2>
 
-      <p>All events are called on original element, first argument is the original element too. And can be bound like this:</p>
+      <p>All events are called on original element. Within the callback you have access to the <code>event object</code>, the original
+        <code>select element</code> and to the current <code>selectric instance</code>. It can be bound like this:</p>
 
-      <pre><code class="language-javascript">$('select').on('eventname', function(element) {
-&nbsp;&nbsp;// your code
-});</code></pre>
+      <pre><code class="language-javascript">/**
+ * @param {Object}          event - jquery event object
+ * @param {HTMLElement}   element - original dom element
+ * @param {Object}      selectric - current selectric instance
+ */
+ $('select').on('eventname', function(event, element, selectric) {
+ &nbsp;&nbsp;// your code
+ });</code></pre>
 
       <p><code>eventname</code> can be one of the following:</p>
 
@@ -353,27 +359,27 @@
         </tr>
         <tr>
           <td><code>selectric-before-init</code></td>
-          <td>Fired before plugin initialize</td>
+          <td>Fired before plugin initialization</td>
         </tr>
         <tr>
           <td><code>selectric-init</code></td>
-          <td>Fired plugin has been fully initialized</td>
+          <td>Fired after plugin has been fully initialized</td>
         </tr>
         <tr>
           <td><code>selectric-before-open</code></td>
-          <td>Fired before select options opens</td>
+          <td>Fired before dropdown opens</td>
         </tr>
         <tr>
           <td><code>selectric-open</code></td>
-          <td>Fired after select options opens</td>
+          <td>Fired after dropdown has been opened</td>
         </tr>
         <tr>
           <td><code>selectric-before-close</code></td>
-          <td>Fired before select options closes</td>
+          <td>Fired before the dropdown is closed</td>
         </tr>
         <tr>
           <td><code>selectric-close</code></td>
-          <td>Fired after select options closes</td>
+          <td>Fired after dropdown has been closed</td>
         </tr>
         <tr>
           <td><code>selectric-before-highlight</code></td>
@@ -389,19 +395,19 @@
         </tr>
         <tr>
           <td><code>selectric-select</code></td>
-          <td>Fired before a select option is selected</td>
+          <td>Fired after a select option was selected</td>
         </tr>
         <tr>
           <td><code>selectric-before-change</code></td>
-          <td>Fired before select options change</td>
+          <td>Fired before a select option changed</td>
         </tr>
         <tr>
           <td><code>selectric-change</code></td>
-          <td>Fired when select options change</td>
+          <td>Fired when a select option changed</td>
         </tr>
         <tr>
           <td><code>selectric-refresh</code></td>
-          <td>Fired when the Selectric is refreshed</td>
+          <td>Fired after Selectric was refreshed</td>
         </tr>
       </table>
     </div>
