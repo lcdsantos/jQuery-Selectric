@@ -316,7 +316,8 @@
     <div class="section">
       <h2>Events</h2>
 
-      <p>All events are called on original element and can be bound like this:</p>
+      <p>All events are called on original element. Within the callback you have access to the <code>event object</code>, the original
+        <code>select element</code> and to the current <code>selectric instance</code>. It can be bound like this:</p>
 
       <pre><code class="language-javascript">/**
  * @param {Object}          event - jquery event object
