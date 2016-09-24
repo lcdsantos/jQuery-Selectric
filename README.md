@@ -21,7 +21,7 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 Make sure to include jQuery in your page:
 
 ```html
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 ```
 
 Include **jQuery Selectric:**
@@ -40,7 +40,7 @@ Initialize **jQuery Selectric:**
 
 ```html
 <script>
-$(function(){
+$(function() {
   $('select').selectric();
 });
 </script>
@@ -167,8 +167,8 @@ $('select').selectric({
    * Description: Customize classes.
    */
   customClass: {
-    prefix: 'selectric',
-    camelCase: false
+    prefix: 'selectric', // Type: String.  Description: Prefixed string of every class name.
+    camelCase: false     // Type: Boolean. Description: Switch classes style between camelCase or dash-case.
   },
 
   /*
@@ -218,7 +218,17 @@ $('select').selectric({
    *              first (or last) once reach the end (or start) item of list upon
    *              keyboard arrow navigation.
    */
-  allowWrap: true
+  allowWrap: true,
+
+  /*
+   * Type: Object
+   * Description: Customize select "multiple" behavior
+   */
+  multiple: {
+    separator: ', ',       // Type: String.             Description: Items separator.
+    keepMenuOpen: true,    // Type: Boolean.            Description: Close after an item is selected.
+    maxLabelEntries: false // Type: Boolean or Integer. Description: Max selected items do show.
+  }
 }
 ```
 
@@ -227,7 +237,7 @@ $('select').selectric({
 All events are called on original element, first argument is the original element too. And can be bound like this:
 
 ```js
-$('select').on('eventname', function(element){
+$('select').on('eventname', function(element) {
   // your code
 });
 ```
@@ -264,6 +274,22 @@ $('select').on('eventname', function(element){
     <td>Fired after select options closes</td>
   </tr>
   <tr>
+    <td><code>selectric-before-highlight</code></td>
+    <td>Fired before a select option is highlighted</td>
+  </tr>
+  <tr>
+    <td><code>selectric-highlight</code></td>
+    <td>Fired when a select option is highlighted</td>
+  </tr>
+  <tr>
+    <td><code>selectric-before-select</code></td>
+    <td>Fired before a select option is selected</td>
+  </tr>
+  <tr>
+    <td><code>selectric-select</code></td>
+    <td>Fired before a select option is selected</td>
+  </tr>
+  <tr>
     <td><code>selectric-before-change</code></td>
     <td>Fired before select options change</td>
   </tr>
@@ -279,7 +305,7 @@ $('select').on('eventname', function(element){
 
 ##Hooks:
 
-Check [jquery.selectric.placeholder.js](plugins/jquery.selectric.placeholder.js) source for a usage example
+Check [jquery.selectric.placeholder.js](plugins/jquery.selectric.placeholder.js) source for a usage example.
 
 ```js
 // Add a callback everytime 'callbackName' is called

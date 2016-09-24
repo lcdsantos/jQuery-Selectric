@@ -326,7 +326,10 @@
         _this.bindEvents();
       } else {
         _this.elements.outerWrapper.addClass(_this.classes.disabled);
-        _this.elements.input.prop('disabled', true);
+
+        if ( _this.elements.input ) {
+          _this.elements.input.prop('disabled', true);
+        }
       }
 
       _this.utils.triggerCallback('Activate', _this);
