@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.11.0 (Sep 23 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.11.0 (Sep 24 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
@@ -542,23 +542,33 @@
     /**
      * Generate every option markup
      *
-     * @param  {number} i   - Index of current item
-     * @param  {object} elm - Current item
+     * @param  {number} index   - Index of current item
+     * @param  {object} itemData - Current item
      * @return {string}       HTML for the option
      */
-    getItemMarkup: function(i, elm) {
+    getItemMarkup: function(index, itemData) {
       var _this = this;
       var itemBuilder = _this.options.optionsItemBuilder;
+      // limit access to item data to provide a simple interface
+      // to most relevant options.
+      var filteredItemData = {
+        value: itemData.value,
+        text : itemData.text,
+        slug : itemData.slug,
+        index: itemData.index
+      };
 
       return _this.utils.format('<li data-index="{1}" class="{2}">{3}</li>',
-        i,
+        index,
         _this.utils.arrayToClassname([
-          elm.className,
-          i === _this.items.length - 1 ? 'last'     : '',
-          elm.disabled                 ? 'disabled' : '',
-          elm.selected                 ? 'selected' : ''
+          itemData.className,
+          index === _this.items.length - 1  ? 'last'     : '',
+          itemData.disabled                 ? 'disabled' : '',
+          itemData.selected                 ? 'selected' : ''
         ]),
-        $.isFunction(itemBuilder) ? itemBuilder(elm, elm.element, i) : _this.utils.format(itemBuilder, elm)
+        $.isFunction(itemBuilder)
+          ? _this.utils.format(itemBuilder(itemData), itemData)
+          : _this.utils.format(itemBuilder, filteredItemData)
       );
     },
 
