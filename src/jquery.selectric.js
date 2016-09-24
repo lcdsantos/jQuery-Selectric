@@ -200,7 +200,7 @@
       /**
        * Transform array list to concatenated string and remove empty values
        * @param  {array} arr - Class list
-       * @return {string}    - Concatenated string
+       * @return {string}      Concatenated string
        */
       arrayToClassname: function(arr) {
         var newArr = $.grep(arr, function(item) {
@@ -466,7 +466,7 @@
      * @param  {integer} index      - Current item index
      * @param  {node}    $elm       - Current element node
      * @param  {boolean} isDisabled - Current element disabled state
-     * @return {object}             - Item object
+     * @return {object}               Item object
      */
     getItemData: function(index, $elm, isDisabled) {
       var _this = this;
@@ -525,9 +525,9 @@
     /**
      * Generate every option markup
      *
-     * @param  {number} index   - Index of current item
+     * @param  {number} index    - Index of current item
      * @param  {object} itemData - Current item
-     * @return {string}       HTML for the option
+     * @return {string}            HTML for the option
      */
     getItemMarkup: function(index, itemData) {
       var _this = this;
@@ -957,7 +957,7 @@
     /**
      * Select option
      *
-     * @param {number}  index - Index of the option that will be selected
+     * @param {number} index - Index of the option that will be selected
      */
     select: function(index) {
       var _this = this;
