@@ -32,25 +32,25 @@ gulp.task('lint', function() {
 });
 
 gulp.task('js', ['lint'], function() {
-  var pkg = getPackageJson(),
-      banner = [
-        '/*!',
-        ' *         ,/',
-        ' *       ,\'/',
-        ' *     ,\' /',
-        ' *   ,\'  /_____,',
-        ' * .\'____    ,\'',
-        ' *      /  ,\'',
-        ' *     / ,\'',
-        ' *    /,\'',
-        ' *   /\'',
-        ' *',
-        ' * Selectric \u03DF v<%= pkg.version %> (<%= new Date().toString().substr(4, 11) %>) - http://lcdsantos.github.io/jQuery-Selectric/',
-        ' *',
-        ' * Copyright (c) <%= new Date().getFullYear() %> Leonardo Santos; MIT License',
-        ' *',
-        ' */\n\n'
-      ].join('\n');
+  var pkg = getPackageJson();
+  var banner = [
+    '/*!',
+    ' *         ,/',
+    ' *       ,\'/',
+    ' *     ,\' /',
+    ' *   ,\'  /_____,',
+    ' * .\'____    ,\'',
+    ' *      /  ,\'',
+    ' *     / ,\'',
+    ' *    /,\'',
+    ' *   /\'',
+    ' *',
+    ' * Selectric \u03DF v<%= pkg.version %> (<%= new Date().toString().substr(4, 11) %>) - http://lcdsantos.github.io/jQuery-Selectric/',
+    ' *',
+    ' * Copyright (c) <%= new Date().getFullYear() %> Leonardo Santos; MIT License',
+    ' *',
+    ' */\n\n'
+  ].join('\n');
 
   return gulp.src('src/jquery.selectric.js')
     .pipe($.header(banner, { pkg: pkg }))
