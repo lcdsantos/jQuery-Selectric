@@ -704,8 +704,8 @@ $.fn.selectric.hooks.remove('<i>callbackName</i>', '<i>hookName</i>');</code></p
   <script>
     $(function() {
       $('.customOptions').selectric({
-        optionsItemBuilder: function(itemData, element, index) {
-          return element.val().length ? '<span class="ico ico-' + element.val() +  '"></span>' + itemData.text : itemData.text;
+        optionsItemBuilder: function(itemData) {
+          return itemData.value.length ? '<span class="ico ico-' + itemData.value +  '"></span>' + itemData.text : itemData.text;
         }
       });
 
