@@ -1112,7 +1112,7 @@
     allowWrap            : true,
     optionsItemBuilder   : '{text}', // function(itemData, element, index)
     labelBuilder         : '{text}', // function(currItem)
-    listBuilder          : false,
+    listBuilder          : false,    // function(items)
     keys                 : {
       previous : [37, 38],                 // Left / Up
       next     : [39, 40],                 // Right / Down
