@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.11.0 (Sep 24 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.11.0 (Sep 27 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
@@ -509,6 +509,10 @@
     getItemsMarkup: function(items) {
       var _this = this;
       var markup = '<ul>';
+
+      if ( $.isFunction(_this.options.listBuilder) && _this.options.listBuilder ) {
+        items = _this.options.listBuilder(items);
+      }
 
       $.each(items, function(i, elm) {
         if ( elm.label !== undefined ) {
@@ -1108,6 +1112,7 @@
     allowWrap            : true,
     optionsItemBuilder   : '{text}', // function(itemData, element, index)
     labelBuilder         : '{text}', // function(currItem)
+    listBuilder          : false,
     keys                 : {
       previous : [37, 38],                 // Left / Up
       next     : [39, 40],                 // Right / Down

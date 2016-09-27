@@ -493,6 +493,10 @@
       var _this = this;
       var markup = '<ul>';
 
+      if ( $.isFunction(_this.options.listBuilder) && _this.options.listBuilder ) {
+        items = _this.options.listBuilder(items);
+      }
+
       $.each(items, function(i, elm) {
         if ( elm.label !== undefined ) {
 
@@ -1091,6 +1095,7 @@
     allowWrap            : true,
     optionsItemBuilder   : '{text}', // function(itemData, element, index)
     labelBuilder         : '{text}', // function(currItem)
+    listBuilder          : false,
     keys                 : {
       previous : [37, 38],                 // Left / Up
       next     : [39, 40],                 // Right / Down
