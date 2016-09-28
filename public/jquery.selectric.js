@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.11.0 (Sep 24 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.11.0 (Sep 28 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
@@ -978,7 +978,7 @@
      */
     select: function(index) {
       var _this = this;
-      var $filteredLi = _this.$li.filter('[data-index]').removeClass('selected');
+      var $filteredLi = _this.$li.filter('[data-index]');
 
       _this.utils.triggerCallback('BeforeSelect', _this, index);
 
@@ -999,12 +999,14 @@
         }
 
         $filteredLi
+          .removeClass('selected')
           .filter(function(index) {
             return $.inArray(index, _this.state.selectedIdx) !== -1;
           })
           .addClass('selected');
       } else {
         $filteredLi
+          .removeClass('selected')
           .eq(_this.state.selectedIdx = index)
           .addClass('selected');
       }
