@@ -174,7 +174,7 @@
       },
 
       /**
-       * Calls the events and hooks registered with function name.
+       * Calls the events registered with function name.
        *
        * @param {string}    fn - The name of the function.
        * @param {number} scope - Scope that should be set on the function.
@@ -186,12 +186,6 @@
 
         if ( $.isFunction(func) ) {
           func.apply(elm, args);
-        }
-
-        if ( $.fn[pluginName].hooks[fn] ) {
-          $.each($.fn[pluginName].hooks[fn], function() {
-            this.apply(elm, args);
-          });
         }
 
         $(elm).trigger(pluginName + '-' + this.toDash(fn), args);
@@ -1037,38 +1031,6 @@
         $.data(this, pluginName, new Selectric(this, args));
       }
     });
-  };
-
-  /**
-   * Hooks for the callbacks
-   *
-   * @type {object}
-   */
-  $.fn[pluginName].hooks = {
-    /**
-     * @param {string} callbackName - The callback name.
-     * @param {string}     hookName - The name of the hook to be attached.
-     * @param {function}         fn - Callback function.
-     */
-    add: function(callbackName, hookName, fn) {
-      if ( !this[callbackName] ) {
-        this[callbackName] = {};
-      }
-
-      this[callbackName][hookName] = fn;
-
-      return this;
-    },
-
-    /**
-     * @param {string} callbackName - The callback name.
-     * @param {string}     hookName - The name of the hook that will be removed.
-     */
-    remove: function(callbackName, hookName) {
-      delete this[callbackName][hookName];
-
-      return this;
-    }
   };
 
   /**
