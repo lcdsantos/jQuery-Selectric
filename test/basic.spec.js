@@ -216,4 +216,17 @@ describe('basic suite', function() {
   it('should inherit option tag class', function() {
     expect(select.find('.customOptionClass').length).toBe(1);
   });
+
+  it('should use the listBuilder', function() {
+    select.selectric({
+      listBuilder: function (items) {
+        return $.each(items, function (index, ele) {
+          ele.text = ele.text.toUpperCase();
+        });
+      }
+    });
+    $('.selectric').click();
+    $('.selectric-items').find('li:eq(4)').click();
+    expect($('.selectric-wrapper').find('.label').text()).toBe('BANANA');
+  });
 });
