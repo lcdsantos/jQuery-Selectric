@@ -76,12 +76,13 @@ gulp.task('js-min', function() {
 gulp.task('css', function() {
   var pkg = getPackageJson();
 
-  return gulp.src('./src/*.scss')
-    .pipe($.sass())
+  return gulp.src('./src/selectric.scss')
+    .pipe($.sass({
+      outputStyle: 'expanded'
+    }))
     .pipe($.autoprefixer({
       browsers: ['last 2 versions', '> 1%', 'ie 8', 'ie 7']
     }))
-    .pipe($.csscomb())
     .pipe($.header([
       '/*======================================',
       '  Selectric v<%= pkg.version %>',
@@ -89,6 +90,17 @@ gulp.task('css', function() {
     ].join('\n'), { pkg: pkg }))
     .pipe(gulp.dest('./public'))
     .pipe($.connect.reload());
+});
+
+gulp.task('themes-css', function() {
+  return gulp.src('**/*.scss', { cwd: './src/themes/' })
+    .pipe($.sass({
+      outputStyle: 'expanded'
+    }))
+    .pipe($.autoprefixer({
+      browsers: ['last 2 versions', '> 1%', 'ie 8', 'ie 7']
+    }))
+    .pipe(gulp.dest('./public/themes/'));
 });
 
 /**
@@ -111,9 +123,10 @@ gulp.task('html', function() {
  * Watch
  */
 gulp.task('watch', ['serve'], function() {
-  gulp.watch(['*.js'],   { cwd: './src/' },    ['js', 'js-min']);
-  gulp.watch(['*.scss'], { cwd: './src/' },    ['css']);
-  gulp.watch(['*.html'], { cwd: './public/' }, ['html']);
+  gulp.watch(['*.js'],      { cwd: './src/' },        ['js', 'js-min']);
+  gulp.watch(['*.scss'],    { cwd: './src/' },        ['css']);
+  gulp.watch(['**/*.scss'], { cwd: './src/themes/' }, ['themes-css']);
+  gulp.watch(['*.html'],    { cwd: './public/' },     ['html']);
 });
 
 

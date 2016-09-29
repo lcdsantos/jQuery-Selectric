@@ -16,6 +16,7 @@
   background: #F8F8F8;
   position: relative;
 }
+
 .selectric .label {
   display: block;
   white-space: nowrap;
@@ -31,6 +32,7 @@
       -ms-user-select: none;
           user-select: none;
 }
+
 .selectric .button {
   display: block;
   position: absolute;
@@ -43,6 +45,7 @@
   font: 0/0 a;
   *font: 20px/38px Lucida Sans Unicode, Arial Unicode MS, Arial;
 }
+
 .selectric .button:after {
   content: " ";
   position: absolute;
@@ -59,25 +62,29 @@
 }
 
 .selectric-focus .selectric {
-  border-color: #AAA;
+  border-color: #aaaaaa;
 }
 
 .selectric-hover .selectric {
-  border-color: #C4C4C4;
+  border-color: #c4c4c4;
 }
+
 .selectric-hover .selectric .button {
-  color: #A2A2A2;
+  color: #a2a2a2;
 }
+
 .selectric-hover .selectric .button:after {
-  border-top-color: #A2A2A2;
+  border-top-color: #a2a2a2;
 }
 
 .selectric-open {
   z-index: 9999;
 }
+
 .selectric-open .selectric {
-  border-color: #C4C4C4;
+  border-color: #c4c4c4;
 }
+
 .selectric-open .selectric-items {
   display: block;
 }
@@ -98,16 +105,19 @@
   width: 0;
   height: 0;
 }
+
 .selectric-hide-select select {
   position: absolute;
   left: -100%;
 }
+
 .selectric-hide-select.selectric-is-native {
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: 10;
 }
+
 .selectric-hide-select.selectric-is-native select {
   position: absolute;
   top: 0;
@@ -150,18 +160,21 @@
   top: 100%;
   left: 0;
   background: #F8F8F8;
-  border: 1px solid #C4C4C4;
+  border: 1px solid #c4c4c4;
   z-index: -1;
   box-shadow: 0 0 10px -6px;
 }
+
 .selectric-items .selectric-scroll {
   height: 100%;
   overflow: auto;
 }
+
 .selectric-above .selectric-items {
   top: auto;
   bottom: 100%;
 }
+
 .selectric-items ul, .selectric-items li {
   list-style: none;
   padding: 0;
@@ -170,24 +183,29 @@
   line-height: 20px;
   min-height: 20px;
 }
+
 .selectric-items li {
   display: block;
   padding: 10px;
   color: #666;
   cursor: pointer;
 }
+
 .selectric-items li.selected {
   background: #E0E0E0;
   color: #444;
 }
+
 .selectric-items li.highlighted {
   background: #D0D0D0;
   color: #444;
 }
+
 .selectric-items li:hover {
   background: #D5D5D5;
   color: #444;
 }
+
 .selectric-items .disabled {
   filter: alpha(opacity=50);
   opacity: 0.5;
@@ -199,6 +217,7 @@
       -ms-user-select: none;
           user-select: none;
 }
+
 .selectric-items .selectric-group .selectric-group-label {
   font-weight: bold;
   padding-left: 10px;
@@ -210,10 +229,12 @@
   background: none;
   color: #444;
 }
+
 .selectric-items .selectric-group.disabled li {
   filter: alpha(opacity=100);
   opacity: 1;
 }
+
 .selectric-items .selectric-group li {
   padding-left: 25px;
 }
