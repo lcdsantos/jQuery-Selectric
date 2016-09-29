@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.11.0 (Sep 24 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.11.0 (Sep 29 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
@@ -217,7 +217,7 @@
       /**
        * Transform array list to concatenated string and remove empty values
        * @param  {array} arr - Class list
-       * @return {string}    - Concatenated string
+       * @return {string}      Concatenated string
        */
       arrayToClassname: function(arr) {
         var newArr = $.grep(arr, function(item) {
@@ -483,7 +483,7 @@
      * @param  {integer} index      - Current item index
      * @param  {node}    $elm       - Current element node
      * @param  {boolean} isDisabled - Current element disabled state
-     * @return {object}             - Item object
+     * @return {object}               Item object
      */
     getItemData: function(index, $elm, isDisabled) {
       var _this = this;
@@ -509,6 +509,10 @@
     getItemsMarkup: function(items) {
       var _this = this;
       var markup = '<ul>';
+
+      if ( $.isFunction(_this.options.listBuilder) && _this.options.listBuilder ) {
+        items = _this.options.listBuilder(items);
+      }
 
       $.each(items, function(i, elm) {
         if ( elm.label !== undefined ) {
@@ -542,23 +546,33 @@
     /**
      * Generate every option markup
      *
-     * @param  {number} i   - Index of current item
-     * @param  {object} elm - Current item
-     * @return {string}       HTML for the option
+     * @param  {number} index    - Index of current item
+     * @param  {object} itemData - Current item
+     * @return {string}            HTML for the option
      */
-    getItemMarkup: function(i, elm) {
+    getItemMarkup: function(index, itemData) {
       var _this = this;
       var itemBuilder = _this.options.optionsItemBuilder;
+      // limit access to item data to provide a simple interface
+      // to most relevant options.
+      var filteredItemData = {
+        value: itemData.value,
+        text : itemData.text,
+        slug : itemData.slug,
+        index: itemData.index
+      };
 
       return _this.utils.format('<li data-index="{1}" class="{2}">{3}</li>',
-        i,
+        index,
         _this.utils.arrayToClassname([
-          elm.className,
-          i === _this.items.length - 1 ? 'last'     : '',
-          elm.disabled                 ? 'disabled' : '',
-          elm.selected                 ? 'selected' : ''
+          itemData.className,
+          index === _this.items.length - 1  ? 'last'     : '',
+          itemData.disabled                 ? 'disabled' : '',
+          itemData.selected                 ? 'selected' : ''
         ]),
-        $.isFunction(itemBuilder) ? itemBuilder(elm, elm.element, i) : _this.utils.format(itemBuilder, elm)
+        $.isFunction(itemBuilder)
+          ? _this.utils.format(itemBuilder(itemData), itemData)
+          : _this.utils.format(itemBuilder, filteredItemData)
       );
     },
 
@@ -964,11 +978,11 @@
     /**
      * Select option
      *
-     * @param {number}  index - Index of the option that will be selected
+     * @param {number} index - Index of the option that will be selected
      */
     select: function(index) {
       var _this = this;
-      var $filteredLi = _this.$li.filter('[data-index]').removeClass('selected');
+      var $filteredLi = _this.$li.filter('[data-index]');
 
       _this.utils.triggerCallback('BeforeSelect', _this, index);
 
@@ -989,12 +1003,14 @@
         }
 
         $filteredLi
+          .removeClass('selected')
           .filter(function(index) {
             return $.inArray(index, _this.state.selectedIdx) !== -1;
           })
           .addClass('selected');
       } else {
         $filteredLi
+          .removeClass('selected')
           .eq(_this.state.selectedIdx = index)
           .addClass('selected');
       }
@@ -1098,6 +1114,7 @@
     allowWrap            : true,
     optionsItemBuilder   : '{text}', // function(itemData, element, index)
     labelBuilder         : '{text}', // function(currItem)
+    listBuilder          : false,    // function(items)
     keys                 : {
       previous : [37, 38],                 // Left / Up
       next     : [39, 40],                 // Right / Down
