@@ -58,6 +58,17 @@ describe('basic suite', function() {
     expect($('.selectric-wrapper').find('.selectric-group-label').length).toBe(3);
   });
 
+  it('should not select <optgroup> label', function() {
+    loadFixtures('optgroup.html');
+
+    select = $('#optgroup');
+    select.selectric();
+
+    $('.selectric').click();
+    $('.selectric-wrapper').find('.selectric-group-label').click();
+    expect(select.val()).toBe('0');
+  });
+
   it('should add class on hover', function() {
     $('.selectric').trigger('mouseenter');
     expect($('.selectric-wrapper').hasClass('selectric-hover')).toBe(true);
@@ -118,6 +129,14 @@ describe('basic suite', function() {
     select.find('option:eq(1)').prop('disabled', true);
     select.selectric('refresh');
     expect($('.selectric-items').find('li:eq(1)').hasClass('disabled')).toBe(true);
+  });
+
+  it('should not select disabled item', function() {
+    select.find('option:eq(2)').prop('disabled', true);
+    select.selectric('refresh');
+    $('.selectric').click();
+    $('.selectric-items').find('li:eq(2)').click();
+    expect(select.val()).toBe('apricot');
   });
 
   it('should update label', function() {

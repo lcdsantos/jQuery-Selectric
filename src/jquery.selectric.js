@@ -935,19 +935,16 @@
 
       _this.utils.triggerCallback('BeforeHighlight', _this);
 
-      // Parameter index is required
-      if ( index === undefined ) {
+      // Parameter index is required and should not be a disabled item
+      if ( index === undefined || index === -1 || _this.lookupItems[index].disabled ) {
         return;
       }
 
-      // If element is disabled, can't select it
-      if ( index !== -1 && !_this.lookupItems[index].disabled ) {
-        $filteredLi
-          .eq(_this.state.highlightedIdx = index)
-          .addClass('highlighted');
+      $filteredLi
+        .eq(_this.state.highlightedIdx = index)
+        .addClass('highlighted');
 
-        _this.detectItemVisibility(index);
-      }
+      _this.detectItemVisibility(index);
 
       _this.utils.triggerCallback('Highlight', _this);
     },
@@ -963,9 +960,9 @@
 
       _this.utils.triggerCallback('BeforeSelect', _this, index);
 
-      // Don't select disabled items
-      if (index !== -1 && _this.lookupItems[index].disabled) {
-        return false;
+      // Parameter index is required and should not be a disabled item
+      if ( index === undefined || index === -1 || _this.lookupItems[index].disabled ) {
+        return;
       }
 
       if ( _this.state.multiple ) {
