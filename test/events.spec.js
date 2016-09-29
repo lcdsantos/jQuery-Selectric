@@ -122,68 +122,6 @@ describe('events', function() {
     expect(callbacks.refresh).toHaveBeenCalled();
   });
 
-  it('should trigger hooks callbacks', function() {
-    var hooks = jasmine.createSpyObj('hooks', [
-      'beforeInit',
-      'init',
-      'beforeOpen',
-      'open',
-      'beforeClose',
-      'close',
-      'beforeChange',
-      'change',
-      'refresh'
-    ]);
-
-    select.selectric('destroy');
-    $.fn.selectric.hooks.add('BeforeInit',   'test', hooks.beforeInit);
-    $.fn.selectric.hooks.add('BeforeInit',   'test2', hooks.beforeInit);
-    $.fn.selectric.hooks.add('BeforeInit',   'test3', hooks.beforeInit);
-    $.fn.selectric.hooks.remove('BeforeInit', 'test3');
-    $.fn.selectric.hooks.add('Init',         'test', hooks.init);
-    $.fn.selectric.hooks.add('BeforeOpen',   'test', hooks.beforeOpen);
-    $.fn.selectric.hooks.add('Open',         'test', hooks.open);
-    $.fn.selectric.hooks.add('BeforeClose',  'test', hooks.beforeClose);
-    $.fn.selectric.hooks.add('Close',        'test', hooks.close);
-    $.fn.selectric.hooks.add('BeforeChange', 'test', hooks.beforeChange);
-    $.fn.selectric.hooks.add('Change',       'test', hooks.change);
-    $.fn.selectric.hooks.add('Refresh',      'test', hooks.refresh);
-    select.selectric();
-
-    $('.selectric').click();
-    $('.selectric-items').find('li:eq(4)').click();
-    select.selectric('refresh');
-
-    expect(hooks.beforeInit).toHaveBeenCalledTimes(2);
-    expect(hooks.init).toHaveBeenCalled();
-    expect(hooks.beforeOpen).toHaveBeenCalled();
-    expect(hooks.open).toHaveBeenCalled();
-    expect(hooks.beforeClose).toHaveBeenCalled();
-    expect(hooks.close).toHaveBeenCalled();
-    expect(hooks.beforeChange).toHaveBeenCalled();
-    expect(hooks.change).toHaveBeenCalled();
-    expect(hooks.refresh).toHaveBeenCalled();
-  });
-
-  it('should allow to chain hooks', function() {
-    var hooks = jasmine.createSpyObj('hooks', [
-      'beforeInit'
-    ]);
-
-    select.selectric('destroy');
-    $.fn.selectric.hooks
-      .add('BeforeInit',   'test', hooks.beforeInit)
-      .add('BeforeInit',   'test2', hooks.beforeInit);
-    select.selectric();
-
-    $('.selectric').click();
-    $('.selectric-items').find('li:eq(4)').click();
-    select.selectric('refresh');
-
-    expect(hooks.beforeInit).toHaveBeenCalledTimes(2);
-
-  });
-
   it('should not bind events when select is disabled after init', function() {
     select.prop('disabled', true).selectric('refresh');
     $('.selectric').trigger('click');
