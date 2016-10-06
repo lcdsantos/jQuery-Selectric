@@ -3,14 +3,14 @@
   position: relative;
 }
 
-.selectric-scroll .createNew {
+.selectric-scroll .create-new {
   position: absolute;
   top: 0;
   width: 100%;
 }
 
-.selectric-scroll .createNew > input[type=text],
-.selectric-scroll .createNew > button {
+.selectric-scroll .create-new > input[type=text],
+.selectric-scroll .create-new > button {
   height: 24px;
   margin: 3px 1%;
   padding: 5px;
@@ -19,7 +19,7 @@
   font-weight: normal;
 }
 
-.selectric-scroll .createNew > input[type=text] {
+.selectric-scroll .create-new > input[type=text] {
   background: #fff;
   width: 76%;
   border: 1px solid #ddd;
@@ -28,7 +28,7 @@
   color: #444;
 }
 
-.selectric-scroll .createNew > button {
+.selectric-scroll .create-new > button {
   width: 20%;
   background: #c02126;
   border: 1px solid #981317;
@@ -42,6 +42,6 @@
   text-transform: uppercase;
 }
 
-.selectric-scroll .createNew + ul {
+.selectric-scroll .create-new + ul {
   margin-top: 30px;
 }

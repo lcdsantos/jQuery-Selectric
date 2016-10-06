@@ -224,7 +224,17 @@
     "space-unary-ops": "error",
     "spaced-comment": [
       "error",
-      "always"
+      "always", {
+        "line": {
+          "markers": ["/"],
+          "exceptions": ["-", "+"]
+        },
+        "block": {
+          "markers": ["!"],
+          "exceptions": ["*"],
+          "balanced": true
+        }
+      }
     ],
     "strict": "off",
     "template-curly-spacing": "error",

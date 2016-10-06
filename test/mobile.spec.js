@@ -37,25 +37,37 @@ describe('mobile', function() {
 
     it('should not enabled on android', function() {
       setUserAgent(window, 'Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19');
-      select.selectric();
+      select.selectric({
+        disableOnMobile: true,
+        nativeOnMobile: false
+      });
       expect($('.selectric-wrapper').length).toBe(0);
     });
 
     it('should not enabled on ipad', function() {
       setUserAgent(window, 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) version/4.0.4 Mobile/7B367 Safari/531.21.10');
-      select.selectric();
+      select.selectric({
+        disableOnMobile: true,
+        nativeOnMobile: false
+      });
       expect($('.selectric-wrapper').length).toBe(0);
     });
 
     it('should not enabled on ipod', function() {
       setUserAgent(window, 'Mozilla/5.0 (iPod; U; CPU like Mac OS X; en) AppleWebKit/420.1 (KHTML, like Gecko) Version/3.0 Mobile/3A101a Safari/419.3');
-      select.selectric();
+      select.selectric({
+        disableOnMobile: true,
+        nativeOnMobile: false
+      });
       expect($('.selectric-wrapper').length).toBe(0);
     });
 
     it('should not enabled on iphone', function() {
       setUserAgent(window, 'Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3');
-      select.selectric();
+      select.selectric({
+        disableOnMobile: true,
+        nativeOnMobile: false
+      });
       expect($('.selectric-wrapper').length).toBe(0);
     });
 
@@ -93,11 +105,11 @@ describe('mobile', function() {
 
     it('should refresh the select after change', function () {
       setUserAgent(window, 'Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19');
-      var spy = spyOn(select.data('selectric'), 'refresh');
       select.selectric({
         disableOnMobile: false,
         nativeOnMobile: true
       });
+      var spy = spyOn(select.data('selectric'), 'refresh');
       select.trigger('change');
       expect(spy).toHaveBeenCalled();
     });
@@ -128,6 +140,7 @@ describe('mobile', function() {
     });
 
     it('open() should return false on mobile', function () {
+      select.selectric();
       spyOn(select.data('selectric').utils, 'isMobile').and.returnValue(true);
       spyOn(select.data('selectric').options, 'nativeOnMobile').and.returnValue(true);
       expect(select.data('selectric').open()).toBe(false);
@@ -151,25 +164,37 @@ describe('mobile', function() {
 
     it('should not enabled on android', function() {
       setUserAgent(window, 'Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19');
-      multiple.selectric();
+      multiple.selectric({
+        disableOnMobile: true,
+        nativeOnMobile: false
+      });
       expect($('.selectric-wrapper').length).toBe(0);
     });
 
     it('should not enabled on ipad', function() {
       setUserAgent(window, 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) version/4.0.4 Mobile/7B367 Safari/531.21.10');
-      multiple.selectric();
+      multiple.selectric({
+        disableOnMobile: true,
+        nativeOnMobile: false
+      });
       expect($('.selectric-wrapper').length).toBe(0);
     });
 
     it('should not enabled on ipod', function() {
       setUserAgent(window, 'Mozilla/5.0 (iPod; U; CPU like Mac OS X; en) AppleWebKit/420.1 (KHTML, like Gecko) Version/3.0 Mobile/3A101a Safari/419.3');
-      multiple.selectric();
+      multiple.selectric({
+        disableOnMobile: true,
+        nativeOnMobile: false
+      });
       expect($('.selectric-wrapper').length).toBe(0);
     });
 
     it('should not enabled on iphone', function() {
       setUserAgent(window, 'Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3');
-      multiple.selectric();
+      multiple.selectric({
+        disableOnMobile: true,
+        nativeOnMobile: false
+      });
       expect($('.selectric-wrapper').length).toBe(0);
     });
 

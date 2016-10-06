@@ -303,18 +303,6 @@ $('select').on('eventname', function(element) {
   </tr>
 </table>
 
-##Hooks:
-
-Check [jquery.selectric.placeholder.js](plugins/jquery.selectric.placeholder.js) source for a usage example.
-
-```js
-// Add a callback everytime 'callbackName' is called
-$.fn.selectric.hooks.add('callbackName', 'hookName', function(element, data) {});
-
-// Remove a callback
-$.fn.selectric.hooks.remove('callbackName', 'hookName');
-```
-
 ##Public methods:
 
 ```js

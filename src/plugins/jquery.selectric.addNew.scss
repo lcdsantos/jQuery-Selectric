@@ -1,0 +1,47 @@
+/* Add new item */
+.selectric-scroll {
+  position: relative;
+
+  .create-new {
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    > input[type=text],
+    > button {
+      height: 24px;
+      margin: 3px 1%;
+      padding: 5px;
+      box-sizing: border-box;
+      font-size: 14px;
+      font-weight: normal;
+    }
+
+    > input[type=text] {
+      background: #fff;
+      width: 76%;
+      border: 1px solid #ddd;
+      border-radius: 0;
+      box-shadow: none;
+      color: #444;
+    }
+
+    > button {
+      width: 20%;
+      background: #c02126;
+      border: 1px solid #981317;
+      box-shadow: 0 1px 1px #d1d1d1;
+      color: #ffffff;
+      display: inline-block;
+      font-size: 12px;
+      font-weight: normal;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    + ul {
+      margin-top: 30px;
+    }
+  }
+}
