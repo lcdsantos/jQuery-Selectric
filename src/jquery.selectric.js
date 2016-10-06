@@ -1045,7 +1045,7 @@
     maxHeight            : 300,
     keySearchTimeout     : 500,
     arrowButtonMarkup    : '<b class="button">&#x25be;</b>',
-    disableOnMobile      : true,
+    disableOnMobile      : false,
     nativeOnMobile       : true,
     openOnFocus          : true,
     openOnHover          : false,

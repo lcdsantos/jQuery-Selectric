@@ -136,7 +136,7 @@ $('select').selectric({
    * Type: Boolean
    * Description: Initialize plugin on mobile browsers
    */
-  disableOnMobile: true,
+  disableOnMobile: false,
 
   /*
    * Type: Boolean
