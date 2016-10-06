@@ -569,7 +569,7 @@ Selectric.init();    // Reinitialize the plugin</code></pre>
         </div>
 
         <div class="item">
-          <select class="customOptions">
+          <select class="custom-options">
             <option value="">Select with icons</option>
             <option value="firefox">Firefox</option>
             <option value="chrome">Chrome</option>
@@ -580,7 +580,7 @@ Selectric.init();    // Reinitialize the plugin</code></pre>
         </div>
 
         <div class="item">
-          <select class="customLabel">
+          <select class="custom-label">
             <option value="">Select with custom label builder</option>
             <option value="ant">Ant</option>
             <option value="bird">Bird</option>
@@ -692,13 +692,13 @@ Selectric.init();    // Reinitialize the plugin</code></pre>
   <script src="jquery.selectric.js"></script>
   <script>
     $(function() {
-      $('.customOptions').selectric({
+      $('.custom-options').selectric({
         optionsItemBuilder: function(itemData) {
           return itemData.value.length ? '<span class="ico ico-' + itemData.value +  '"></span>' + itemData.text : itemData.text;
         }
       });
 
-      $('.customLabel').selectric({
+      $('.custom-label').selectric({
         labelBuilder: function(currItem) {
           return '<strong><em>' + currItem.text + '</em></strong>';
         }

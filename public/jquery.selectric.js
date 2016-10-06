@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.11.0 (Sep 29 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.11.0 (Oct 06 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
@@ -633,6 +633,7 @@
           })
           .on('input propertychange', function() {
             var val = _this.elements.input.val();
+            var searchRegExp = new RegExp('^' + _this.utils.escapeRegExp(val), 'i');
 
             // Clear search
             clearTimeout(_this.resetStr);
@@ -643,9 +644,9 @@
             if ( val.length ) {
               // Search in select options
               $.each(_this.items, function(i, elm) {
-                if ( new RegExp('^' + _this.utils.escapeRegExp(val), 'i').test(elm.slug) && !elm.disabled ) {
+                if ( !elm.disabled && searchRegExp.test(elm.text) || searchRegExp.test(elm.slug) ) {
                   _this.highlight(i);
-                  return false;
+                  return;
                 }
               });
             }
