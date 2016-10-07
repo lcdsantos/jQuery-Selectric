@@ -112,14 +112,16 @@ gulp.task('themes-css', function() {
   return gulp.src('**/*.scss', { cwd: './src/themes/' })
     .pipe($.sass({ outputStyle: 'expanded' }))
     .pipe($.autoprefixer({ browsers: ['last 2 versions', '> 1%', 'ie 8', 'ie 7'] }))
-    .pipe(gulp.dest('./public/themes/'));
+    .pipe(gulp.dest('./public/themes/'))
+    .pipe($.connect.reload());
 });
 
 gulp.task('plugins-css', function() {
   return gulp.src('**/*.scss', { cwd: './src/plugins/' })
     .pipe($.sass({ outputStyle: 'expanded' }))
     .pipe($.autoprefixer({ browsers: ['last 2 versions', '> 1%', 'ie 8', 'ie 7'] }))
-    .pipe(gulp.dest('./public/plugins/'));
+    .pipe(gulp.dest('./public/plugins/'))
+    .pipe($.connect.reload());
 });
 
 

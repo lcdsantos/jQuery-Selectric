@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="customoptions.css">
   <link rel="stylesheet" href="lib/prism.css">
 
+  <link rel="stylesheet" href="plugins/jquery.selectric.search.css">
+
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
 
   <meta property="og:title"       content="jQuery Selectric">
@@ -690,6 +692,7 @@ Selectric.init();    // Reinitialize the plugin</code></pre>
   <script src="lib/jquery.min.js"></script>
   <script src="lib/prism.js"></script>
   <script src="jquery.selectric.js"></script>
+  <script src="plugins/jquery.selectric.search.js"></script>
   <script>
     $(function() {
       $('.custom-options').selectric({
@@ -705,6 +708,7 @@ Selectric.init();    // Reinitialize the plugin</code></pre>
       });
 
       $('select').selectric();
+      $('select').selectricSearch();
     });
 
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

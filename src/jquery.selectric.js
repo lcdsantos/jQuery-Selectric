@@ -659,7 +659,7 @@
      */
     handleKeys: function(e) {
       var _this = this;
-      var key = e.keyCode || e.which;
+      var key = e.which;
       var keys = _this.options.keys;
 
       var isPrevKey = $.inArray(key, keys.previous) > -1;

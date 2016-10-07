@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.11.0 (Oct 06 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.11.0 (Oct 07 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
@@ -676,7 +676,7 @@
      */
     handleKeys: function(e) {
       var _this = this;
-      var key = e.keyCode || e.which;
+      var key = e.which;
       var keys = _this.options.keys;
 
       var isPrevKey = $.inArray(key, keys.previous) > -1;

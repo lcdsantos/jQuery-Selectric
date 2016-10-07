@@ -1,0 +1,32 @@
+.selectric-search-wrapper {
+  margin: 3px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.selectric-search {
+  box-sizing: border-box;
+  padding: 4px 5px;
+  margin-bottom: 3px;
+  width: 100%;
+  height: 32px;
+  border: 1px solid #CCC;
+  font-size: 12px;
+}
+
+.selectric-items {
+  display: block;
+  padding-top: 40px;
+  visibility: hidden;
+}
+
+.selectric-open .selectric-items {
+  visibility: visible;
+}
+
+.selectric-scroll .match {
+  font-weight: bold;
+  color: #222;
+}
