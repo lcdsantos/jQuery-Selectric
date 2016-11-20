@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.11.0 (Oct 06 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.11.0 (Nov 20 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
@@ -371,7 +371,7 @@
           // Hide default (please choose) if more then one element were selected.
           // If no option value were given value is set to option text by default
           if ( labelMarkup.length > 1 || labelMarkup.length === 0 ) {
-            return $.trim(item.value) !== '' && item.value !== item.text;
+            return $.trim(item.value) !== '';
           }
           return item;
         });
