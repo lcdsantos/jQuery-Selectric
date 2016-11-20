@@ -128,6 +128,15 @@ describe('multiple selects', function() {
       $('.selectric').click();
       expect($('.selectric-wrapper').find('.label').text()).toBe('Ant, Cat, Dog');
     });
+
+    it('should build the label correctly by ignoring case or whitespace', function() {
+      var listItems = $('.selectric-items');
+      $('.selectric').click();
+      listItems.find('li').eq(5).click();
+      listItems.find('li').eq(6).click();
+      $('.selectric').click();
+      expect($('.selectric-wrapper').find('.label').text()).toBe('Losabim Oxigenium, Dagobert Duck');
+    });
   });
 
 });
