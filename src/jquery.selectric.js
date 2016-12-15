@@ -430,7 +430,7 @@
             $elm.children().each(function(i) {
               var $elm = $(this);
 
-              optionsGroup.items[i] = _this.getItemData(currIndex, $elm, optionsGroup.groupDisabled);
+              optionsGroup.items[i] = _this.getItemData(currIndex, $elm, optionsGroup.groupDisabled || $elm.prop('disabled'));
 
               _this.lookupItems[currIndex] = optionsGroup.items[i];
 
