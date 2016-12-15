@@ -682,11 +682,11 @@
         }
 
         if ( isPrevKey ) {
-          goToItem = _this.utils.previousEnabledItem(_this.items, idx);
+          goToItem = _this.utils.previousEnabledItem(_this.lookupItems, idx);
         }
 
         if ( isNextKey ) {
-          goToItem = _this.utils.nextEnabledItem(_this.items, idx);
+          goToItem = _this.utils.nextEnabledItem(_this.lookupItems, idx);
         }
 
         _this.highlight(goToItem);

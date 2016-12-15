@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.11.0 (Nov 20 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.11.0 (Dec 15 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
@@ -699,11 +699,11 @@
         }
 
         if ( isPrevKey ) {
-          goToItem = _this.utils.previousEnabledItem(_this.items, idx);
+          goToItem = _this.utils.previousEnabledItem(_this.lookupItems, idx);
         }
 
         if ( isNextKey ) {
-          goToItem = _this.utils.nextEnabledItem(_this.items, idx);
+          goToItem = _this.utils.nextEnabledItem(_this.lookupItems, idx);
         }
 
         _this.highlight(goToItem);
