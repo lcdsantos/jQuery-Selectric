@@ -814,7 +814,9 @@
 
       if ( e ) {
         e.preventDefault();
-        e.stopPropagation();
+        if (_this.options.stopPropagation) {
+          e.stopPropagation();
+        }
       }
 
       if ( _this.state.enabled ) {
@@ -1055,6 +1057,7 @@
     preventWindowScroll  : true,
     inheritOriginalWidth : false,
     allowWrap            : true,
+    stopPropagation      : true,
     optionsItemBuilder   : '{text}', // function(itemData, element, index)
     labelBuilder         : '{text}', // function(currItem)
     listBuilder          : false,    // function(items)
