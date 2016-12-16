@@ -831,7 +831,9 @@
 
       if ( e ) {
         e.preventDefault();
-        e.stopPropagation();
+        if (_this.options.stopPropagation) {
+          e.stopPropagation();
+        }
       }
 
       if ( _this.state.enabled ) {
