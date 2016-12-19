@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.11.0 (Dec 15 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.11.0 (Dec 16 2016) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2016 Leonardo Santos; MIT License
  *
@@ -831,7 +831,9 @@
 
       if ( e ) {
         e.preventDefault();
-        e.stopPropagation();
+        if (_this.options.stopPropagation) {
+          e.stopPropagation();
+        }
       }
 
       if ( _this.state.enabled ) {
@@ -1072,6 +1074,7 @@
     preventWindowScroll  : true,
     inheritOriginalWidth : false,
     allowWrap            : true,
+    stopPropagation      : true,
     optionsItemBuilder   : '{text}', // function(itemData, element, index)
     labelBuilder         : '{text}', // function(currItem)
     listBuilder          : false,    // function(items)
