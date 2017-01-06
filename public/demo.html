@@ -258,9 +258,11 @@ $('#callbacks').selectric({
 
       <div class="code">
         <pre><code class="language-javascript">$('.custom-options').selectric({
-  optionsItemBuilder: function(itemData, element, index) {
-    return element.val().length ? '&lt;span class=&quot;ico ico-' + element.val() +  '&quot;&gt;&lt;/span&gt;' + itemData.text : itemData.text;
-  }
+      optionsItemBuilder: function(itemData) {
+        return itemData.value.length ?
+          '&lt;span class=&quot;ico ico-' + itemData.value +  '&quot;&gt;&lt;/span&gt;' + itemData.text :
+          itemData.text;
+      }
 });</code></pre>
         <br>
         <pre data-src="customoptions.css"></pre>
