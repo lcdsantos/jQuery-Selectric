@@ -1,7 +1,7 @@
 {
   "name": "jquery-selectric",
   "description": "Fast, simple and light jQuery plugin to customize HTML selects",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "keywords": [
     "select",
     "selectbox",
@@ -10,7 +10,7 @@
     "input",
     "ui"
   ],
-  "homepage": "http://lcdsantos.github.io/jQuery-Selectric/",
+  "homepage": "http://selectric.js.org/",
   "authors": [
     {
       "name": "Leonardo Santos",
