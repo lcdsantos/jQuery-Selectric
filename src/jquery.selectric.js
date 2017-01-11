@@ -258,7 +258,7 @@
         .wrap(hideSelectWrapper);
 
       _this.originalTabindex = _this.$element.prop('tabindex');
-      _this.$element.prop('tabindex', false);
+      _this.$element.prop('tabindex', -1);
 
       _this.populate();
       _this.activate();
@@ -659,7 +659,7 @@
      */
     handleKeys: function(e) {
       var _this = this;
-      var key = e.keyCode || e.which;
+      var key = e.which;
       var keys = _this.options.keys;
 
       var isPrevKey = $.inArray(key, keys.previous) > -1;
@@ -777,6 +777,7 @@
      */
     detectItemVisibility: function(index) {
       var _this = this;
+      var $filteredLi = _this.$li.filter('[data-index]');
 
       if ( _this.state.multiple ) {
         // If index is an array, we can assume a multiple select and we
@@ -786,8 +787,8 @@
         index = $.isArray(index) ? Math.min.apply(Math, index) : index;
       }
 
-      var liHeight = _this.$li.eq(index).outerHeight();
-      var liTop = _this.$li[index].offsetTop;
+      var liHeight = $filteredLi.eq(index).outerHeight();
+      var liTop = $filteredLi[index].offsetTop;
       var itemsScrollTop = _this.elements.itemsScroll.scrollTop();
       var scrollT = liTop + liHeight * 2;
 
