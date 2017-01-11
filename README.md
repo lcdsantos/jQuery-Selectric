@@ -177,11 +177,33 @@ $('select').selectric({
    *
    *              If it's a string, all keys wrapped in brackets will be replaced by
    *              the respective values in itemData. Available keys are:
-   *              'value', 'text', 'slug', 'disabled'.
+   *              'value', 'text', 'slug', 'index'.
    *
-   *              If it's a function, it will be called with the following parameters:
-   *              (itemData, element, index). The function must return a string,
-   *              no keys will be replaced in this method.
+   *              If it's a function, it will be called with the following parameter:
+   *              (itemData). The function must return a string. If available all keys
+   *              will be replaced by the respective values in itemData.
+   *
+   *              itemData<Object> {
+   *                 className // Type: String.          Description: option class names.
+   *                 disabled  // Type: Boolean.         Description: option is disabled true/false
+   *                 selected  // Type: Boolean.         Description: option is selected true/false
+   *                 element   // Type: HTMLDomElement.  Description: current select element
+   *                 index     // Type: Number.          Description: current option index
+   *                 slug      // Type: String.          Description: option slug
+   *                 text      // Type: String.          Description: option text
+   *                 value     // Type: String.          Description: option value
+   *              }
+   *
+   *              EXAMPLE:
+   *
+   *              function(itemData) {
+   *                  return '{text}';
+   *              }
+   *
+   *              // you're free to build and return your own strings
+   *              function(itemData) {
+   *                  return itemData.text + '(' + itemData.index + ')';
+   *              }
    */
   optionsItemBuilder: '{text}',
 
