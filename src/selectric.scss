@@ -2,10 +2,13 @@ $selectric-main-color:      #DDD !default;                                      
 $selectric-secondary-color: #BBB !default;                                              // Color used in button
 $selectric-text-color:      #444 !default;                                              // Color used in label
 $selectric-bg-color:        #F8F8F8 !default;                                           // Background color
+$selectric-btn-bg-color:    #F8f8f8 !default;                                           // Button background color
 $selectric-height:          40px !default;                                              // Outer height
 $selectric-spacing:         10px !default;                                              // Label left padding
 $selectric-border-width:    1px !default;                                               // Outer border width
+$selectric-border-radius:   0px !default;                                               // Border radius
 $selectric-inner-height:    $selectric-height - ($selectric-border-width * 2) !default; // Inner height
+$selectric-font-size:       12px !default;                                              // Font size
 
 .selectric-wrapper {
   position: relative;
@@ -18,8 +21,10 @@ $selectric-inner-height:    $selectric-height - ($selectric-border-width * 2) !d
 
 .selectric {
   border: $selectric-border-width solid $selectric-main-color;
+  border-radius: $selectric-border-radius;
   background: $selectric-bg-color;
   position: relative;
+  overflow: hidden;
 
   .label {
     display: block;
@@ -27,7 +32,7 @@ $selectric-inner-height:    $selectric-height - ($selectric-border-width * 2) !d
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0 $selectric-inner-height 0 $selectric-spacing;
-    font-size: 12px;
+    font-size: $selectric-font-size;
     line-height: $selectric-inner-height;
     color: $selectric-text-color;
     height: $selectric-inner-height;
@@ -41,6 +46,7 @@ $selectric-inner-height:    $selectric-height - ($selectric-border-width * 2) !d
     top: 0;
     width: $selectric-inner-height;
     height: $selectric-inner-height;
+    background-color: $selectric-btn-bg-color;
     color: $selectric-secondary-color;
     text-align: center;
     font: 0/0 a;
@@ -177,7 +183,7 @@ $selectric-inner-height:    $selectric-height - ($selectric-border-width * 2) !d
     list-style: none;
     padding: 0;
     margin: 0;
-    font-size: 12px;
+    font-size: $selectric-font-size;
     line-height: 20px;
     min-height: 20px;
   }
