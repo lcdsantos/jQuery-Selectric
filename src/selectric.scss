@@ -46,6 +46,7 @@ $selectric-font-size:       12px !default;                                      
     top: 0;
     width: $selectric-inner-height;
     height: $selectric-inner-height;
+    line-height: $selectric-inner-height;
     background-color: $selectric-btn-bg-color;
     color: $selectric-secondary-color;
     text-align: center;
