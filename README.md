@@ -71,7 +71,7 @@ $('select').selectric({
 
   /*
    * Type: Function
-   * Description: Function called plugin has been fully initialized
+   * Description: Function called before select options opens
    */
   onBeforeOpen: function() {},
 
