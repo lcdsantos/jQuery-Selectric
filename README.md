@@ -3,7 +3,7 @@
 [![codecov.io](https://codecov.io/github/lcdsantos/jQuery-Selectric/coverage.svg?branch=master)](https://codecov.io/github/lcdsantos/jQuery-Selectric?branch=master)
 [![npm](https://img.shields.io/npm/v/selectric.svg)](https://www.npmjs.com/package/selectric)
 
-#jQuery Selectric ![icon](http://i.imgur.com/D2hcnUN.png)
+# jQuery Selectric ![icon](http://i.imgur.com/D2hcnUN.png)
 
 jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulating HTML selects.
 
@@ -14,9 +14,9 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 * Doesn't rely on external libraries (besides jQuery)
 * Word search works with western latin characters set (for example: á, ñ, ç...)
 
-###[Demo](http://lcdsantos.github.io/jQuery-Selectric/)
+### [Demo](http://lcdsantos.github.io/jQuery-Selectric/)
 
-##How to use:
+## How to use:
 
 Make sure to include jQuery in your page:
 
@@ -46,7 +46,7 @@ $(function() {
 </script>
 ```
 
-##Options:
+## Options:
 
 You can pass an options object as the first parameter when you call the plugin. For example:
 ```js
@@ -260,7 +260,7 @@ $('select').selectric({
 }
 ```
 
-##Events:
+## Events:
 
 All events are called on original element, first argument is the original element too. And can be bound like this:
 
@@ -331,7 +331,7 @@ $('select').on('eventname', function(element) {
   </tr>
 </table>
 
-##Public methods:
+## Public methods:
 
 ```js
 var Selectric = $('select').data('selectric');
@@ -350,7 +350,7 @@ $('select').selectric('refresh'); // Reconstruct the plugin options box
 $('select').selectric('init');    // Reinitialize the plugin
 ```
 
-##Browser support:
+## Browser support:
 
 * Firefox
 * Chrome
