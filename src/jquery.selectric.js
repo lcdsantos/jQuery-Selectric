@@ -624,14 +624,39 @@
               _this.elements.input.val('');
             }, _this.options.keySearchTimeout);
 
-            if ( val.length ) {
-              // Search in select options
-              $.each(_this.items, function(i, elm) {
-                if ( !elm.disabled && searchRegExp.test(elm.text) || searchRegExp.test(elm.slug) ) {
-                  _this.highlight(i);
-                  return;
-                }
-              });
+            if (val.length) {
+                var suitableIndexes = [];
+                $.each(_this.items, function (i, elm) {
+                    if (!elm.disabled && (searchRegExp.test(elm.text) || searchRegExp.test(elm.slug))) {
+                        suitableIndexes.push(i);
+                    }
+                });
+
+                var alreadyHighlighted = $.inArray(_this.state.highlightedIdx, suitableIndexes) > -1;
+
+                var lastItem = suitableIndexes.slice(-1).pop();
+
+                $.each(suitableIndexes, function (i, elm) {
+                    if (alreadyHighlighted) {
+                        if (elm === _this.state.highlightedIdx) {
+                            //do nothing
+                        } else if (elm < _this.state.highlightedIdx) {
+                            if (lastItem && lastItem === _this.state.highlightedIdx) {
+                                _this.highlight(elm);
+                                return false;
+                            } else {
+                                //do nothing
+                            }
+                        } else if (elm > _this.state.highlightedIdx) {
+                            _this.highlight(elm);
+                            return false;
+                        }
+                        
+                    } else {
+                        _this.highlight(elm);
+                        return false;
+                    }
+                });
             }
           });
       }
