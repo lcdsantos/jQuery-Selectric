@@ -627,8 +627,16 @@
             if (val.length) {
                 var suitableIndexes = [];
                 $.each(_this.items, function (i, elm) {
-                    if (!elm.disabled && (searchRegExp.test(elm.text) || searchRegExp.test(elm.slug))) {
-                        suitableIndexes.push(i);
+                    if (elm.element.is('optgroup')) {
+                        $.each(elm.items, function (k, subElm) {
+                            if (!subElm.disabled && (searchRegExp.test(subElm.text) || searchRegExp.test(subElm.slug))) {
+                                suitableIndexes.push(subElm.index);
+                            }
+                        });
+                    } else {
+                        if (!elm.disabled && (searchRegExp.test(elm.text) || searchRegExp.test(elm.slug))) {
+                            suitableIndexes.push(elm.index);
+                        }
                     }
                 });
 
