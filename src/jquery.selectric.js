@@ -625,46 +625,37 @@
             }, _this.options.keySearchTimeout);
 
             if (val.length) {
-                var suitableIndexes = [];
-                $.each(_this.items, function (i, elm) {
-                    if (elm.element.is('optgroup')) {
-                        $.each(elm.items, function (k, subElm) {
-                            if (!subElm.disabled && (searchRegExp.test(subElm.text) || searchRegExp.test(subElm.slug))) {
-                                suitableIndexes.push(subElm.index);
-                            }
-                        });
-                    } else {
-                        if (!elm.disabled && (searchRegExp.test(elm.text) || searchRegExp.test(elm.slug))) {
-                            suitableIndexes.push(elm.index);
-                        }
-                    }
-                });
-
-                var alreadyHighlighted = $.inArray(_this.state.highlightedIdx, suitableIndexes) > -1;
-
-                var lastItem = suitableIndexes.slice(-1).pop();
-
-                $.each(suitableIndexes, function (i, elm) {
-                    if (alreadyHighlighted) {
-                        if (elm === _this.state.highlightedIdx) {
-                            //do nothing
-                        } else if (elm < _this.state.highlightedIdx) {
-                            if (lastItem && lastItem === _this.state.highlightedIdx) {
-                                _this.highlight(elm);
-                                return false;
-                            } else {
-                                //do nothing
-                            }
-                        } else if (elm > _this.state.highlightedIdx) {
-                            _this.highlight(elm);
-                            return false;
-                        }
-                        
-                    } else {
-                        _this.highlight(elm);
-                        return false;
-                    }
-                });
+              var suitableIndexes = [];
+              $.each(_this.items, function (i, elm) {
+                  if (elm.element.is('optgroup')) {
+                      $.each(elm.items, function (k, subElm) {
+                          if (!subElm.disabled && (searchRegExp.test(subElm.text) || searchRegExp.test(subElm.slug))) {
+                              suitableIndexes.push(subElm.index);
+                          }
+                      });
+                  } else if (!elm.disabled && (searchRegExp.test(elm.text) || searchRegExp.test(elm.slug))) {
+                      suitableIndexes.push(elm.index);
+                  }
+              });  
+              var alreadyHighlighted = $.inArray(_this.state.highlightedIdx, suitableIndexes) > -1;  
+              var lastItem = suitableIndexes.slice(-1).pop();  
+              $.each(suitableIndexes, function (i, elm) {
+                  if (alreadyHighlighted) {
+                      if (elm < _this.state.highlightedIdx) {
+                          if (lastItem && lastItem === _this.state.highlightedIdx) {
+                              _this.highlight(elm);
+                              return false;
+                          }
+                      } else if (elm > _this.state.highlightedIdx) {
+                          _this.highlight(elm);
+                          return false;
+                      }
+                      
+                  } else {
+                      _this.highlight(elm);
+                      return false;
+                  }
+              });
             }
           });
       }
