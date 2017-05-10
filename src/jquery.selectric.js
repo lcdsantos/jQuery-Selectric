@@ -548,7 +548,7 @@
           itemData.selected                 ? 'selected' : ''
         ]),
         $.isFunction(itemBuilder)
-          ? _this.utils.format(itemBuilder(itemData), itemData)
+          ? _this.utils.format(itemBuilder(itemData, this.$element, index), itemData)
           : _this.utils.format(itemBuilder, filteredItemData)
       );
     },

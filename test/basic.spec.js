@@ -160,14 +160,36 @@ describe('basic suite', function() {
     expect($('.selectric-wrapper').find('.label').find('strong').length).toBe(1);
   });
 
-  it('should have custom option item text', function() {
-    select.selectric({
-      optionsItemBuilder: function(itemData) {
-        return '<span>' + itemData.text + '</span>';
-      }
+  describe('optionsItemBuilder', function () {
+
+    it('should have custom option item text', function() {
+      select.selectric({
+        optionsItemBuilder: function(itemData) {
+          return '<span>' + itemData.text + '</span>';
+        }
+      });
+      $('.selectric').click();
+      expect($('.selectric-items').find('li.selected').find('span').length).toBe(1);
     });
-    $('.selectric').click();
-    expect($('.selectric-items').find('li.selected').find('span').length).toBe(1);
+
+    it('should have element available',function () {
+      select.selectric({
+        optionsItemBuilder: function(itemData, element) {
+          element.addClass('testtest');
+          return '<span>' + itemData.text + '</span>';
+        }
+      });
+      expect(select).toHaveClass('testtest');
+    });
+
+    it('should have index available',function () {
+      select.selectric({
+        optionsItemBuilder: function(itemData, element, index) {
+          return '<span class="item-' + index +'">' + itemData.text + '</span>';
+        }
+      });
+      expect($('.selectric-items').find('li:first').find('.item-0').length).toBe(1);
+    });
   });
 
   it('should have same width of original <select>', function() {
