@@ -205,6 +205,15 @@ describe('basic suite', function() {
     expect($('.custom-wrapper').length).toBe(1);
   });
 
+  it('should change classes even if last char is a number', function() {
+    select.selectric({
+      customClass: {
+        prefix: 'custom2'
+      }
+    });
+    expect($('.custom2-wrapper').length).toBe(1);
+  });
+
   it('should change classes to camelcase', function() {
     select.selectric({
       customClass: {
