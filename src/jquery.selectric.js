@@ -628,7 +628,9 @@
               // Search in select options
               $.each(_this.items, function(i, elm) {
                 if ( !elm.disabled && searchRegExp.test(elm.text) || searchRegExp.test(elm.slug) ) {
-                  _this.highlight(i);
+
+                  // Stop on the first option from the value made on keypress.
+                  _this.highlight(i).first();
                   return;
                 }
               });
