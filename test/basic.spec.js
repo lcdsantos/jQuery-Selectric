@@ -119,6 +119,13 @@ describe('basic suite', function() {
     expect($('.selectric-items').find('.highlighted').length).toBe(0);
   });    
 
+  it('should skip blank alternative text with separator', function () {
+    select.find('option:eq(6)').attr('data-alt', '|');
+    select.selectric('refresh');
+    $('.selectric-input').val('a text that does not exist').trigger('input');
+    expect($('.selectric-items').find('.highlighted').length).toBe(0);
+  });    
+
   it('highlight() should return undefined if index is undefined', function () {
     expect(select.data('selectric').highlight(undefined)).toBe(undefined);
   });
