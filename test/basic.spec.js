@@ -80,6 +80,24 @@ describe('basic suite', function() {
     expect(select.val()).toBe('banana');
   });
 
+  it('should search alternative text', function () {
+    $('.selectric-input').val('alt banana').trigger('input');
+    $('.selectric-items').find('.highlighted').click();
+    expect(select.val()).toBe('banana');
+  });
+
+  it('should search alternative text with separator', function () {
+    $('.selectric-input').val('altberry').trigger('input');
+    $('.selectric-items').find('.highlighted').click();
+    expect(select.val()).toBe('bilberry');
+  });
+
+  it('should search alternative text with separator 2', function () {
+    $('.selectric-input').val('another berry').trigger('input');
+    $('.selectric-items').find('.highlighted').click();
+    expect(select.val()).toBe('bilberry');
+  });  
+
   it('highlight() should return undefined if index is undefined', function () {
     expect(select.data('selectric').highlight(undefined)).toBe(undefined);
   });
