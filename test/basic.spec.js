@@ -80,6 +80,52 @@ describe('basic suite', function() {
     expect(select.val()).toBe('banana');
   });
 
+  it('should not search a disabled option', function() {
+    select.find('option:eq(4)').prop('disabled', 'disabled');
+    select.selectric('refresh');
+    $('.selectric-input').val('banana').trigger('input');
+    $('.selectric-items').find('.highlighted').lenght;
+    expect($('.selectric-items').find('.highlighted').length).toBe(0);
+  });  
+
+  it('should search alternative text', function () {
+    select.find('option:eq(6)').attr('data-alt', 'alt blackberry');
+    select.selectric('refresh');
+    $('.selectric-input').val('alt blackberry').trigger('input');
+    $('.selectric-items').find('.highlighted').click();
+    expect(select.val()).toBe('blackberry');
+  });
+
+  it('should search alternative text with separator', function () {
+    select.find('option:eq(6)').attr('data-alt', 'alt blackberry | another berry');
+    select.selectric('refresh');
+    $('.selectric-input').val('alt blackberry').trigger('input');
+    $('.selectric-items').find('.highlighted').click();
+    expect(select.val()).toBe('blackberry');
+  });
+
+  it('should search alternative text with separator 2', function () {
+    select.find('option:eq(6)').attr('data-alt', 'alt blackberry | another berry');
+    select.selectric('refresh');
+    $('.selectric-input').val('another berry').trigger('input');
+    $('.selectric-items').find('.highlighted').click();
+    expect(select.val()).toBe('blackberry');
+  });  
+
+  it('should skip blank alternative text', function () {
+    select.find('option:eq(6)').attr('data-alt', '');
+    select.selectric('refresh');
+    $('.selectric-input').val('a text that does not exist').trigger('input');
+    expect($('.selectric-items').find('.highlighted').length).toBe(0);
+  });    
+
+  it('should skip blank alternative text with separator', function () {
+    select.find('option:eq(6)').attr('data-alt', '|');
+    select.selectric('refresh');
+    $('.selectric-input').val('a text that does not exist').trigger('input');
+    expect($('.selectric-items').find('.highlighted').length).toBe(0);
+  });    
+
   it('highlight() should return undefined if index is undefined', function () {
     expect(select.data('selectric').highlight(undefined)).toBe(undefined);
   });
