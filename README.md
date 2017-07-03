@@ -249,6 +249,14 @@ $('select').selectric({
   allowWrap: true,
 
   /*
+   * Type: Boolean
+   * Description: By default the options box gets opened above if it's outside the window.
+   *              In case this auto detection doesn't work as expected (e.g. in transform/relative scopes)
+   *              you may force opening above.
+   */
+  forceRenderAbove: false,
+
+  /*
    * Type: Object
    * Description: Customize select "multiple" behavior
    */
