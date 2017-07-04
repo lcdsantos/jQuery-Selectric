@@ -160,6 +160,8 @@
 
     $('#basic').selectric();
 
+    $('#forceRenderAbove').selectric({ forceRenderAbove: true });
+
     /*------------------------------------*/
 
     // Cache the target element
