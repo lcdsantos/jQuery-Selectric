@@ -27,7 +27,7 @@
   var $win = $(window);
 
   var pluginName = 'selectric';
-  var classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Focus Hover Responsive Above Scroll Group GroupLabel';
+  var classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Focus Hover Responsive Above Below Scroll Group GroupLabel';
   var eventNamespaceSuffix = '.sl';
 
   var chars = ['a', 'e', 'i', 'o', 'u', 'n', 'c', 'y'];
@@ -756,6 +756,8 @@
 
       if (_this.options.forceRenderAbove === true) {
         _this.elements.outerWrapper.addClass(_this.classes.above);
+      } else if (_this.options.forceRenderBelow === true) {
+        _this.elements.outerWrapper.addClass(_this.classes.below);
       } else {
         var scrollTop = $win.scrollTop();
         var winHeight = $win.height();
@@ -770,8 +772,10 @@
         // It's acceptable that the user needs to
         // scroll the viewport to see the cut off UI
         var renderAbove = !fitsDown && fitsAbove;
+        var renderBelow = !renderAbove;
 
         _this.elements.outerWrapper.toggleClass(_this.classes.above, renderAbove);
+        _this.elements.outerWrapper.toggleClass(_this.classes.below, renderBelow);
       }
     },
 
@@ -1064,6 +1068,7 @@
     inheritOriginalWidth : false,
     allowWrap            : true,
     forceRenderAbove     : false,
+    forceRenderBelow     : false,
     stopPropagation      : true,
     optionsItemBuilder   : '{text}', // function(itemData, element, index)
     labelBuilder         : '{text}', // function(currItem)
