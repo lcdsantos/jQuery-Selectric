@@ -257,6 +257,13 @@ $('select').selectric({
   forceRenderAbove: false,
 
   /*
+   * Type: Boolean
+   * Description: In some cases the options box gets opened above even though the desired behavior would be below.
+   *              If the auto dectection doesn't work as expected you may force opening below.
+   */
+  forceRenderBelow: false,
+
+  /*
    * Type: Object
    * Description: Customize select "multiple" behavior
    */

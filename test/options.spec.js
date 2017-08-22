@@ -10,6 +10,7 @@ describe('options', function() {
     loadFixtures('options.html');
 
     $('#forceRenderAbove select').selectric({ forceRenderAbove: true });
+    $('#forceRenderBelow select').selectric({ forceRenderBelow: true });
   });
 
   it('should always have above class after initial open when using forceRenderAbove option', function() {
@@ -19,6 +20,15 @@ describe('options', function() {
     // close afterwards
     $('#forceRenderAbove').find('.selectric').trigger('click');
     expect($('#forceRenderAbove').find('.selectric-wrapper').hasClass('selectric-above')).toBe(true);
+  });
+
+  it('should always have below class after initial open when using forceRenderBelow option', function() {
+    // initial open
+    $('#forceRenderBelow').find('.selectric').trigger('click');
+    expect($('#forceRenderBelow').find('.selectric-wrapper').hasClass('selectric-below')).toBe(true);
+    // close afterwards
+    $('#forceRenderBelow').find('.selectric').trigger('click');
+    expect($('#forceRenderBelow').find('.selectric-wrapper').hasClass('selectric-below')).toBe(true);
   });
 
 });
