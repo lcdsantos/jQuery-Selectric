@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.13.0 (Aug 21 2017) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.13.0 (Aug 22 2017) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2017 Leonardo Santos; MIT License
  *
@@ -489,6 +489,7 @@
         className : $elm.prop('class'),
         text      : $elm.html(),
         slug      : $.trim(_this.utils.replaceDiacritics($elm.html())),
+        alt       : $elm.attr('data-alt'),
         selected  : $elm.prop('selected'),
         disabled  : isDisabled
       };
@@ -644,9 +645,25 @@
             if ( val.length ) {
               // Search in select options
               $.each(_this.items, function(i, elm) {
-                if ( !elm.disabled && searchRegExp.test(elm.text) || searchRegExp.test(elm.slug) ) {
+                if (elm.disabled) {
+                  return;
+                }
+                if (searchRegExp.test(elm.text) || searchRegExp.test(elm.slug)) {
                   _this.highlight(i);
                   return;
+                }
+                if (!elm.alt) {
+                  return;
+                }
+                var altItems = elm.alt.split('|');
+                for (var ai = 0; ai < altItems.length; ai++) {
+                  if (!altItems[ai]) {
+                    break;
+                  }
+                  if (searchRegExp.test(altItems[ai].trim())) {
+                    _this.highlight(i);
+                    return;
+                  }
                 }
               });
             }
