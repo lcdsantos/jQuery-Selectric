@@ -879,7 +879,7 @@
           /* istanbul ignore next */
           $doc.on('mousewheel' + eventNamespaceSuffix + ' DOMMouseScroll' + eventNamespaceSuffix, '.' + _this.classes.scroll, function(e) {
             var orgEvent = e.originalEvent;
-            var scrollTop = $(this).scrollTop();
+            var scrollTop = $(this).parent().scrollTop();
             var deltaY = 0;
 
             if ( 'detail'      in orgEvent ) { deltaY = orgEvent.detail * -1; }
