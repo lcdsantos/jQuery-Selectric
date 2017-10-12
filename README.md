@@ -2,6 +2,7 @@
 [![Travis](https://img.shields.io/travis/lcdsantos/jQuery-Selectric.svg)](https://travis-ci.org/lcdsantos/jQuery-Selectric)
 [![codecov.io](https://codecov.io/github/lcdsantos/jQuery-Selectric/coverage.svg?branch=master)](https://codecov.io/github/lcdsantos/jQuery-Selectric?branch=master)
 [![npm](https://img.shields.io/npm/v/selectric.svg)](https://www.npmjs.com/package/selectric)
+[![jsDelivr Hits](https://data.jsdelivr.com/v1/package/npm/selectric/badge?style=rounded)](https://www.jsdelivr.com/package/npm/selectric)
 
 # jQuery Selectric ![icon](http://i.imgur.com/D2hcnUN.png)
 
