@@ -35,6 +35,18 @@
           user-select: none;
 }
 
+.selectric .selectric-value-item {
+  margin: 0 5px 0 0;
+  background-color: #FFF;
+  padding: 2px 5px;
+  cursor: default;
+}
+
+.selectric .selectric-value-item .selectric-item-cancel {
+  cursor: pointer;
+  padding-left: 6px;
+}
+
 .selectric .button {
   display: block;
   position: absolute;

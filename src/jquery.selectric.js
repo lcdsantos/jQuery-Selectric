@@ -263,6 +263,14 @@
       _this.populate();
       _this.activate();
 
+      if ( _this.options.multiple.control ) {
+        // delegate multiple option cancel
+        _this.elements.label.on('click', '.selectric-item-cancel', function(e) {
+          e.stopPropagation();
+          _this.select($(this).data('index'));
+        });
+      }
+
       _this.utils.triggerCallback('Init', _this);
     },
 
@@ -377,7 +385,17 @@
             labelMarkup.slice(labelMarkup.length - 1);
           }
         }
-        _this.elements.label.html(labelMarkup.join(_this.options.multiple.separator));
+
+        if ( _this.options.multiple.control && _this.state.selectedIdx.length ) {
+          _this.elements.label.html($.map(_this.state.selectedIdx, function(item, index) {
+            return $('<span/>',  {
+              class: 'selectric-value-item',
+              html: '<span class="selectric-value">' + labelMarkup[index] + '</span><span class="selectric-item-cancel" data-index="' + item + '">' + _this.options.multiple.icon + '</span>',
+            });
+          }));
+        } else {
+          _this.elements.label.html(labelMarkup.join(_this.options.multiple.separator));
+        }
 
       } else {
         var currItem = _this.lookupItems[_this.state.currValue];
@@ -1102,6 +1120,8 @@
       camelCase: false
     },
     multiple              : {
+      control: true,
+      icon: 'x',
       separator: ', ',
       keepMenuOpen: true,
       maxLabelEntries: false

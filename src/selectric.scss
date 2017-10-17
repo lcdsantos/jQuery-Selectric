@@ -3,6 +3,7 @@ $selectric-secondary-color: #BBB !default;                                      
 $selectric-text-color:      #444 !default;                                              // Color used in label
 $selectric-bg-color:        #F8F8F8 !default;                                           // Background color
 $selectric-btn-bg-color:    #F8f8f8 !default;                                           // Button background color
+$selectric-option-bg-color: #FFF !default;                                              // Multiple option background color
 $selectric-height:          40px !default;                                              // Outer height
 $selectric-spacing:         10px !default;                                              // Label left padding
 $selectric-border-width:    1px !default;                                               // Outer border width
@@ -37,6 +38,18 @@ $selectric-font-size:       12px !default;                                      
     color: $selectric-text-color;
     height: $selectric-inner-height;
     user-select: none;
+  }
+
+  .selectric-value-item {
+    margin: 0 5px 0 0;
+    background-color: $selectric-option-bg-color;
+    padding: 2px 5px;
+    cursor: default;
+
+    .selectric-item-cancel {
+      cursor: pointer;
+      padding-left: 6px;
+    }
   }
 
   .button {
