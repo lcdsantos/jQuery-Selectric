@@ -83,6 +83,23 @@ $selectric-font-size:       12px !default;                                      
   }
 }
 
+.selectric-multi-line {
+  .selectric {
+    .label {
+      height: unset;
+      white-space: normal;
+      overflow: unset;
+      text-overflow: unset;
+      word-break: break-all;
+    }
+
+    .selectric-value-item {
+      display: inline-block;
+      line-height: 16px;
+    }
+  }
+}
+
 .selectric-focus .selectric {
   border-color: darken($selectric-main-color, 20%);
 }

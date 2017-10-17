@@ -74,6 +74,7 @@
 
     _this.state = {
       multiple       : !!_this.$element.attr('multiple'),
+      control        : !!_this.$element.attr('option-control'),
       enabled        : false,
       opened         : false,
       currValue      : -1,
@@ -280,7 +281,7 @@
       _this.populate();
       _this.activate();
 
-      if ( _this.options.multiple.control ) {
+      if ( _this.state.control ) {
         // delegate multiple option cancel
         _this.elements.label.on('click', '.selectric-item-cancel', function(e) {
           e.stopPropagation();
@@ -403,7 +404,7 @@
           }
         }
 
-        if ( _this.options.multiple.control && _this.state.selectedIdx.length ) {
+        if ( _this.state.control && _this.state.selectedIdx.length ) {
           _this.elements.label.html($.map(_this.state.selectedIdx, function(item, index) {
             return $('<span/>',  {
               class: 'selectric-value-item',
@@ -1137,7 +1138,6 @@
       camelCase: false
     },
     multiple              : {
-      control: true,
       icon: 'x',
       separator: ', ',
       keepMenuOpen: true,

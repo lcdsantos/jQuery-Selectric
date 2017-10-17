@@ -77,6 +77,19 @@
   border-bottom: none;
 }
 
+.selectric-multi-line .selectric .label {
+  height: unset;
+  white-space: normal;
+  overflow: unset;
+  text-overflow: unset;
+  word-break: break-all;
+}
+
+.selectric-multi-line .selectric .selectric-value-item {
+  display: inline-block;
+  line-height: 16px;
+}
+
 .selectric-focus .selectric {
   border-color: #aaaaaa;
 }
