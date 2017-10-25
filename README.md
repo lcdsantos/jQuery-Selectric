@@ -19,6 +19,12 @@ jQuery Selectric is a jQuery plugin designed to help at stylizing and manipulati
 
 ## How to use:
 
+Install via NPM:
+
+```html
+npm install selectric
+```
+
 Make sure to include jQuery in your page:
 
 ```html
