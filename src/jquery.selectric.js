@@ -633,7 +633,7 @@
                 }
                 if (searchRegExp.test(elm.text) || searchRegExp.test(elm.slug)) {
                   _this.highlight(i);
-                  return;
+                  return false;
                 }
                 if (!elm.alt) {
                   return;
@@ -645,7 +645,7 @@
                   }
                   if (searchRegExp.test(altItems[ai].trim())) {
                     _this.highlight(i);
-                    return;
+                    return false;
                   }
                 }
               });

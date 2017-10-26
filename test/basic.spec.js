@@ -80,6 +80,12 @@ describe('basic suite', function() {
     expect(select.val()).toBe('banana');
   });
 
+  it('partial search should return first match', function() {
+    $('.selectric-input').val('b').trigger('input');
+    $('.selectric-items').find('.highlighted').click();
+    expect(select.val()).toBe('banana');
+  });
+
   it('should not search a disabled option', function() {
     select.find('option:eq(4)').prop('disabled', 'disabled');
     select.selectric('refresh');
@@ -102,6 +108,15 @@ describe('basic suite', function() {
     $('.selectric-input').val('alt blackberry').trigger('input');
     $('.selectric-items').find('.highlighted').click();
     expect(select.val()).toBe('blackberry');
+  });
+
+  it('should match first alternative text', function () {
+    select.find('option:eq(8)').attr('data-alt', 'alt blueberry | zebra');
+    select.find('option:eq(9)').attr('data-alt', 'alt cantalope | zilch');
+    select.selectric('refresh');
+    $('.selectric-input').val('z').trigger('input');
+    $('.selectric-items').find('.highlighted').click();
+    expect(select.val()).toBe('blueberry');
   });
 
   it('should search alternative text with separator 2', function () {
