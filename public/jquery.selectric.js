@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.13.0 (Oct 17 2017) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.13.0 (Dec 02 2017) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2017 Leonardo Santos; MIT License
  *
@@ -439,7 +439,7 @@
       if ( $selected.length > 1 && _this.state.multiple ) {
         selectedIndex = [];
         $selected.each(function() {
-          selectedIndex.push($(this).index());
+          selectedIndex.push($(_this.$element.find('option')).index(this));
         });
       }
 

@@ -422,7 +422,7 @@
       if ( $selected.length > 1 && _this.state.multiple ) {
         selectedIndex = [];
         $selected.each(function() {
-          selectedIndex.push($(_this.$element.find("option")).index(this));
+          selectedIndex.push($(_this.$element.find('option')).index(this));
         });
       }
 
