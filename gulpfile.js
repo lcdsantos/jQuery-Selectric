@@ -71,7 +71,7 @@ gulp.task('js-min', function() {
   var pkg = getPackageJson();
 
   return gulp.src(['./src/jquery.selectric.js'])
-    .pipe($.uglify())
+    .pipe($.uglify({ output: { keep_quoted_props: true } }))
     .pipe($.header(bannerSmall, { pkg: pkg }))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest('./public'))
