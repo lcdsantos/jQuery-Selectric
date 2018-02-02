@@ -9,9 +9,9 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.13.0 (Aug 22 2017) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.13.0 (Feb 02 2018) - http://lcdsantos.github.io/jQuery-Selectric/
  *
- * Copyright (c) 2017 Leonardo Santos; MIT License
+ * Copyright (c) 2018 Leonardo Santos; MIT License
  *
  */
 
@@ -420,7 +420,7 @@
       if ( $selected.length > 1 && _this.state.multiple ) {
         selectedIndex = [];
         $selected.each(function() {
-          selectedIndex.push($(this).index());
+          selectedIndex.push($(_this.$element.find('option')).index(this));
         });
       }
 
@@ -650,7 +650,7 @@
                 }
                 if (searchRegExp.test(elm.text) || searchRegExp.test(elm.slug)) {
                   _this.highlight(i);
-                  return;
+                  return false;
                 }
                 if (!elm.alt) {
                   return;
@@ -662,7 +662,7 @@
                   }
                   if (searchRegExp.test(altItems[ai].trim())) {
                     _this.highlight(i);
-                    return;
+                    return false;
                   }
                 }
               });
