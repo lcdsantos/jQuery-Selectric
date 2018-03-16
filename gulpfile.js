@@ -71,7 +71,7 @@ gulp.task('js-min', function() {
   var pkg = getPackageJson();
 
   return gulp.src(['./src/jquery.selectric.js'])
-    .pipe($.uglify({ output: { keep_quoted_props: true } }))
+    .pipe($.uglify({ output: { 'keep_quoted_props': true } }))
     .pipe($.header(bannerSmall, { pkg: pkg }))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest('./public'))
@@ -101,7 +101,7 @@ gulp.task('css', function() {
   var pkg = getPackageJson();
 
   return gulp.src('./src/selectric.scss')
-    .pipe($.sass({ outputStyle: 'expanded' }))
+    .pipe($.sass({ outputStyle: 'expanded' }).on('error', $.sass.logError))
     .pipe($.autoprefixer({ browsers: ['last 2 versions', '> 1%', 'ie 8', 'ie 7'] }))
     .pipe($.header(bannerCSS, { pkg: pkg }))
     .pipe(gulp.dest('./public'))
@@ -110,14 +110,14 @@ gulp.task('css', function() {
 
 gulp.task('themes-css', function() {
   return gulp.src('**/*.scss', { cwd: './src/themes/' })
-    .pipe($.sass({ outputStyle: 'expanded' }))
+    .pipe($.sass({ outputStyle: 'expanded' }).on('error', $.sass.logError))
     .pipe($.autoprefixer({ browsers: ['last 2 versions', '> 1%', 'ie 8', 'ie 7'] }))
     .pipe(gulp.dest('./public/themes/'));
 });
 
 gulp.task('plugins-css', function() {
   return gulp.src('**/*.scss', { cwd: './src/plugins/' })
-    .pipe($.sass({ outputStyle: 'expanded' }))
+    .pipe($.sass({ outputStyle: 'expanded' }).on('error', $.sass.logError))
     .pipe($.autoprefixer({ browsers: ['last 2 versions', '> 1%', 'ie 8', 'ie 7'] }))
     .pipe(gulp.dest('./public/plugins/'));
 });
