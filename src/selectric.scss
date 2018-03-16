@@ -1,88 +1,91 @@
-$selectric-main-color:      #DDD !default;                                              // Color used in border
-$selectric-secondary-color: #BBB !default;                                              // Color used in button
-$selectric-text-color:      #444 !default;                                              // Color used in label
-$selectric-bg-color:        #F8F8F8 !default;                                           // Background color
-$selectric-btn-bg-color:    #F8f8f8 !default;                                           // Button background color
-$selectric-height:          40px !default;                                              // Outer height
-$selectric-spacing:         10px !default;                                              // Label left padding
-$selectric-border-width:    1px !default;                                               // Outer border width
-$selectric-border-radius:   0px !default;                                               // Border radius
-$selectric-inner-height:    $selectric-height - ($selectric-border-width * 2) !default; // Inner height
-$selectric-font-size:       12px !default;                                              // Font size
+// Colors
+$selectric-bg-color:            #fdfdfd !default;                                           // Background color
+$selectric-border-color:        #ededed !default;                                           // Color used in border
+$selectric-label-color:         #2f2f2f !default;                                           // Color used in label
+$selectric-btn-color:           #b0b0b0 !default;                                           // Color used in button
+$selectric-btn-bg-color:        transparent !default;                                       // Button background color
+
+// Sizing and style
+$selectric-spacing:             1em !default;                                               // Label left padding
+$selectric-border-width:        1px !default;                                               // Outer border width
+$selectric-border-radius:       0 !default;                                                 // Border radius
+$selectric-height:              40px !default;                                              // Outer height
+$selectric-inner-height:        $selectric-height - ($selectric-border-width * 2) !default; // Inner height
+$selectric-font-size:           12px !default;                                              // Font size
+
+// Options box
+$selectric-color-box-bg:        $selectric-bg-color !default;                               // Options box background color
+$selectric-color-box-color:     $selectric-label-color !default;                            // Options box items color
+$selectric-include-above-style: true !default;                                              // Toggle `selectric-above` style
 
 .selectric-wrapper {
   position: relative;
   cursor: pointer;
 }
 
-.selectric-responsive {
-  width: 100%;
-}
-
 .selectric {
-  border: $selectric-border-width solid $selectric-main-color;
+  border: $selectric-border-width solid $selectric-border-color;
   border-radius: $selectric-border-radius;
-  background: $selectric-bg-color;
+  background-color: $selectric-bg-color;
   position: relative;
   overflow: hidden;
 
-  .label {
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin: 0 $selectric-inner-height 0 $selectric-spacing;
-    font-size: $selectric-font-size;
-    line-height: $selectric-inner-height;
-    color: $selectric-text-color;
-    height: $selectric-inner-height;
-    user-select: none;
+  .selectric-focus & {
+    border-color: darken($selectric-border-color, 20%);
   }
 
-  .button {
-    display: block;
+  .selectric-hover & {
+    border-color: darken($selectric-border-color, 10%);
+  }
+}
+
+.selectric-label {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 $selectric-inner-height 0 $selectric-spacing;
+  font-size: $selectric-font-size;
+  line-height: $selectric-inner-height;
+  color: $selectric-label-color;
+  height: $selectric-inner-height;
+  user-select: none;
+}
+
+.selectric-button {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: $selectric-inner-height;
+  height: $selectric-inner-height;
+  line-height: $selectric-inner-height;
+  background-color: $selectric-btn-bg-color;
+  color: $selectric-btn-color;
+  text-align: center;
+  border: none;
+  padding: 0;
+  font: 0/0 a;
+  *font: 20px/#{$selectric-inner-height} Lucida Sans Unicode, Arial Unicode MS, Arial;
+
+  &:after {
+    content: " ";
     position: absolute;
-    right: 0;
     top: 0;
-    width: $selectric-inner-height;
-    height: $selectric-inner-height;
-    line-height: $selectric-inner-height;
-    background-color: $selectric-btn-bg-color;
-    color: $selectric-secondary-color;
-    text-align: center;
-    font: 0/0 a;
-    *font: 20px/#{$selectric-inner-height} Lucida Sans Unicode, Arial Unicode MS, Arial;
-
-    &:after {
-      content: " ";
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      margin: auto;
-      width: 0;
-      height: 0;
-      border: 4px solid transparent;
-      border-top-color: $selectric-secondary-color;
-      border-bottom: none;
-    }
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 0;
+    height: 0;
+    border: 4px solid;
+    border-bottom: none;
+    border-left-color: transparent;
+    border-right-color: transparent;
   }
-}
 
-.selectric-focus .selectric {
-  border-color: darken($selectric-main-color, 20%);
-}
-
-.selectric-hover .selectric {
-  border-color: darken($selectric-main-color, 10%);
-
-  .button {
-    color: darken($selectric-secondary-color, 10%);
-
-    &:after {
-      border-top-color: darken($selectric-secondary-color, 10%);
-    }
+  .selectric-hover & {
+    color: darken($selectric-btn-color, 10%);
   }
 }
 
@@ -90,7 +93,7 @@ $selectric-font-size:       12px !default;                                      
   z-index: 9999;
 
   .selectric {
-    border-color: darken($selectric-main-color, 10%);
+    border-color: darken($selectric-border-color, 10%);
   }
 
   .selectric-items {
@@ -163,51 +166,51 @@ $selectric-font-size:       12px !default;                                      
 .selectric-items {
   display: none;
   position: absolute;
+  z-index: -1;
   top: 100%;
   left: 0;
   background: $selectric-bg-color;
-  border: 1px solid darken($selectric-main-color, 10%);
-  z-index: -1;
+  border: 1px solid darken($selectric-border-color, 10%);
   box-shadow: 0 0 10px -6px;
+  font-size: $selectric-font-size;
 
   .selectric-scroll {
     height: 100%;
     overflow: auto;
   }
 
-  .selectric-above & {
-    top: auto;
-    bottom: 100%;
+  @if $selectric-include-above-style {
+    .selectric-above & {
+      top: auto;
+      bottom: 100%;
+    }
   }
 
   ul, li {
     list-style: none;
     padding: 0;
     margin: 0;
-    font-size: $selectric-font-size;
-    line-height: 20px;
-    min-height: 20px;
   }
 
   li {
     display: block;
     padding: 10px;
-    color: #666;
+    color: $selectric-color-box-color;
     cursor: pointer;
 
     &.selected {
-      background: #E0E0E0;
-      color: #444;
+      background: darken($selectric-color-box-bg, 5%);
+      color: darken($selectric-color-box-color, 5%);
     }
 
     &.highlighted {
-      background: #D0D0D0;
-      color: #444;
+      background: darken($selectric-color-box-bg, 10%);
+      color: darken($selectric-color-box-color, 5%);
     }
 
     &:hover {
-      background: #D5D5D5;
-      color: #444;
+      background: darken($selectric-color-box-bg, 15%);
+      color: darken($selectric-color-box-color, 5%);
     }
   }
 
@@ -216,7 +219,7 @@ $selectric-font-size:       12px !default;                                      
     opacity: 0.5;
     cursor: default !important;
     background: none !important;
-    color: #666 !important;
+    color: $selectric-color-box-color !important;
     user-select: none;
   }
 
@@ -227,7 +230,7 @@ $selectric-font-size:       12px !default;                                      
       cursor: default;
       user-select: none;
       background: none;
-      color: #444;
+      color: darken($selectric-color-box-color, 10%);
     }
 
     &.disabled li {
