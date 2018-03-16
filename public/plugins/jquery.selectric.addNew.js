@@ -1,4 +1,4 @@
-/*! Selectric AddNew ϟ v0.2.0 (2017-08-22) - git.io/tjl9sQ - Copyright (c) 2017 David Shen (git.io/mhQmLQ) - MIT License */
+/*! Selectric AddNew ϟ v0.2.0 (2018-03-16) - git.io/tjl9sQ - Copyright (c) 2018 David Shen (git.io/mhQmLQ) - MIT License */
 (function(factory) {
   /* global define */
   if ( typeof define === 'function' && define.amd ) {

@@ -9,9 +9,9 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.13.0 (Aug 22 2017) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.13.0 (Mar 15 2018) - http://lcdsantos.github.io/jQuery-Selectric/
  *
- * Copyright (c) 2017 Leonardo Santos; MIT License
+ * Copyright (c) 2018 Leonardo Santos; MIT License
  *
  */
 
@@ -44,7 +44,7 @@
   var $win = $(window);
 
   var pluginName = 'selectric';
-  var classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Focus Hover Responsive Above Below Scroll Group GroupLabel';
+  var classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Focus Hover Responsive Above Below Scroll Group GroupLabel Label';
   var eventNamespaceSuffix = '.sl';
 
   var chars = ['a', 'e', 'i', 'o', 'u', 'n', 'c', 'y'];
@@ -248,7 +248,7 @@
       var items              = $('<div/>',   { 'class': _this.classes.items, 'tabindex': -1 });
       var itemsScroll        = $('<div/>',   { 'class': _this.classes.scroll });
       var wrapper            = $('<div/>',   { 'class': _this.classes.prefix, 'html': _this.options.arrowButtonMarkup });
-      var label              = $('<span/>',  { 'class': 'label' });
+      var label              = $('<span/>',  { 'class': _this.classes.label });
       var outerWrapper       = _this.$element.wrap('<div/>').parent().append(wrapper.prepend(label), items, input);
       var hideSelectWrapper  = $('<div/>',   { 'class': _this.classes.hideselect });
 
@@ -650,7 +650,7 @@
                 }
                 if (searchRegExp.test(elm.text) || searchRegExp.test(elm.slug)) {
                   _this.highlight(i);
-                  return;
+                  return false;
                 }
                 if (!elm.alt) {
                   return;
@@ -662,7 +662,7 @@
                   }
                   if (searchRegExp.test(altItems[ai].trim())) {
                     _this.highlight(i);
-                    return;
+                    return false;
                   }
                 }
               });
@@ -1090,7 +1090,7 @@
     onChange             : function(elm) { $(elm).change(); },
     maxHeight            : 300,
     keySearchTimeout     : 500,
-    arrowButtonMarkup    : '<b class="button">&#x25be;</b>',
+    arrowButtonMarkup    : '<button class="selectric-button">&#x25be;</button>',
     disableOnMobile      : false,
     nativeOnMobile       : true,
     openOnFocus          : true,
