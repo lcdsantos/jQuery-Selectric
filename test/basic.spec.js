@@ -92,7 +92,7 @@ describe('basic suite', function() {
     $('.selectric-input').val('banana').trigger('input');
     $('.selectric-items').find('.highlighted').lenght;
     expect($('.selectric-items').find('.highlighted').length).toBe(0);
-  });  
+  });
 
   it('should search alternative text', function () {
     select.find('option:eq(6)').attr('data-alt', 'alt blackberry');
@@ -125,21 +125,21 @@ describe('basic suite', function() {
     $('.selectric-input').val('another berry').trigger('input');
     $('.selectric-items').find('.highlighted').click();
     expect(select.val()).toBe('blackberry');
-  });  
+  });
 
   it('should skip blank alternative text', function () {
     select.find('option:eq(6)').attr('data-alt', '');
     select.selectric('refresh');
     $('.selectric-input').val('a text that does not exist').trigger('input');
     expect($('.selectric-items').find('.highlighted').length).toBe(0);
-  });    
+  });
 
   it('should skip blank alternative text with separator', function () {
     select.find('option:eq(6)').attr('data-alt', '|');
     select.selectric('refresh');
     $('.selectric-input').val('a text that does not exist').trigger('input');
     expect($('.selectric-items').find('.highlighted').length).toBe(0);
-  });    
+  });
 
   it('highlight() should return undefined if index is undefined', function () {
     expect(select.data('selectric').highlight(undefined)).toBe(undefined);
@@ -203,7 +203,7 @@ describe('basic suite', function() {
   it('should update label', function() {
     $('.selectric').click();
     $('.selectric-items').find('li:eq(4)').click();
-    expect($('.selectric-wrapper').find('.label').text()).toBe('Banana');
+    expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Banana');
   });
 
   it('should original select value', function() {
@@ -218,7 +218,7 @@ describe('basic suite', function() {
         return '<strong>' + currItem.text + '</strong>';
       }
     });
-    expect($('.selectric-wrapper').find('.label').find('strong').length).toBe(1);
+    expect($('.selectric-wrapper').find('.selectric-label').find('strong').length).toBe(1);
   });
 
   describe('optionsItemBuilder', function () {
@@ -338,6 +338,6 @@ describe('basic suite', function() {
     });
     $('.selectric').click();
     $('.selectric-items').find('li:eq(4)').click();
-    expect($('.selectric-wrapper').find('.label').text()).toBe('BANANA');
+    expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('BANANA');
   });
 });

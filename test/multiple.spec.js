@@ -26,20 +26,20 @@ describe('multiple selects', function() {
 
   it('should render the default option (please choose)', function () {
     $('.selectric').click();
-    expect($('.selectric-wrapper').find('.label').text()).toBe('Please choose...');
+    expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Please choose...');
   });
 
   it('should render the default option (please choose) even if no value were given', function () {
     $('.selectric').click();
     select.find('option').first().removeAttr('value');
-    expect($('.selectric-wrapper').find('.label').text()).toBe('Please choose...');
+    expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Please choose...');
   });
 
   it('should set the first option if no default option (please choose) is given', function () {
     $('.selectric').click();
     select.find('option').first().remove();
     select.selectric('refresh');
-    expect($('.selectric-wrapper').find('.label').text()).toBe('Ant');
+    expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Ant');
   });
 
   it('should update label', function () {
@@ -47,7 +47,7 @@ describe('multiple selects', function() {
     $('.selectric').click();
     listItems.find('li').eq(1).click();
     listItems.find('li').eq(3).click();
-    expect($('.selectric-wrapper').find('.label').text()).toBe('Ant, Dog');
+    expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Ant, Dog');
   });
 
   it('should update label after a option was deselected', function () {
@@ -56,7 +56,7 @@ describe('multiple selects', function() {
     listItems.find('li').eq(1).click();
     listItems.find('li').eq(3).click();
     listItems.find('li').eq(1).click();
-    expect($('.selectric-wrapper').find('.label').text()).toBe('Dog');
+    expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Dog');
   });
 
   it('should restore default option after all options were deselected', function () {
@@ -66,7 +66,7 @@ describe('multiple selects', function() {
     listItems.find('li').eq(3).click();
     listItems.find('li').eq(1).click();
     listItems.find('li').eq(3).click();
-    expect($('.selectric-wrapper').find('.label').text()).toBe('Please choose...');
+    expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Please choose...');
   });
 
   it('should use the label builder', function() {
@@ -78,7 +78,7 @@ describe('multiple selects', function() {
     });
 
     $('.selectric').click();
-    expect($('.selectric-wrapper').find('.label > h2').length).toBe(1);
+    expect($('.selectric-wrapper').find('.selectric-label > h2').length).toBe(1);
   });
 
   it('should not select disabled items', function() {
@@ -88,7 +88,7 @@ describe('multiple selects', function() {
     listItems.find('li').eq(3).click();
 
     $('.selectric').click();
-    expect($('.selectric-wrapper').find('.label').text()).toBe('Please choose...');
+    expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Please choose...');
   });
 
   describe('maxLabelEntries', function() {
@@ -114,7 +114,7 @@ describe('multiple selects', function() {
       listItems.find('li').eq(4).click();
       $('.selectric').click();
 
-      expect($('.selectric-wrapper').find('.label').text()).toBe('Ant, Cat, Dog, ...');
+      expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Ant, Cat, Dog, ...');
     });
 
     it('should remove three dots if amount of selected items is less then maxLabelEntries', function() {
@@ -126,7 +126,7 @@ describe('multiple selects', function() {
       listItems.find('li').eq(4).click();
       listItems.find('li').eq(4).click();
       $('.selectric').click();
-      expect($('.selectric-wrapper').find('.label').text()).toBe('Ant, Cat, Dog');
+      expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Ant, Cat, Dog');
     });
 
     it('should build the label correctly by ignoring case or whitespace', function() {
@@ -135,7 +135,7 @@ describe('multiple selects', function() {
       listItems.find('li').eq(5).click();
       listItems.find('li').eq(6).click();
       $('.selectric').click();
-      expect($('.selectric-wrapper').find('.label').text()).toBe('Losabim Oxigenium, Dagobert Duck');
+      expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Losabim Oxigenium, Dagobert Duck');
     });
   });
 

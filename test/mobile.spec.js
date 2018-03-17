@@ -135,7 +135,7 @@ describe('mobile', function() {
         select.find('option').eq(2).prop('selected', true);
         select.find('option').eq(3).prop('selected', false);
         select.selectric('refresh');
-        expect($('.selectric-wrapper').find('.label').text()).toBe('Apple');
+        expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Apple');
       });
     });
 
@@ -247,14 +247,14 @@ describe('mobile', function() {
         multiple.find('option').eq(2).prop('selected', true);
         multiple.find('option').eq(3).prop('selected', false);
         multiple.selectric('refresh');
-        expect($('.selectric-wrapper').find('.label').text()).toBe('Cat');
+        expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Cat');
       });
 
       it('should update the label with multiple selected values', function () {
         multiple.find('option').eq(2).prop('selected', true);
         multiple.find('option').eq(3).prop('selected', true);
         multiple.selectric('refresh');
-        expect($('.selectric-wrapper').find('.label').text()).toBe('Cat, Dog');
+        expect($('.selectric-wrapper').find('.selectric-label').text()).toBe('Cat, Dog');
       });
     });
   });
