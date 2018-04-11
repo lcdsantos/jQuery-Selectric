@@ -73,7 +73,7 @@ gulp.task('js-min', function() {
   return gulp.src(['./src/jquery.selectric.js'])
     .pipe($.uglify({ output: { 'keep_quoted_props': true } }))
     .on('error', function(err) {
-      console.error('Error in compress task', err.toString());
+      throw new $.util.PluginError('uglify', err);
     })
     .pipe($.header(bannerSmall, { pkg: pkg }))
     .pipe($.rename({ suffix: '.min' }))
@@ -181,5 +181,5 @@ gulp.task('gh-pages', function() {
  */
 gulp.task('build',   ['bump', 'js', 'js-min', 'js-plugins', 'css', 'themes-css', 'plugins-css']);
 gulp.task('default', ['build', 'watch']);
-gulp.task('release', ['bump', 'build', 'zip']);
+gulp.task('release', ['build', 'zip']);
 gulp.task('publish', ['gh-pages']);
