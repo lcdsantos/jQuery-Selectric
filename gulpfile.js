@@ -72,6 +72,9 @@ gulp.task('js-min', function() {
 
   return gulp.src(['./src/jquery.selectric.js'])
     .pipe($.uglify({ output: { 'keep_quoted_props': true } }))
+    .on('error', function(err) {
+      console.error('Error in compress task', err.toString());
+    })
     .pipe($.header(bannerSmall, { pkg: pkg }))
     .pipe($.rename({ suffix: '.min' }))
     .pipe(gulp.dest('./public'))

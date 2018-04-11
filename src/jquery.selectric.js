@@ -27,7 +27,7 @@
   var $win = $(window);
 
   var pluginName = 'selectric';
-  var classList = 'Input Items Open Disabled TempShow HideSelect Wrapper Focus Hover Responsive Above Below Scroll Group GroupLabel Label';
+  var classList = 'Items Open Disabled TempShow HideSelect Wrapper Focus Hover Responsive Above Below Scroll Group GroupLabel Label Button';
   var eventNamespaceSuffix = '.sl';
 
   var chars = ['a', 'e', 'i', 'o', 'u', 'n', 'c', 'y'];
@@ -61,7 +61,8 @@
       opened         : false,
       currValue      : -1,
       selectedIdx    : -1,
-      highlightedIdx : -1
+      highlightedIdx : -1,
+      inputStr       : ''
     };
 
     _this.eventTriggers = {
@@ -193,6 +194,7 @@
 
       /**
        * Transform array list to concatenated string and remove empty values
+       *
        * @param  {array} arr - Class list
        * @return {string}      Concatenated string
        */
@@ -202,6 +204,19 @@
         });
 
         return $.trim(newArr.join(' '));
+      },
+
+      /**
+       * Simple unique ID generator
+       *
+       * @return {string} ID
+       */
+      uuid: function() {
+        return 'xxxxxxxxxxxx'.replace(/x/g, function(c) {
+          var r = Math.random() * 16 | 0;
+          var v = c == 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+        });
       }
     },
 
@@ -226,26 +241,63 @@
       // Get classes
       _this.classes = _this.getClassNames();
 
+      // Generate unique ID
+      _this.uniqueid = _this.utils.uuid();
+
       // Create elements
-      var input              = $('<input/>', { 'class': _this.classes.input, 'readonly': _this.utils.isMobile() });
-      var items              = $('<div/>',   { 'class': _this.classes.items, 'tabindex': -1 });
-      var itemsScroll        = $('<div/>',   { 'class': _this.classes.scroll });
-      var wrapper            = $('<div/>',   { 'class': _this.classes.prefix, 'html': _this.options.arrowButtonMarkup });
-      var label              = $('<span/>',  { 'class': _this.classes.label });
-      var outerWrapper       = _this.$element.wrap('<div/>').parent().append(wrapper.prepend(label), items, input);
-      var hideSelectWrapper  = $('<div/>',   { 'class': _this.classes.hideselect });
+      var wrapper = $('<div/>', {
+        'class'         : _this.classes.prefix,
+        'role'          : 'combobox',
+        'aria-controls' : 'listbox-' + _this.uniqueid,
+        'aria-owns'     : 'listbox-' + _this.uniqueid,
+        'aria-haspopup' : 'listbox',
+        'aria-expanded' : false
+      });
+
+      var label = $('<span/>', {
+        'class' : _this.classes.label,
+        'id'    : 'label-' + _this.uniqueid
+      });
+
+      var button = $('<span/>', {
+        'class' : _this.classes.button,
+        'html'  : _this.options.arrowButtonMarkup
+      });
+
+      var items = $('<div/>', {
+        'class': _this.classes.items
+      });
+
+      var itemsScroll = $('<div/>', {
+        'class': _this.classes.scroll
+      });
+
+      var listbox = $('<ul/>', {
+        'tabindex'             : 0, // focusable
+        'role'                 : 'listbox',
+        'id'                   : 'listbox-' + _this.uniqueid,
+        'aria-labelledby'      : 'label-' + _this.uniqueid,
+        'aria-multiselectable' : _this.state.multiple
+      });
+
+      var hideSelectWrapper = $('<div/>', {
+        'class'       : _this.classes.hideselect,
+        'aria-hidden' : true
+      });
+
+      var outerWrapper = _this.$element.wrap('<div/>').parent().append(wrapper.append(label, button), items);
 
       _this.elements = {
-        input        : input,
-        items        : items,
-        itemsScroll  : itemsScroll,
+        outerWrapper : outerWrapper,
         wrapper      : wrapper,
         label        : label,
-        outerWrapper : outerWrapper
+        button       : button,
+        items        : items,
+        itemsScroll  : itemsScroll,
+        listbox      : listbox
       };
 
       if ( _this.options.nativeOnMobile && _this.utils.isMobile() ) {
-        _this.elements.input = undefined;
         hideSelectWrapper.addClass(_this.classes.prefix + '-is-native');
 
         _this.$element.on('change', function() {
@@ -303,10 +355,6 @@
         _this.bindEvents();
       } else {
         _this.elements.outerWrapper.addClass(_this.classes.disabled);
-
-        if ( _this.elements.input ) {
-          _this.elements.input.prop('disabled', true);
-        }
       }
 
       _this.utils.triggerCallback('Activate', _this);
@@ -451,7 +499,11 @@
         });
 
         _this.setLabel();
-        _this.elements.items.append( _this.elements.itemsScroll.html( _this.getItemsMarkup(_this.items) ) );
+        _this.elements.items.append(
+          _this.elements.itemsScroll.append(
+            _this.elements.listbox.html( _this.getItemsMarkup(_this.items) )
+          )
+        );
       }
     },
 
@@ -472,7 +524,7 @@
         className : $elm.prop('class'),
         text      : $elm.html(),
         slug      : $.trim(_this.utils.replaceDiacritics($elm.html())),
-        alt       : $elm.attr('data-alt'),
+        alt       : $elm.data('alt'),
         selected  : $elm.prop('selected'),
         disabled  : isDisabled
       };
@@ -486,7 +538,7 @@
      */
     getItemsMarkup: function(items) {
       var _this = this;
-      var markup = '<ul>';
+      var markup = '';
 
       if ( $.isFunction(_this.options.listBuilder) && _this.options.listBuilder ) {
         items = _this.options.listBuilder(items);
@@ -495,7 +547,7 @@
       $.each(items, function(i, elm) {
         if ( elm.label !== undefined ) {
 
-          markup += _this.utils.format('<ul class="{1}"><li class="{2}">{3}</li>',
+          markup += _this.utils.format('<ul class="{1}"><li class="{2}" role="option">{3}</li>',
             _this.utils.arrayToClassname([
               _this.classes.group,
               elm.groupDisabled ? 'disabled' : '',
@@ -518,7 +570,7 @@
         }
       });
 
-      return markup + '</ul>';
+      return markup;
     },
 
     /**
@@ -534,13 +586,13 @@
       // limit access to item data to provide a simple interface
       // to most relevant options.
       var filteredItemData = {
-        value: itemData.value,
-        text : itemData.text,
-        slug : itemData.slug,
-        index: itemData.index
+        value : itemData.value,
+        text  : itemData.text,
+        slug  : itemData.slug,
+        index : itemData.index
       };
 
-      return _this.utils.format('<li data-index="{1}" class="{2}">{3}</li>',
+      return _this.utils.format('<li role="option" data-index="{1}" class="{2}" id="option-{4}-{1}">{3}</li>',
         index,
         _this.utils.arrayToClassname([
           itemData.className,
@@ -550,18 +602,20 @@
         ]),
         $.isFunction(itemBuilder)
           ? _this.utils.format(itemBuilder(itemData, this.$element, index), itemData)
-          : _this.utils.format(itemBuilder, filteredItemData)
+          : _this.utils.format(itemBuilder, filteredItemData),
+        _this.uniqueid
       );
     },
 
     /** Remove events on the elements */
     unbindEvents: function() {
       var _this = this;
+      var elements = $.map(_this.elements, function(elm) {
+        return elm.get(0);
+      });
 
-      _this.elements.wrapper
-        .add(_this.$element)
-        .add(_this.elements.outerWrapper)
-        .add(_this.elements.input)
+      _this.$element
+        .add(elements)
         .off(eventNamespaceSuffix);
     },
 
@@ -589,72 +643,33 @@
         _this.state.opened ? _this.close() : _this.open(e);
       });
 
-      // Translate original element focus event to dummy input.
-      // Disabled on mobile devices because the default option list isn't
-      // shown due the fact that hidden input gets focused
       if ( !(_this.options.nativeOnMobile && _this.utils.isMobile()) ) {
         _this.$element.on('focus' + eventNamespaceSuffix, function() {
-          _this.elements.input.focus();
+          _this.elements.listbox.focus();
         });
 
-        _this.elements.input
-          .prop({ tabindex: _this.originalTabindex, disabled: false })
-          .on('keydown' + eventNamespaceSuffix, $.proxy(_this.handleKeys, _this))
+        _this.elements.listbox
           .on('focusin' + eventNamespaceSuffix, function(e) {
             _this.elements.outerWrapper.addClass(_this.classes.focus);
 
-            // Prevent the flicker when focusing out and back again in the browser window
-            _this.elements.input.one('blur', function() {
-              _this.elements.input.blur();
+            // Prevent the flicker when focusing out and
+            // back again in the browser window
+            _this.elements.listbox.one('blur', function() {
+              _this.elements.listbox.blur();
             });
 
             if ( _this.options.openOnFocus && !_this.state.opened ) {
               _this.open(e);
             }
           })
-          .on('focusout' + eventNamespaceSuffix, function() {
+          .on('blur' + eventNamespaceSuffix, function() {
             _this.elements.outerWrapper.removeClass(_this.classes.focus);
           })
-          .on('input propertychange', function() {
-            var val = _this.elements.input.val();
-            var searchRegExp = new RegExp('^' + _this.utils.escapeRegExp(val), 'i');
-
-            // Clear search
-            clearTimeout(_this.resetStr);
-            _this.resetStr = setTimeout(function() {
-              _this.elements.input.val('');
-            }, _this.options.keySearchTimeout);
-
-            if ( val.length ) {
-              // Search in select options
-              $.each(_this.items, function(i, elm) {
-                if (elm.disabled) {
-                  return;
-                }
-                if (searchRegExp.test(elm.text) || searchRegExp.test(elm.slug)) {
-                  _this.highlight(i);
-                  return false;
-                }
-                if (!elm.alt) {
-                  return;
-                }
-                var altItems = elm.alt.split('|');
-                for (var ai = 0; ai < altItems.length; ai++) {
-                  if (!altItems[ai]) {
-                    break;
-                  }
-                  if (searchRegExp.test(altItems[ai].trim())) {
-                    _this.highlight(i);
-                    return false;
-                  }
-                }
-              });
-            }
-          });
+          .on('keydown' + eventNamespaceSuffix, $.proxy(_this.handleSearch, _this))
+          .on('keydown' + eventNamespaceSuffix, $.proxy(_this.handleKeys, _this));
       }
 
       _this.$li.on({
-        // Prevent <input> blur on Chrome
         mousedown: function(e) {
           e.preventDefault();
           e.stopPropagation();
@@ -667,6 +682,49 @@
           return false;
         }
       });
+    },
+
+    /**
+     * Search options
+     *
+     * @param {object} e Event object
+     */
+    handleSearch: function(e) {
+      var _this = this;
+      var val = (_this.state.inputStr += String.fromCharCode(e.which));
+      var searchRegExp = new RegExp('^' + _this.utils.escapeRegExp(val), 'i');
+
+      // Clear search
+      clearTimeout(_this.resetStr);
+      _this.resetStr = setTimeout(function() {
+        _this.state.inputStr = '';
+      }, _this.options.keySearchTimeout);
+
+      if ( val.length ) {
+        // Search in select options
+        $.each(_this.items, function(i, elm) {
+          if (elm.disabled) {
+            return;
+          }
+          if (searchRegExp.test(elm.text) || searchRegExp.test(elm.slug)) {
+            _this.highlight(i);
+            return false;
+          }
+          if (!elm.alt) {
+            return;
+          }
+          var altItems = elm.alt.split('|');
+          for (var ai = 0; ai < altItems.length; ai++) {
+            if (!altItems[ai]) {
+              break;
+            }
+            if (searchRegExp.test(altItems[ai].trim())) {
+              _this.highlight(i);
+              return false;
+            }
+          }
+        });
+      }
     },
 
     /**
@@ -683,12 +741,13 @@
       var isNextKey = $.inArray(key, keys.next) > -1;
       var isSelectKey = $.inArray(key, keys.select) > -1;
       var isOpenKey = $.inArray(key, keys.open) > -1;
+      var isCloseKey = $.inArray(key, keys.close) > -1;
       var idx = _this.state.highlightedIdx;
       var isFirstOrLastItem = (isPrevKey && idx === 0) || (isNextKey && (idx + 1) === _this.items.length);
       var goToItem = 0;
 
       // Enter / Space
-      if ( key === 13 || key === 32 ) {
+      if ( key === 13 || key === 32 || isPrevKey || isNextKey ) {
         e.preventDefault();
       }
 
@@ -709,7 +768,7 @@
         _this.highlight(goToItem);
       }
 
-      // Tab / Enter / ESC
+      // Tab / Enter / ESC / Space
       if ( isSelectKey && _this.state.opened ) {
         _this.select(idx);
 
@@ -723,6 +782,11 @@
       // Space / Enter / Left / Up / Right / Down
       if ( isOpenKey && !_this.state.opened ) {
         _this.open();
+      }
+
+      // Tab / Escape
+      if ( isCloseKey ) {
+        _this.close();
       }
     },
 
@@ -756,6 +820,7 @@
         // Set a really long width for _this.elements.outerWrapper
         _this.elements.outerWrapper.width(9e4);
         _this.finalWidth = _this.elements.items.width();
+
         // Set scroll bar to auto
         _this.elements.items.css('overflow', '');
         _this.elements.outerWrapper.width('');
@@ -803,7 +868,6 @@
      */
     detectItemVisibility: function(index) {
       var _this = this;
-      var $filteredLi = _this.$li.filter('[data-index]');
 
       if ( _this.state.multiple ) {
         // If index is an array, we can assume a multiple select and we
@@ -813,15 +877,18 @@
         index = $.isArray(index) ? Math.min.apply(Math, index) : index;
       }
 
-      var liHeight = $filteredLi.eq(index).outerHeight();
-      var liTop = $filteredLi[index].offsetTop;
+      var $filteredLi = _this.$li.filter('[data-index]').eq(index);
+      var liHeight = $filteredLi.outerHeight();
+      var liTop = $filteredLi.prop('offsetTop');
       var itemsScrollTop = _this.elements.itemsScroll.scrollTop();
       var scrollT = liTop + liHeight * 2;
 
       _this.elements.itemsScroll.scrollTop(
-        scrollT > itemsScrollTop + _this.itemsHeight ? scrollT - _this.itemsHeight :
-          liTop - liHeight < itemsScrollTop ? liTop - liHeight :
-            itemsScrollTop
+        scrollT > itemsScrollTop + _this.itemsHeight
+          ? scrollT - _this.itemsHeight
+          : liTop - liHeight < itemsScrollTop
+            ? liTop - liHeight
+            : itemsScrollTop
       );
     },
 
@@ -833,7 +900,7 @@
     open: function(e) {
       var _this = this;
 
-      if ( _this.options.nativeOnMobile && _this.utils.isMobile()) {
+      if ( _this.options.nativeOnMobile && _this.utils.isMobile() ) {
         return false;
       }
 
@@ -841,37 +908,44 @@
 
       if ( e ) {
         e.preventDefault();
-        if (_this.options.stopPropagation) {
+        if ( _this.options.stopPropagation ) {
           e.stopPropagation();
         }
       }
 
       if ( _this.state.enabled ) {
-        _this.setOptionsDimensions();
-
         // Find any other opened instances of select and close it
         $('.' + _this.classes.hideselect, '.' + _this.classes.open).children()[pluginName]('close');
+
+        // Toggle options box visibility
+        _this.elements.outerWrapper.addClass(_this.classes.open);
+
+        // Set listbox width/height
+        _this.setOptionsDimensions();
 
         _this.state.opened = true;
         _this.itemsHeight = _this.elements.items.outerHeight();
         _this.itemsInnerHeight = _this.elements.items.height();
 
-        // Toggle options box visibility
-        _this.elements.outerWrapper.addClass(_this.classes.open);
+        // Reset search string
+        _this.state.inputStr = '';
 
-        // Give dummy input focus
-        _this.elements.input.val('');
-        if ( e && e.type !== 'focusin' ) {
-          _this.elements.input.focus();
+        // Give listbox focus
+        if ( e && e.type !== 'focus' && !_this.elements.listbox.is(':focus') ) {
+          _this.elements.listbox.focus();
         }
 
         // Delayed binds events on Document to make label clicks work
         setTimeout(function() {
+          $win.on('blur' + eventNamespaceSuffix, $.proxy(_this.close, _this));
+
           $doc
+            .on('blur' + eventNamespaceSuffix, $.proxy(_this.close, _this))
             .on('click' + eventNamespaceSuffix, $.proxy(_this.close, _this))
             .on('scroll' + eventNamespaceSuffix, $.proxy(_this.isInViewport, _this));
         }, 1);
 
+        // Check if listbox is inside the viewport
         _this.isInViewport();
 
         // Prevent window scroll when using mouse wheel inside items box
@@ -897,6 +971,8 @@
 
         _this.highlight(_this.state.multiple ? -1 : _this.state.selectedIdx);
 
+        _this.elements.listbox.attr('aria-expanded', true);
+
         _this.utils.triggerCallback('Open', _this);
       }
     },
@@ -914,6 +990,8 @@
       _this.elements.outerWrapper.removeClass(_this.classes.open);
 
       _this.state.opened = false;
+
+      _this.elements.listbox.removeAttr('aria-expanded');
 
       _this.utils.triggerCallback('Close', _this);
     },
@@ -933,7 +1011,7 @@
 
         // Set new selected
         $.each(_this.state.selectedIdx, function(idx, value) {
-          _this.lookupItems[value].selected = true;
+          _this.lookupItems[idx].selected = true;
           _this.$element.find('option').eq(value).prop('selected', true);
         });
 
@@ -961,7 +1039,7 @@
      */
     highlight: function(index) {
       var _this = this;
-      var $filteredLi = _this.$li.filter('[data-index]').removeClass('highlighted');
+      var $filteredLi = _this.$li.filter('[data-index]');
 
       _this.utils.triggerCallback('BeforeHighlight', _this);
 
@@ -970,11 +1048,15 @@
         return;
       }
 
-      $filteredLi
+      var activeID = $filteredLi
+        .removeClass('highlighted')
         .eq(_this.state.highlightedIdx = index)
-        .addClass('highlighted');
+        .addClass('highlighted')
+        .attr('id');
 
       _this.detectItemVisibility(index);
+
+      _this.elements.listbox.attr('aria-activedescendant', activeID);
 
       _this.utils.triggerCallback('Highlight', _this);
     },
@@ -991,7 +1073,7 @@
       _this.utils.triggerCallback('BeforeSelect', _this, index);
 
       // Parameter index is required and should not be a disabled item
-      if ( index === undefined || index === -1 || _this.lookupItems[index].disabled ) {
+      if ( index === undefined || index === -1 || index.length === 0 ) {
         return;
       }
 
@@ -999,24 +1081,41 @@
         // Make sure selectedIdx is an array
         _this.state.selectedIdx = $.isArray(_this.state.selectedIdx) ? _this.state.selectedIdx : [_this.state.selectedIdx];
 
-        var hasSelectedIndex = $.inArray(index, _this.state.selectedIdx);
-        if ( hasSelectedIndex !== -1 ) {
-          _this.state.selectedIdx.splice(hasSelectedIndex, 1);
+        if ( $.isArray(index) ) {
+          _this.state.selectedIdx = index;
         } else {
-          _this.state.selectedIdx.push(index);
+          var hasSelectedIndex = $.inArray(index, _this.state.selectedIdx);
+
+          if ( _this.lookupItems[index].disabled ) {
+            return;
+          }
+
+          if ( hasSelectedIndex !== -1 ) {
+            _this.state.selectedIdx.splice(hasSelectedIndex, 1);
+          } else {
+            _this.state.selectedIdx.push(index);
+          }
         }
 
         $filteredLi
           .removeClass('selected')
-          .filter(function(index) {
-            return $.inArray(index, _this.state.selectedIdx) !== -1;
+          .removeAttr('aria-selected')
+          .filter(function(idx) {
+            return $.inArray(idx, _this.state.selectedIdx) !== -1;
           })
-          .addClass('selected');
+          .addClass('selected')
+          .attr('aria-selected', true);
       } else {
+        if ( _this.lookupItems[index].disabled ) {
+          return;
+        }
+
         $filteredLi
           .removeClass('selected')
+          .removeAttr('aria-selected')
           .eq(_this.state.selectedIdx = index)
-          .addClass('selected');
+          .addClass('selected')
+          .attr('aria-selected', true);
       }
 
       if ( !_this.state.multiple || !_this.options.multiple.keepMenuOpen ) {
@@ -1037,7 +1136,7 @@
       var _this = this;
 
       if ( _this.state && _this.state.enabled ) {
-        _this.elements.items.add(_this.elements.wrapper).add(_this.elements.input).remove();
+        _this.elements.items.add(_this.elements.wrapper).add(_this.elements.listbox).remove();
 
         if ( !preserveData ) {
           _this.$element.removeData(pluginName).removeData('value');
@@ -1073,7 +1172,7 @@
     onChange             : function(elm) { $(elm).change(); },
     maxHeight            : 300,
     keySearchTimeout     : 500,
-    arrowButtonMarkup    : '<button class="selectric-button">&#x25be;</button>',
+    arrowButtonMarkup    : '',
     disableOnMobile      : false,
     nativeOnMobile       : true,
     openOnFocus          : true,
@@ -1093,18 +1192,18 @@
     keys                 : {
       previous : [37, 38],                 // Left / Up
       next     : [39, 40],                 // Right / Down
-      select   : [9, 13, 27],              // Tab / Enter / Escape
+      select   : [13, 32],                 // Enter / Space
       open     : [13, 32, 37, 38, 39, 40], // Enter / Space / Left / Up / Right / Down
       close    : [9, 27]                   // Tab / Escape
     },
     customClass          : {
-      prefix: pluginName,
-      camelCase: false
+      prefix    : pluginName,
+      camelCase : false
     },
     multiple              : {
-      separator: ', ',
-      keepMenuOpen: true,
-      maxLabelEntries: false
+      separator       : ', ',
+      keepMenuOpen    : true,
+      maxLabelEntries : false
     }
   };
 }));

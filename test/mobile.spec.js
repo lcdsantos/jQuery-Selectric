@@ -9,16 +9,9 @@ describe('mobile', function() {
   var oldUserAgent = window.navigator.userAgent;
 
   function setUserAgent(window, userAgent) {
-    if (window.navigator.userAgent != userAgent) {
-      var userAgentProp = { get: function () { return userAgent; } };
-      try {
-        Object.defineProperty(window.navigator, 'userAgent', userAgentProp);
-      } catch (e) {
-        window.navigator = Object.create(navigator, {
-          userAgent: userAgentProp
-        });
-      }
-    }
+    window.navigator.__defineGetter__('userAgent', function() {
+      return userAgent;
+    });
   }
 
   describe('Single Selects', function () {

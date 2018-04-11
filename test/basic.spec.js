@@ -1,5 +1,5 @@
 /* eslint-env jasmine, jquery */
-/* global loadFixtures */
+/* global loadFixtures, keyvent */
 
 'use strict';
 
@@ -75,13 +75,23 @@ describe('basic suite', function() {
   });
 
   it('should search an option', function() {
-    $('.selectric-input').val('banana').trigger('input');
-    $('.selectric-items').find('.highlighted').click();
+    $('.selectric').click();
+    var inputElm = document.activeElement;
+    var kb = keyvent.on(inputElm);
+    var str = 'banana';
+    for (var i = 0; i <= str.length; i++) {
+      kb.down(str.charCodeAt(i));
+    }
+    kb.down('enter');
     expect(select.val()).toBe('banana');
   });
 
   it('partial search should return first match', function() {
-    $('.selectric-input').val('b').trigger('input');
+    $('.selectric').click();
+    var inputElm = document.activeElement;
+    var kb = keyvent.on(inputElm);
+    kb.down('b'.charCodeAt(0));
+    kb.down('enter');
     $('.selectric-items').find('.highlighted').click();
     expect(select.val()).toBe('banana');
   });
@@ -94,18 +104,30 @@ describe('basic suite', function() {
     expect($('.selectric-items').find('.highlighted').length).toBe(0);
   });
 
-  it('should search alternative text', function () {
+  it('should search alternative text', function() {
     select.find('option:eq(6)').attr('data-alt', 'alt blackberry');
     select.selectric('refresh');
-    $('.selectric-input').val('alt blackberry').trigger('input');
+    $('.selectric').click();
+    var inputElm = document.activeElement;
+    var kb = keyvent.on(inputElm);
+    var str = 'alt blackberry';
+    for (var i = 0; i <= str.length; i++) {
+      kb.down(str.toUpperCase().charCodeAt(i));
+    }
     $('.selectric-items').find('.highlighted').click();
     expect(select.val()).toBe('blackberry');
   });
 
-  it('should search alternative text with separator', function () {
+  it('should search alternative text with separator', function() {
     select.find('option:eq(6)').attr('data-alt', 'alt blackberry | another berry');
     select.selectric('refresh');
-    $('.selectric-input').val('alt blackberry').trigger('input');
+    $('.selectric').click();
+    var inputElm = document.activeElement;
+    var kb = keyvent.on(inputElm);
+    var str = 'alt blackberry';
+    for (var i = 0; i <= str.length; i++) {
+      kb.down(str.toUpperCase().charCodeAt(i));
+    }
     $('.selectric-items').find('.highlighted').click();
     expect(select.val()).toBe('blackberry');
   });
@@ -114,7 +136,13 @@ describe('basic suite', function() {
     select.find('option:eq(8)').attr('data-alt', 'alt blueberry | zebra');
     select.find('option:eq(9)').attr('data-alt', 'alt cantalope | zilch');
     select.selectric('refresh');
-    $('.selectric-input').val('z').trigger('input');
+    $('.selectric').click();
+    var inputElm = document.activeElement;
+    var kb = keyvent.on(inputElm);
+    var str = 'z';
+    for (var i = 0; i <= str.length; i++) {
+      kb.down(str.toUpperCase().charCodeAt(i));
+    }
     $('.selectric-items').find('.highlighted').click();
     expect(select.val()).toBe('blueberry');
   });
@@ -122,23 +150,15 @@ describe('basic suite', function() {
   it('should search alternative text with separator 2', function () {
     select.find('option:eq(6)').attr('data-alt', 'alt blackberry | another berry');
     select.selectric('refresh');
-    $('.selectric-input').val('another berry').trigger('input');
+    $('.selectric').click();
+    var inputElm = document.activeElement;
+    var kb = keyvent.on(inputElm);
+    var str = 'another berry';
+    for (var i = 0; i <= str.length; i++) {
+      kb.down(str.toUpperCase().charCodeAt(i));
+    }
     $('.selectric-items').find('.highlighted').click();
     expect(select.val()).toBe('blackberry');
-  });
-
-  it('should skip blank alternative text', function () {
-    select.find('option:eq(6)').attr('data-alt', '');
-    select.selectric('refresh');
-    $('.selectric-input').val('a text that does not exist').trigger('input');
-    expect($('.selectric-items').find('.highlighted').length).toBe(0);
-  });
-
-  it('should skip blank alternative text with separator', function () {
-    select.find('option:eq(6)').attr('data-alt', '|');
-    select.selectric('refresh');
-    $('.selectric-input').val('a text that does not exist').trigger('input');
-    expect($('.selectric-items').find('.highlighted').length).toBe(0);
   });
 
   it('highlight() should return undefined if index is undefined', function () {
@@ -156,10 +176,10 @@ describe('basic suite', function() {
     var char = String.fromCharCode(0x30A0 + Math.random() * (0x30FF - 0x30A0 + 1));
 
     select.selectric({
-      arrowButtonMarkup: '<b class="button">' + char + '</b>',
+      arrowButtonMarkup: char,
     });
 
-    expect($('.button').html()).toBe(char);
+    expect($('.selectric-button').html()).toBe(char);
   });
 
   it('should be bigger than wrapper', function() {
@@ -319,9 +339,12 @@ describe('basic suite', function() {
     expect(event.isDefaultPrevented()).toBeTruthy();
   });
 
-  it('should open on label click', function() {
+  it('should open on label click', function(done) {
     $('label').click();
-    expect($('.selectric-wrapper').hasClass('selectric-open')).toBe(true);
+    setTimeout(function() {
+      expect($('.selectric-wrapper').hasClass('selectric-open')).toBe(true);
+      done();
+    }, 1);
   });
 
   it('should inherit option tag class', function() {

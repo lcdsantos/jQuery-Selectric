@@ -15,32 +15,32 @@ describe('keyboard', function() {
   });
 
   it('should open if has focus', function() {
-    $('.selectric-input').focus();
+    $('ul[role="listbox"]').focus();
     $('.selectric-items').find('li').click();
     var inputElm = document.activeElement;
     keyvent.on(inputElm).down('down');
-    expect($('.selectric-items').is(':visible')).toBe(true);
+    expect($('.selectric-wrapper').hasClass('selectric-open')).toBe(true);
   });
 
   it('should close on tab keypress', function() {
     $('.selectric').click();
     var inputElm = document.activeElement;
     keyvent.on(inputElm).down('tab');
-    expect($('.selectric-items').is(':visible')).toBe(false);
+    expect($('.selectric-wrapper').hasClass('selectric-open')).toBe(false);
   });
 
   it('should close on enter keypress', function() {
     $('.selectric').click();
     var inputElm = document.activeElement;
     keyvent.on(inputElm).down('enter');
-    expect($('.selectric-items').is(':visible')).toBe(false);
+    expect($('.selectric-wrapper').hasClass('selectric-open')).toBe(false);
   });
 
   it('should close on esc keypress', function() {
     $('.selectric').click();
     var inputElm = document.activeElement;
     keyvent.on(inputElm).down('enter');
-    expect($('.selectric-items').is(':visible')).toBe(false);
+    expect($('.selectric-wrapper').hasClass('selectric-open')).toBe(false);
   });
 
   it('should change value on keyboard navigation', function() {
