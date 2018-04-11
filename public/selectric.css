@@ -1,5 +1,5 @@
 /*======================================
-  Selectric v1.13.0
+  Selectric v2.0.0
 ======================================*/
 
 .selectric-wrapper {
@@ -136,7 +136,6 @@
   display: block !important;
 }
 
-/* Items box */
 .selectric-items {
   clip: rect(0 0 0 0);
   width: 1px;

@@ -9,7 +9,7 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.13.0 (Apr 10 2018) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v2.0.0 (Apr 10 2018) - http://lcdsantos.github.io/jQuery-Selectric/
  *
  * Copyright (c) 2018 Leonardo Santos; MIT License
  *
@@ -263,22 +263,22 @@
 
       // Create elements
       var wrapper = $('<div/>', {
-        'class': _this.classes.prefix,
-        'role': 'combobox',
-        'aria-controls': 'listbox-' + _this.uniqueid,
-        'aria-owns': 'listbox-' + _this.uniqueid,
-        'aria-haspopup': 'listbox',
-        'aria-expanded': false
+        'class'         : _this.classes.prefix,
+        'role'          : 'combobox',
+        'aria-controls' : 'listbox-' + _this.uniqueid,
+        'aria-owns'     : 'listbox-' + _this.uniqueid,
+        'aria-haspopup' : 'listbox',
+        'aria-expanded' : false
       });
 
       var label = $('<span/>', {
-        'class': _this.classes.label,
-        'id': 'label-' + _this.uniqueid
+        'class' : _this.classes.label,
+        'id'    : 'label-' + _this.uniqueid
       });
 
       var button = $('<span/>', {
-        'class': _this.classes.button,
-        'html': _this.options.arrowButtonMarkup
+        'class' : _this.classes.button,
+        'html'  : _this.options.arrowButtonMarkup
       });
 
       var items = $('<div/>', {
@@ -290,16 +290,16 @@
       });
 
       var listbox = $('<ul/>', {
-        'tabindex': 0, // focusable
-        'role': 'listbox',
-        'id': 'listbox-' + _this.uniqueid,
-        'aria-labelledby': 'label-' + _this.uniqueid,
-        'aria-multiselectable': _this.state.multiple
+        'tabindex'             : 0, // focusable
+        'role'                 : 'listbox',
+        'id'                   : 'listbox-' + _this.uniqueid,
+        'aria-labelledby'      : 'label-' + _this.uniqueid,
+        'aria-multiselectable' : _this.state.multiple
       });
 
       var hideSelectWrapper = $('<div/>', {
-        'class': _this.classes.hideselect,
-        'aria-hidden': true
+        'class'       : _this.classes.hideselect,
+        'aria-hidden' : true
       });
 
       var outerWrapper = _this.$element.wrap('<div/>').parent().append(wrapper.append(label, button), items);
@@ -603,10 +603,10 @@
       // limit access to item data to provide a simple interface
       // to most relevant options.
       var filteredItemData = {
-        value: itemData.value,
-        text : itemData.text,
-        slug : itemData.slug,
-        index: itemData.index
+        value : itemData.value,
+        text  : itemData.text,
+        slug  : itemData.slug,
+        index : itemData.index
       };
 
       return _this.utils.format('<li role="option" data-index="{1}" class="{2}" id="option-{4}-{1}">{3}</li>',
@@ -687,7 +687,6 @@
       }
 
       _this.$li.on({
-        // Prevent <input> blur on Chrome
         mousedown: function(e) {
           e.preventDefault();
           e.stopPropagation();
@@ -1215,13 +1214,13 @@
       close    : [9, 27]                   // Tab / Escape
     },
     customClass          : {
-      prefix: pluginName,
-      camelCase: false
+      prefix    : pluginName,
+      camelCase : false
     },
     multiple              : {
-      separator: ', ',
-      keepMenuOpen: true,
-      maxLabelEntries: false
+      separator       : ', ',
+      keepMenuOpen    : true,
+      maxLabelEntries : false
     }
   };
 }));

@@ -1,4 +1,4 @@
-/*! Selectric Placeholder ϟ v0.2.0 (2018-04-10) - git.io/tjl9sQ - Copyright (c) 2018 Leonardo Santos - MIT License */
+/*! Selectric Placeholder ϟ v0.2.0 (2018-04-11) - git.io/tjl9sQ - Copyright (c) 2018 Leonardo Santos - MIT License */
 (function(factory) {
   /* global define */
   if ( typeof define === 'function' && define.amd ) {

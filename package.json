@@ -58,6 +58,7 @@
   },
   "scripts": {
     "start": "gulp",
+    "build": "gulp build",
     "test": "npm run lint && npm run test:single",
     "test:single": "karma start --single-run --browsers ChromeHeadless",
     "test:watch": "karma start",
