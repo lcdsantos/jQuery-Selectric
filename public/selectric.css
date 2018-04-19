@@ -35,6 +35,18 @@
           user-select: none;
 }
 
+.selectric .selectric-value-item {
+  margin: 0 5px 0 0;
+  background-color: #FFF;
+  padding: 2px 5px;
+  cursor: default;
+}
+
+.selectric .selectric-value-item .selectric-item-cancel {
+  cursor: pointer;
+  padding-left: 6px;
+}
+
 .selectric .button {
   display: block;
   position: absolute;
@@ -63,6 +75,19 @@
   border: 4px solid transparent;
   border-top-color: #BBB;
   border-bottom: none;
+}
+
+.selectric-multi-line .selectric .label {
+  height: unset;
+  white-space: normal;
+  overflow: unset;
+  text-overflow: unset;
+  word-break: break-all;
+}
+
+.selectric-multi-line .selectric .selectric-value-item {
+  display: inline-block;
+  line-height: 16px;
 }
 
 .selectric-focus .selectric {

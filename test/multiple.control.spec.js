@@ -3,12 +3,12 @@
 
 'use strict';
 
-describe('multiple selects', function() {
+describe('multiple control selects', function() {
   var select = false;
 
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
-    loadFixtures('multiple.html');
+    loadFixtures('optioncontrol.html');
     select = $('#multiple');
     select.selectric();
   });
@@ -47,7 +47,7 @@ describe('multiple selects', function() {
     $('.selectric').click();
     listItems.find('li').eq(1).click();
     listItems.find('li').eq(3).click();
-    expect($('.selectric-wrapper').find('.label').text()).toBe('Ant, Dog');
+    expect($('.selectric-wrapper').find('.selectric-value').map(function() {return $(this).text()}).get().join(', ')).toBe('Ant, Dog');
   });
 
   it('should update label after a option was deselected', function () {
@@ -56,7 +56,7 @@ describe('multiple selects', function() {
     listItems.find('li').eq(1).click();
     listItems.find('li').eq(3).click();
     listItems.find('li').eq(1).click();
-    expect($('.selectric-wrapper').find('.label').text()).toBe('Dog');
+    expect($('.selectric-wrapper').find('.selectric-value').text()).toBe('Dog');
   });
 
   it('should restore default option after all options were deselected', function () {
@@ -138,4 +138,16 @@ describe('multiple selects', function() {
       expect($('.selectric-wrapper').find('.label').text()).toBe('Losabim Oxigenium, Dagobert Duck');
     });
   });
+
+  it('should update label with option control', function() {
+    var listItems = $('.selectric-items');
+    $('.selectric').click();
+    listItems.find('li').eq(1).click();
+    listItems.find('li').eq(2).click();
+    listItems.find('li').eq(3).click();
+    listItems.find('li').eq(4).click();
+    $('.selectric-item-cancel:last').click();
+    expect($('.selectric-wrapper').find('.selectric-value').map(function() {return $(this).text()}).get().join(', ')).toBe('Ant, Cat, Dog');
+  })
+
 });

@@ -484,7 +484,7 @@ Selectric.init();    // Reinitialize the plugin</code></pre>
         </div>
 
         <div class="item">
-          <select multiple>
+          <select multiple option-control=true class="multi-line">
             <option value="">Select with "multiple" attribute</option>
             <option value="ant">Ant</option>
             <option value="bird">Bird</option>
@@ -506,6 +506,24 @@ Selectric.init();    // Reinitialize the plugin</code></pre>
             <option value="tiger">Tiger</option>
             <option value="whale">Whale</option>
             <option value="wolf">Wolf</option>
+          </select>
+        </div>
+
+        <div class="item">
+          <select multiple>
+            <option>Select with optgroup and multiple</option>
+            <optgroup label="Group 1">
+              <option>Option 1.1</option>
+            </optgroup>
+            <optgroup label="Group 2">
+              <option selected>Option 2.1</option>
+              <option selected>Option 2.2</option>
+            </optgroup>
+            <optgroup label="Group 3" disabled>
+              <option>Option 3.1</option>
+              <option>Option 3.2</option>
+              <option>Option 3.3</option>
+            </optgroup>
           </select>
         </div>
 

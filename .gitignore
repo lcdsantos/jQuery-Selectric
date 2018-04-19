@@ -6,3 +6,4 @@ tmp
 coverage
 *.sublime-*
 .idea
+package-lock.json
