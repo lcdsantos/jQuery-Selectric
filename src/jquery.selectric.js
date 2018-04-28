@@ -174,6 +174,19 @@
       },
 
       /**
+       *  Returns new unique id with 'sel-' prefix to use with aria-owns relationships
+       *  @return {string} The new unique id generated 
+       */
+      
+      randomId: function() {
+    	  var new_id = false;
+    	  while ( !new_id || null != document.getElementById( new_id ) ) {
+    		  new_id = 'sel-' + (0|Math.random()*9e6).toString(36);
+    	  }
+    	  return new_id;
+      },
+      
+      /**
        * Calls the events registered with function name.
        *
        * @param {string}    fn - The name of the function.
@@ -226,13 +239,33 @@
       // Get classes
       _this.classes = _this.getClassNames();
 
+      // create random prefix for ids to use in aria-owns, aria-controls, etc. properties
+      _this.random_prefix = _this.utils.randomId();
+      // find label if it exists
+      var original_label_id = false;
+      if ( _this.$element.attr( 'id' ) ) {
+	      var $original_label = $( 'label[for="' + _this.$element.attr( 'id' ) + '"]' );
+	      if( 0 < $original_label.length ) { // if a label exists, let's use it for aria-labelledby
+	    	  if ( !$original_label.attr( 'id' ) ) { // if it doesn't have an id, we need to give it one
+	    		  $original_label.attr( 'id', _this.random_prefix + "-labelledby" );
+	    	  }
+	    	  original_label_id = $original_label.attr( 'id' ); 
+	      }
+      }
+      
       // Create elements
       var input              = $('<input/>', { 'class': _this.classes.input, 'readonly': _this.utils.isMobile() });
       var items              = $('<div/>',   { 'class': _this.classes.items, 'tabindex': -1 });
       var itemsScroll        = $('<div/>',   { 'class': _this.classes.scroll });
       var wrapper            = $('<div/>',   { 'class': _this.classes.prefix, 'html': _this.options.arrowButtonMarkup });
-      var label              = $('<span/>',  { 'class': 'label' });
-      var outerWrapper       = _this.$element.wrap('<div/>').parent().append(wrapper.prepend(label), items, input);
+      var label              = $('<span/>',  { 'class': 'label', 'role' : 'textbox', 'aria-autocomplete' : 'list', 'id' : _this.random_prefix + '-textbox' });
+      var wrapper_attributes = { 'role' : 'combobox', 'id' : _this.random_prefix,
+    		  'aria-haspopup' : 'listbox', 'aria-owns' : _this.random_prefix + '-listbox' };
+      if ( original_label_id ) {
+    	  wrapper_attributes[ 'aria-labelledby' ] = original_label_id;
+      }
+      var outerWrapper       = _this.$element.wrap( $( '<div/>', wrapper_attributes ) )
+      										.parent().append(wrapper.prepend(label), items, input);
       var hideSelectWrapper  = $('<div/>',   { 'class': _this.classes.hideselect });
 
       _this.elements = {
@@ -486,8 +519,16 @@
      */
     getItemsMarkup: function(items) {
       var _this = this;
-      var markup = '<ul>';
 
+//      var options_id_list = '';
+//      var number_of_options = _this.$element.find('option').length;
+//      for( var i=0; i < number_of_options; i++ ) {
+//    	  options_id_list += _this.random_prefix + '-' + i + ' ';
+//      }
+
+      var markup = '<ul role="listbox" id="' + _this.random_prefix + '-listbox" ' + 
+      				'aria-controls="' + _this.random_prefix + '-textbox' + '">'; // aria-controls="' + options_id_list.trim() + '">';
+     
       if ( $.isFunction(_this.options.listBuilder) && _this.options.listBuilder ) {
         items = _this.options.listBuilder(items);
       }
@@ -495,7 +536,7 @@
       $.each(items, function(i, elm) {
         if ( elm.label !== undefined ) {
 
-          markup += _this.utils.format('<ul class="{1}"><li class="{2}">{3}</li>',
+          markup += _this.utils.format('<ul class="{1}" role="group"><li class="{2}">{3}</li>',
             _this.utils.arrayToClassname([
               _this.classes.group,
               elm.groupDisabled ? 'disabled' : '',
@@ -540,7 +581,7 @@
         index: itemData.index
       };
 
-      return _this.utils.format('<li data-index="{1}" class="{2}">{3}</li>',
+      return _this.utils.format('<li data-index="{1}" class="{2}" id="{5}-{1}" role="option" aria-selected="{4}">{3}</li>',
         index,
         _this.utils.arrayToClassname([
           itemData.className,
@@ -550,7 +591,9 @@
         ]),
         $.isFunction(itemBuilder)
           ? _this.utils.format(itemBuilder(itemData, this.$element, index), itemData)
-          : _this.utils.format(itemBuilder, filteredItemData)
+          : _this.utils.format(itemBuilder, filteredItemData),
+        itemData.selected ? "true" : "false",
+        _this.random_prefix
       );
     },
 
@@ -857,7 +900,7 @@
         _this.itemsInnerHeight = _this.elements.items.height();
 
         // Toggle options box visibility
-        _this.elements.outerWrapper.addClass(_this.classes.open);
+        _this.elements.outerWrapper.addClass(_this.classes.open).prop( 'aria-expanded', true ).attr( 'aria-expanded', true );
 
         // Give dummy input focus
         _this.elements.input.val('');
@@ -879,7 +922,7 @@
           /* istanbul ignore next */
           $doc.on('mousewheel' + eventNamespaceSuffix + ' DOMMouseScroll' + eventNamespaceSuffix, '.' + _this.classes.scroll, function(e) {
             var orgEvent = e.originalEvent;
-            var scrollTop = $(this).scrollTop();
+            var scrollTop = $(this).parent().scrollTop();
             var deltaY = 0;
 
             if ( 'detail'      in orgEvent ) { deltaY = orgEvent.detail * -1; }
@@ -911,7 +954,7 @@
       $doc.off(eventNamespaceSuffix);
 
       // Remove visible class to hide options box
-      _this.elements.outerWrapper.removeClass(_this.classes.open);
+      _this.elements.outerWrapper.removeClass(_this.classes.open).prop( 'aria-expanded', false ).attr( 'aria-expanded', false );
 
       _this.state.opened = false;
 
@@ -970,9 +1013,11 @@
         return;
       }
 
-      $filteredLi
+      var highlighted_id = $filteredLi
         .eq(_this.state.highlightedIdx = index)
-        .addClass('highlighted');
+        .addClass('highlighted')
+        .prop( 'id' );
+//     $( '[id="' + _this.random_prefix + '-listbox' +'"]' ).prop( 'aria-activedescendant', highlighted_id ).attr( 'aria-activedescendant', highlighted_id );
 
       _this.detectItemVisibility(index);
 
@@ -1007,16 +1052,16 @@
         }
 
         $filteredLi
-          .removeClass('selected')
+          .removeClass('selected').prop( 'aria-selected', false ).attr( 'aria-selected', false )
           .filter(function(index) {
             return $.inArray(index, _this.state.selectedIdx) !== -1;
           })
-          .addClass('selected');
+          .addClass('selected').prop( 'aria-selected', true ).attr( 'aria-selected', true );
       } else {
         $filteredLi
-          .removeClass('selected')
+          .removeClass('selected').prop( 'aria-selected', false ).attr( 'aria-selected', false )
           .eq(_this.state.selectedIdx = index)
-          .addClass('selected');
+          .addClass('selected').prop( 'aria-selected', true ).attr( 'aria-selected', true );
       }
 
       if ( !_this.state.multiple || !_this.options.multiple.keepMenuOpen ) {
