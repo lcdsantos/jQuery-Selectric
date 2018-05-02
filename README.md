@@ -227,6 +227,12 @@ $('select').selectric({
    *              replaced in this method.
    */
   labelBuilder: '{text}',
+   
+   /*
+   * Type: String
+   * Description: Custom class for label element
+   */
+   labelClass: 'label',
 
   /*
    * Type: Boolean

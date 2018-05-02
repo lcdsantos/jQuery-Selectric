@@ -231,7 +231,7 @@
       var items              = $('<div/>',   { 'class': _this.classes.items, 'tabindex': -1 });
       var itemsScroll        = $('<div/>',   { 'class': _this.classes.scroll });
       var wrapper            = $('<div/>',   { 'class': _this.classes.prefix, 'html': _this.options.arrowButtonMarkup });
-      var label              = $('<span/>',  { 'class': 'label' });
+      var label              = $('<span/>',  { 'class': _this.options.labelClass });
       var outerWrapper       = _this.$element.wrap('<div/>').parent().append(wrapper.prepend(label), items, input);
       var hideSelectWrapper  = $('<div/>',   { 'class': _this.classes.hideselect });
 
@@ -1090,6 +1090,7 @@
     optionsItemBuilder   : '{text}', // function(itemData, element, index)
     labelBuilder         : '{text}', // function(currItem)
     listBuilder          : false,    // function(items)
+    labelClass           : 'label',
     keys                 : {
       previous : [37, 38],                 // Left / Up
       next     : [39, 40],                 // Right / Down
