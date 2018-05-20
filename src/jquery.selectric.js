@@ -227,7 +227,7 @@
       _this.classes = _this.getClassNames();
 
       // Create elements
-      var input              = $('<input/>', { 'class': _this.classes.input, 'readonly': _this.utils.isMobile() });
+      var input              = $('<input/>', { 'class': _this.classes.input, 'type: 'hidden', 'readonly': _this.utils.isMobile() });
       var items              = $('<div/>',   { 'class': _this.classes.items, 'tabindex': -1 });
       var itemsScroll        = $('<div/>',   { 'class': _this.classes.scroll });
       var wrapper            = $('<div/>',   { 'class': _this.classes.prefix, 'html': _this.options.arrowButtonMarkup });
