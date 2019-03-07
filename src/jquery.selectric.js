@@ -681,6 +681,8 @@
 
       var isPrevKey = $.inArray(key, keys.previous) > -1;
       var isNextKey = $.inArray(key, keys.next) > -1;
+      var isFirstKey = $.inArray(key, keys.first) > -1;
+      var isLastKey = $.inArray(key, keys.last) > -1;
       var isSelectKey = $.inArray(key, keys.select) > -1;
       var isOpenKey = $.inArray(key, keys.open) > -1;
       var idx = _this.state.highlightedIdx;
@@ -690,6 +692,23 @@
       // Enter / Space
       if ( key === 13 || key === 32 ) {
         e.preventDefault();
+      }
+
+      // If it's a jump key
+      if ( isFirstKey ) {
+        e.preventDefault();
+
+        goToItem = _this.utils.nextEnabledItem(_this.lookupItems, -1);
+
+        _this.highlight(goToItem);
+      }
+
+      if ( isLastKey ) {
+        e.preventDefault();
+
+        goToItem = _this.utils.previousEnabledItem(_this.lookupItems, _this.items.length);
+
+        _this.highlight(goToItem);
       }
 
       // If it's a directional key
@@ -1093,6 +1112,8 @@
     keys                 : {
       previous : [37, 38],                 // Left / Up
       next     : [39, 40],                 // Right / Down
+      first    : [33],                     // Page Up
+      last     : [34],                     // Page Down
       select   : [9, 13, 27],              // Tab / Enter / Escape
       open     : [13, 32, 37, 38, 39, 40], // Enter / Space / Left / Up / Right / Down
       close    : [9, 27]                   // Tab / Escape
