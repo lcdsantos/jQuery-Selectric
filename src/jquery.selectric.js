@@ -269,10 +269,6 @@
     /** Activates the plugin */
     activate: function() {
       var _this = this;
-      var hiddenChildren = _this.elements.items.closest(':visible').children(':hidden').addClass(_this.classes.tempshow);
-      var originalWidth = _this.$element.width();
-
-      hiddenChildren.removeClass(_this.classes.tempshow);
 
       _this.utils.triggerCallback('BeforeActivate', _this);
 
@@ -284,8 +280,13 @@
         ])
       );
 
-      if ( _this.options.inheritOriginalWidth && originalWidth > 0 ) {
-        _this.elements.outerWrapper.width(originalWidth);
+      if ( _this.options.inheritOriginalWidth ) {
+        var hiddenChildren = _this.elements.items.closest(':visible').children(':hidden').addClass(_this.classes.tempshow);
+        var originalWidth = _this.$element.width();
+        hiddenChildren.removeClass(_this.classes.tempshow);
+        if ( originalWidth > 0 ) {
+          _this.elements.outerWrapper.width(originalWidth);
+        }
       }
 
       _this.unbindEvents();
