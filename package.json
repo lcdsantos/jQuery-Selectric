@@ -27,7 +27,7 @@
     "type": "git",
     "url": "https://github.com/lcdsantos/jQuery-Selectric.git"
   },
-  "dependencies": {
+  "peerDependencies": {
     "jquery": "^3.1.1"
   },
   "devDependencies": {
